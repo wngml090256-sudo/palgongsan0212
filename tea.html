@@ -215,35 +215,29 @@
 const REAL_URL = "https://wngml090256-sudo.github.io/wngml090256.github.io/tea.html";
 window.openShareModal = async () => {
   const title = document.title;
+  
+  // HTML 요소 가져오기
   const input = document.getElementById('shareUrlInput');
   const qr = document.getElementById('qrImage');
   const modal = document.getElementById('shareModal');
   
+  // 모달 내용 미리 채워두기 (PC용)
   if(input) input.value = REAL_URL;
   if(qr) qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(REAL_URL)}`;
   
+  // 1. 모바일(공유 기능 지원)인 경우
   if (navigator.share) { 
-      try { await navigator.share({ title: title, text: '나에게 맞는 자연의 향기와 차를 찾아보세요.', url: REAL_URL }); return; } catch (e) {} 
+      try { 
+          // 모바일 자체 공유창 띄우기
+          await navigator.share({ title: title, text: '나에게 맞는 자연의 향기와 차를 찾아보세요.', url: REAL_URL }); 
+      } catch (e) {
+          // 사용자가 취소해도 아무것도 하지 않음 (조용히 종료)
+      }
+      return; // ★핵심★ 모바일이면 여기서 무조건 끝냅니다. 밑으로 안 내려감!
   } 
+  
+  // 2. PC(공유 기능 미지원)인 경우에만 모달창 띄우기
   if(modal) modal.classList.remove('hidden'); 
-};
-window.closeShareModal = () => {
-  const modal = document.getElementById('shareModal');
-  if(modal) modal.classList.add('hidden');
-};
-window.copyShareUrl = () => { 
-  const input = document.getElementById('shareUrlInput'); 
-  if(input) {
-      input.select(); 
-      try { navigator.clipboard.writeText(input.value).then(() => alert("주소가 복사되었습니다.")); } catch(err) { document.execCommand('copy'); alert("주소가 복사되었습니다."); }
-  }
-};
-window.shareResult = async (key, name) => { 
-    const text = `[자연 속 오감테라피] 결과 공유: "${name}"`; 
-    try { 
-        if (navigator.share) { await navigator.share({ title: "오감테라피 결과", text: text, url: REAL_URL }); } 
-        else { await navigator.clipboard.writeText(REAL_URL); alert("링크가 복사되었습니다."); } 
-    } catch(e) {} 
 };
 </script>
 </body>

@@ -101,39 +101,30 @@
 const REAL_URL = "https://wngml090256-sudo.github.io/wngml090256.github.io/"; 
 
 window.openShareModal = async () => {
-  const url = window.location.href; // (혹시 몰라 현재 주소도 가져오게 둠)
   const title = document.title;
   
+  // HTML 요소 가져오기
   const input = document.getElementById('shareUrlInput');
   const qr = document.getElementById('qrImage');
   const modal = document.getElementById('shareModal');
   
-  // 입력창과 QR코드에는 '진짜 주소'를 넣습니다.
+  // 모달 내용 미리 채워두기 (PC용)
   if(input) input.value = REAL_URL;
   if(qr) qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(REAL_URL)}`;
   
+  // 1. 모바일(공유 기능 지원)인 경우
   if (navigator.share) { 
       try { 
-        // 공유하기 버튼 누를 때도 '진짜 주소'를 공유합니다.
-        await navigator.share({ title: title, text: '나에게 맞는 자연의 향기와 차를 찾아보세요.', url: REAL_URL }); 
-        return; 
-      } catch (e) {} 
-  }
-  if(modal) modal.classList.remove('hidden');
-};
-
-window.closeShareModal = () => {
-  const modal = document.getElementById('shareModal');
-  if(modal) modal.classList.add('hidden');
-};
-
-window.copyShareUrl = () => {
-  const input = document.getElementById('shareUrlInput');
-  if(input) {
-    input.select();
-    try { navigator.clipboard.writeText(input.value).then(() => alert("주소가 복사되었습니다.")); } 
-    catch(err) { document.execCommand('copy'); alert("주소가 복사되었습니다."); }
-  }
+          // 모바일 자체 공유창 띄우기
+          await navigator.share({ title: title, text: '나에게 맞는 자연의 향기와 차를 찾아보세요.', url: REAL_URL }); 
+      } catch (e) {
+          // 사용자가 취소해도 아무것도 하지 않음 (조용히 종료)
+      }
+      return; // ★핵심★ 모바일이면 여기서 무조건 끝냅니다. 밑으로 안 내려감!
+  } 
+  
+  // 2. PC(공유 기능 미지원)인 경우에만 모달창 띄우기
+  if(modal) modal.classList.remove('hidden'); 
 };
   </script>
 </body>
