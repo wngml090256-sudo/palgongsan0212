@@ -1,0 +1,250 @@
+
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  
+  <!-- [추가됨] 링크 공유 시 보여질 미리보기 정보 -->
+  <title>티 테라피 (Tea Therapy)</title>
+  <meta property="og:title" content="티 테라피 (Tea Therapy)" />
+  <meta property="og:description" content="나의 상태에 딱 맞는 약선차를 추천받아보세요." />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1200&auto=format&fit=crop" />
+
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Pretendard:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" id="app">
+      <header>
+        <div class="header-left">
+          <h1 id="pageTitle">티 테라피 (Tea Therapy)</h1>
+          <div class="sub" id="pageSub">오늘의 나에게 필요한 차를 골라보세요.</div>
+        </div>
+        <div class="header-right">
+             <!-- 홈으로 가기 -->
+             <button class="icon-btn" onclick="location.href='index.html'">🏠</button>
+             <!-- 공유 버튼 -->
+             <button class="icon-btn" onclick="openShareModal()" aria-label="공유하기">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="18" cy="5" r="3"></circle>
+                  <circle cx="6" cy="12" r="3"></circle>
+                  <circle cx="18" cy="19" r="3"></circle>
+                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                  <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                </svg>
+             </button>
+        </div>
+      </header>
+      
+      <div style="margin-bottom:10px;"><div class="pill" id="stepPill">Tea</div></div>
+      <div class="bar"><div id="barFill"></div></div>
+
+      <main id="mainContent"></main>
+
+      <div class="footer">
+        <div>© 자연환경해설사 정주희</div>
+        <div>* 의학적 진단이 아닌 취향/컨디션 기반 추천입니다.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 공유 모달창 -->
+  <div id="shareModal" class="modal-overlay hidden" onclick="closeShareModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <h3>QR코드 공유</h3>
+      <img id="qrImage" src="" alt="QR Code" class="qr-img">
+      <input type="text" id="shareUrlInput" class="url-input" readonly>
+      <div style="display:flex; gap:8px;">
+        <button class="btn primary" style="flex:1" onclick="copyShareUrl()">주소 복사</button>
+        <button class="btn" style="flex:1" onclick="closeShareModal()">닫기</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const ICONS = {
+    yakseon: `<svg viewBox="0 0 24 24" fill="none" stroke="#d68c00" stroke-width="1.5"><path d="M12 3v18m-9-9h18" stroke="currentColor"/><circle cx="12" cy="12" r="5" fill="rgba(214,140,0,0.1)"/></svg>`, 
+    herb: `<svg viewBox="0 0 24 24" fill="none" stroke="#4caf50" stroke-width="1.5"><path d="M12 22s8-10 8-16a8 8 0 0 0-16 0c0 6 8 16 8 16z"/><path d="M12 6v8"/></svg>`, 
+    green: `<svg viewBox="0 0 24 24" fill="none" stroke="#2e7d32" stroke-width="1.5"><path d="M2 22h20M12 2v20M5 10c0-4 3-8 7-8s7 4 7 8v12H5V10z"/></svg>`,
+  };
+
+  const TEA_TYPES = {
+    warm:   { name: "따뜻순환차", example: "생강차(또는 생강+대추)", pitch: "포근하게 감싸주는 한 잔이 필요해요.", tags:["따뜻함","손발차가움","포근"], },
+    cool:   { name: "맑은쿨링차", example: "국화차(또는 박하)", pitch: "머리까지 맑아지는 상쾌함이 필요해요.", tags:["상쾌","두통","리셋"], },
+    digest: { name: "소화편안차", example: "보리차(또는 진피)", pitch: "속을 편안하게 비우고 싶어요.", tags:["구수함","더부룩","소화"], },
+    calm:   { name: "긴장완화차", example: "대추차", pitch: "마음을 차분하게 낮춰보세요.", tags:["안정","불면","휴식"], },
+    energy: { name: "기력충전차", example: "인삼차(또는 쌍화)", pitch: "방전된 에너지, 충전이 필요해요.", tags:["에너지","지침","활력"], },
+    water:  { name: "수분정리차", example: "옥수수수염차", pitch: "가볍게 몸을 정돈하고 싶어요.", tags:["붓기","가벼움","배출"], },
+    five:   { name: "오미자차", example: "오미자차", pitch: "다섯가지 맛으로 리듬을 되찾으세요.", tags:["새콤달콤","갈증","균형"], }
+  };
+
+  const TEA_QUESTIONS = [
+    { q: "Q1. 지금 내 몸의 “온도 감각”은?", a: [{t:"손발이 차고 따뜻한 게 좋다",s:{warm:2,energy:1}}, {t:"더위를 타고 시원한 게 좋다",s:{cool:2}}, {t:"그때그때 다르다",s:{digest:1,calm:1}}, {t:"잘 모르겠다",s:{}}] },
+    { q: "Q2. 요즘 가장 불편한 점은?", a: [{t:"속이 더부룩/가스",s:{digest:2}}, {t:"목마름/건조함",s:{five:2}}, {t:"몸이 붓고 무거움",s:{water:2}}, {t:"딱히 없음/기분전환",s:{cool:1,calm:1}}] },
+    { q: "Q3. 스트레스 정도는?", a: [{t:"예민하고 머리가 복잡",s:{calm:2}}, {t:"축 처지고 기운 없음",s:{energy:2}}, {t:"스트레스 적음",s:{digest:1}}, {t:"감정 기복이 심함",s:{five:1,calm:1}}] },
+    { q: "Q4. 잠은 잘 주무시나요?", a: [{t:"잠들기 힘듦",s:{calm:2}}, {t:"자주 깨거나 개운치 않음",s:{energy:1,calm:1}}, {t:"잘 자는 편",s:{cool:1}}, {t:"수면시간 불규칙",s:{five:1}}] },
+    { q: "Q5. 음식 먹은 후 반응은?", a: [{t:"기름진 것 먹으면 부담",s:{digest:2}}, {t:"매운/뜨거운 것 먹으면 확 달아오름",s:{cool:2}}, {t:"찬 것 먹으면 배 아픔",s:{warm:2}}, {t:"상관 없음",s:{}}] },
+    { q: "Q6. 오늘 바라는 차의 역할은?", a: [{t:"따뜻하게 위로받기",s:{warm:2}}, {t:"상쾌하게 리셋",s:{cool:2}}, {t:"속 편하게",s:{digest:2}}, {t:"마음의 안정",s:{calm:2}}] },
+    { q: "Q7. 선호하는 향/맛은?", a: [{t:"알싸한 향(생강/계피)",s:{warm:2}}, {t:"향긋한 꽃/허브향",s:{cool:2}}, {t:"구수한 곡물맛",s:{digest:2}}, {t:"새콤달콤한 맛",s:{five:2}}] },
+    { q: "Q8. 평소 물 섭취량은?", a: [{t:"잘 안 마심",s:{five:1,water:1}}, {t:"많이 마셔도 갈증 남",s:{five:2}}, {t:"보통",s:{}}, {t:"짠 음식 먹으면 잘 부음",s:{water:2}}] },
+    { q: "Q9. 현재 에너지 상태는?", a: [{t:"배터리 10% (지침)",s:{energy:2,calm:1}}, {t:"평범함",s:{digest:1}}, {t:"과열/흥분 상태",s:{cool:2}}, {t:"들쭉날쭉함",s:{five:1}}] },
+  ];
+
+  const state = {
+    view: 'menu',
+    quizStep: 0,
+    quizPicks: [],
+    isProcessing: false
+  };
+
+  const mainContent = document.getElementById("mainContent");
+  const pageTitle = document.getElementById("pageTitle");
+  const pageSub = document.getElementById("pageSub");
+  const stepPill = document.getElementById("stepPill");
+  const barFill = document.getElementById("barFill");
+
+  function render() {
+    barFill.style.width = '0%';
+    state.isProcessing = false;
+
+    if (state.view === 'menu') {
+      setTitle("티 테라피 (Tea Therapy)", "원하는 차 메뉴를 선택해주세요.", "Tea");
+      mainContent.innerHTML = `
+        <div class="tea-grid">
+          <button class="tea-btn" onclick="startQuiz()">
+            ${ICONS.yakseon}
+            <span>약선차<br><span class="tiny">(추천받기)</span></span>
+          </button>
+          <button class="tea-btn" onclick="alert('허브차 정보는 준비 중입니다.')">
+            ${ICONS.herb}
+            <span>허브차</span>
+          </button>
+          <button class="tea-btn" onclick="alert('녹차 정보는 준비 중입니다.')">
+            ${ICONS.green}
+            <span>녹차</span>
+          </button>
+        </div>
+        <button class="wide-btn" onclick="alert('티 블랜딩 레시피는 준비 중입니다.')">
+          <span>🍵 티 블랜딩 레시피 보기</span>
+          <span>OPEN ></span>
+        </button>
+        <div class="nav">
+          <button class="btn" onclick="location.href='index.html'">← 홈으로</button>
+        </div>
+      `;
+    } 
+    else if (state.view === 'quiz_tea') { renderQuiz(); }
+  }
+
+  function startQuiz() {
+    state.view = 'quiz_tea';
+    state.quizStep = 0;
+    state.quizPicks = Array(TEA_QUESTIONS.length).fill(null);
+    render();
+  }
+  window.startQuiz = startQuiz;
+
+  function renderQuiz() {
+    const progress = (state.quizStep / TEA_QUESTIONS.length) * 100;
+    barFill.style.width = `${progress}%`;
+    if (state.quizStep >= TEA_QUESTIONS.length) { renderResult(); return; }
+    const q = TEA_QUESTIONS[state.quizStep];
+    const picked = state.quizPicks[state.quizStep];
+    setTitle("약선차 추천", "나의 상태를 체크해보세요.", `${state.quizStep+1} / ${TEA_QUESTIONS.length}`);
+    mainContent.innerHTML = `
+      <h2 class="q-title">${q.q}</h2>
+      <div class="choices">${q.a.map((ans, idx) => `<button class="choice" onclick="pickAnswer(${idx})" aria-pressed="${picked===idx}">${ans.t}</button>`).join("")}</div>
+      <div class="nav"><button class="btn" onclick="prevStep()" ${state.quizStep===0 ? 'disabled':''}>이전</button><button class="btn danger" onclick="setView('menu')">취소</button></div>`;
+  }
+
+  window.pickAnswer = (idx) => { state.quizPicks[state.quizStep] = idx; if (state.quizStep < TEA_QUESTIONS.length) { state.quizStep++; render(); } };
+  window.prevStep = () => { if (state.quizStep > 0) { state.quizStep--; render(); } };
+
+  function renderResult() {
+    const finalScores = {};
+    Object.keys(TEA_TYPES).forEach(k => finalScores[k] = 0);
+    state.quizPicks.forEach((pidx, qidx) => {
+      if (pidx === null) return;
+      const scores = TEA_QUESTIONS[qidx].a[pidx].s;
+      for (const [k, v] of Object.entries(scores)) finalScores[k] += v;
+    });
+    const ranking = Object.entries(finalScores).sort((a,b) => b[1]-a[1]);
+    const topKey = ranking[0][0];
+    const topType = TEA_TYPES[topKey];
+    setTitle("결과 확인", "오늘 당신에게 가장 필요한 차는?", "완료");
+    barFill.style.width = '100%';
+    mainContent.innerHTML = `
+      <section class="result">
+        <div class="box" style="text-align:center; padding:30px 20px;">
+          <div style="font-size:14px; color:#2f8a58; font-weight:700; margin-bottom:10px;">오늘의 추천 약선차</div>
+          <h2 style="font-size:26px; margin:0 0 10px; color:#000;">${topType.name}</h2>
+          <div style="color:#333; font-weight:600; font-size:16px; margin-bottom:12px;">${topType.example}</div>
+          <p style="color:#555; line-height:1.6;">"${topType.pitch}"</p>
+          <div style="margin-top:20px">${topType.tags.map(t => `<span class="tag">#${t}</span>`).join("")}</div>
+        </div>
+        <div class="box">
+          <div class="tiny">결과 활용하기</div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;">
+            <button class="btn capture" onclick="captureResult('app', '${topType.name}_결과')">📷 이미지 저장</button>
+            <button class="btn primary" onclick="shareResult('${topKey}', '${topType.name}')">결과 공유</button>
+            <button class="btn" onclick="startQuiz()">다시 테스트</button>
+            <button class="btn" onclick="setView('menu')">메뉴로</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  window.setView = (viewName) => { state.view = viewName; render(); };
+  function setTitle(title, sub, pill) { pageTitle.textContent = title; pageSub.textContent = sub; stepPill.textContent = pill; }
+  window.captureResult = (elementId, fileName) => {
+    const element = document.getElementById(elementId);
+    alert("이미지를 생성 중입니다. 잠시만 기다려주세요...");
+    html2canvas(element, { backgroundColor: "#ffffff", scale: 2 }).then(canvas => {
+        const link = document.createElement('a'); link.download = fileName + '.png'; link.href = canvas.toDataURL(); link.click();
+    }).catch(err => { alert("이미지 저장 중 오류가 발생했습니다."); });
+  };
+  
+  render();
+})();
+
+const REAL_URL = "https://wngml090256-sudo.github.io/tea.html"; // 차 전용 주소
+window.openShareModal = async () => {
+  const title = document.title;
+  const input = document.getElementById('shareUrlInput');
+  const qr = document.getElementById('qrImage');
+  const modal = document.getElementById('shareModal');
+  
+  if(input) input.value = REAL_URL;
+  if(qr) qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(REAL_URL)}`;
+  
+  if (navigator.share) { 
+      try { await navigator.share({ title: title, text: '나에게 맞는 자연의 향기와 차를 찾아보세요.', url: REAL_URL }); return; } catch (e) {} 
+  } 
+  if(modal) modal.classList.remove('hidden'); 
+};
+window.closeShareModal = () => {
+  const modal = document.getElementById('shareModal');
+  if(modal) modal.classList.add('hidden');
+};
+window.copyShareUrl = () => { 
+  const input = document.getElementById('shareUrlInput'); 
+  if(input) {
+      input.select(); 
+      try { navigator.clipboard.writeText(input.value).then(() => alert("주소가 복사되었습니다.")); } catch(err) { document.execCommand('copy'); alert("주소가 복사되었습니다."); }
+  }
+};
+window.shareResult = async (key, name) => { 
+    const text = `[자연 속 오감테라피] 결과 공유: "${name}"`; 
+    try { 
+        if (navigator.share) { await navigator.share({ title: "오감테라피 결과", text: text, url: REAL_URL }); } 
+        else { await navigator.clipboard.writeText(REAL_URL); alert("링크가 복사되었습니다."); } 
+    } catch(e) {} 
+};
+</script>
+</body>
+</html>

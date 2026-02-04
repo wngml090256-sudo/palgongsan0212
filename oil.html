@@ -1,0 +1,510 @@
+
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  
+  <!-- [추가됨] 링크 공유 시 보여질 미리보기 정보 -->
+  <title>에센셜 오일 테라피</title>
+  <meta property="og:title" content="에센셜 오일 테라피" />
+  <meta property="og:description" content="나에게 맞는 향기를 찾고, DIY 레시피를 만들어보세요." />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1200&auto=format&fit=crop" />
+
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Pretendard:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" id="app">
+      <header>
+        <div class="header-left">
+          <h1 id="pageTitle">에센셜 오일 테라피</h1>
+          <div class="sub" id="pageSub">원하는 메뉴를 선택해주세요.</div>
+        </div>
+        <div class="header-right">
+          <!-- 홈 버튼 -->
+          <button class="icon-btn" onclick="location.href='index.html'">🏠</button>
+          <!-- 공유 버튼 -->
+          <button class="icon-btn" onclick="openShareModal()" aria-label="공유하기">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="18" cy="5" r="3"></circle>
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="19" r="3"></circle>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            </svg>
+          </button>
+        </div>
+      </header>
+      
+      <div style="margin-bottom:10px;"><div class="pill" id="stepPill">Oil</div></div>
+      <div class="bar"><div id="barFill"></div></div>
+
+      <main id="mainContent"></main>
+
+      <div class="footer">
+        <div>© 자연환경해설사 정주희</div>
+        <div>* 의학적 진단이 아닌 취향/컨디션 기반 추천입니다.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 공유 모달창 -->
+  <div id="shareModal" class="modal-overlay hidden" onclick="closeShareModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <h3>QR코드 공유</h3>
+      <img id="qrImage" src="" alt="QR Code" class="qr-img">
+      <input type="text" id="shareUrlInput" class="url-input" readonly>
+      <div style="display:flex; gap:8px;">
+        <button class="btn primary" style="flex:1" onclick="copyShareUrl()">주소 복사</button>
+        <button class="btn" style="flex:1" onclick="closeShareModal()">닫기</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const OIL_DATA = [
+      { name: "라벤더", category: "Floral", note: "M", tags: ["휴식", "수면"], desc: "많은 배려로 지치셨군요. 지금은 엄마 품 같은 온전한 쉼이 필요해요.", scentDesc: "보랏빛 꽃밭이 바람에 흩날리는 듯한 편안한 향" },
+      { name: "일랑일랑", category: "Floral", note: "B", tags: ["매혹", "감각"], desc: "감성이 풍부한 당신, 억눌린 감정을 로맨틱하게 표현해보세요.", scentDesc: "달콤하고 묵직하게 피어오르는 관능적인 꽃향기" },
+      { name: "자스민", category: "Floral", note: "B", tags: ["우아", "신뢰"], desc: "당신은 이미 고귀한 사람입니다. 스스로를 더 믿어주세요.", scentDesc: "달빛 아래 핀 하얀 꽃처럼 그윽하고 깊은 향" },
+      { name: "로즈", category: "Floral", note: "M", tags: ["사랑", "행복"], desc: "마음 깊은 곳 따뜻한 사랑이 필요하시군요. 상처를 부드럽게 감싸주세요.", scentDesc: "수천 송이 장미 꽃잎에 파묻힌 듯한 풍성한 향" },
+      { name: "네롤리", category: "Floral", note: "M", tags: ["순수", "안식"], desc: "여린 마음을 다치셨나요? 깊은 슬픔을 부드럽게 어루만져 주세요.", scentDesc: "오렌지 꽃에서 배어나오는 섬세하고 청초한 향" },
+      { name: "제라늄", category: "Floral", note: "M", tags: ["균형", "안정"], desc: "감정의 롤러코스터 속에서 평정심을 찾고 싶으시군요.", scentDesc: "장미와 풀내음이 섞인 듯한 싱그러운 꽃향기" },
+      { name: "베르가못", category: "Citrus", note: "T", tags: ["밝음", "희망"], desc: "꽉 막힌 마음을 풀어주고 햇살 같은 희망을 채워보세요.", scentDesc: "홍차(얼그레이)에 담긴 듯한 고급스럽고 쌉쌀한 귤향" },
+      { name: "레몬그라스", category: "Citrus", note: "T", tags: ["활력", "자극"], desc: "무기력함을 느끼시나요? 야생의 생명력이 당신을 깨워줄 거예요.", scentDesc: "흙내음이 섞인 거칠고 강렬한 레몬 풀향" },
+      { name: "스위트오렌지", category: "Citrus", note: "T", tags: ["웃음", "천진"], desc: "걱정은 내려놓고 아이처럼 해맑게 웃고 싶은 날이군요.", scentDesc: "껍질을 막 깠을 때 퍼지는 달콤하고 상큼한 과즙향" },
+      { name: "라임", category: "Citrus", note: "T", tags: ["재치", "가벼움"], desc: "삶이 너무 무겁나요? 탄산수처럼 가볍고 유쾌하게 기분 전환하세요.", scentDesc: "입안에 침이 고이게 하는 쨍하고 쌉싸름한 라임향" },
+      { name: "레몬", category: "Citrus", note: "T", tags: ["상쾌", "시작"], desc: "지루한 일상을 끝내고 맑은 에너지로 새로 시작하고 싶으시군요.", scentDesc: "정신이 번쩍 들 만큼 시고 상쾌한 노란색 향기" },
+      { name: "로즈마리", category: "Herb", note: "T", tags: ["기억", "선명"], desc: "생각이 너무 많으시군요. 안개를 걷어내고 정신을 맑게 깨워보세요.", scentDesc: "머리가 맑아지는 톡 쏘는 푸른 허브의 향" },
+      { name: "유칼립투스", category: "Herb", note: "T", tags: ["정화", "시원"], desc: "답답한 상황에 갇힌 기분인가요? 시원한 바람으로 환기가 필요해요.", scentDesc: "코가 뻥 뚫리는 듯한 시원하고 청량한 숲의 향" },
+      { name: "페퍼민트", category: "Herb", note: "T", tags: ["깨어남", "충격"], desc: "나태해진 정신에 찬물 같은 자극과 새로운 에너지를 주세요.", scentDesc: "박하사탕처럼 화하고 차가운 멘톨의 향" },
+      { name: "티트리", category: "Herb", note: "T", tags: ["방어", "청결"], desc: "외부 스트레스로부터 나를 지킬 단단한 방패가 필요하군요.", scentDesc: "약초처럼 쌉싸름하고 깨끗한 소독의 향" },
+      { name: "카모마일", category: "Herb", note: "M", tags: ["위로", "포용"], desc: "예민해진 신경을 '괜찮아'라고 다독여주는 따뜻한 위로가 필요해요.", scentDesc: "말린 사과와 국화차에서 나는 은은하고 달큰한 향" },
+      { name: "시트로넬라", category: "Herb", note: "T", tags: ["경계", "방향"], desc: "불필요한 관계를 끊어내고 나만의 공간을 확실히 확보하세요.", scentDesc: "벌레가 싫어할 만큼 강렬하고 날카로운 풀향" },
+      { name: "화이트티", category: "Herb", note: "M", tags: ["여백", "심플"], desc: "복잡한 건 싫고 정갈한 상태를 원하시는군요. 마음에 여백을 주세요.", scentDesc: "이슬 맺힌 찻잎처럼 은은하고 깨끗한 향" },
+      { name: "샌달우드", category: "Woody", note: "B", tags: ["명상", "철학"], desc: "소란스러운 세상에서 벗어나 내면의 소리에 집중할 시간이에요.", scentDesc: "오래된 사원에서 날 법한 고요하고 묵직한 나무향" },
+      { name: "시더우드", category: "Woody", note: "B", tags: ["뿌리", "기둥"], desc: "흔들리는 상황 속에서 대지처럼 굳건한 버팀목이 되어주세요.", scentDesc: "연필심에서 나는 듯한 건조하고 씁쓸한 나무향" },
+      { name: "프랑킨센스", category: "Woody", note: "B", tags: ["영혼", "성찰"], desc: "현실의 고민을 넘어 영적인 평온함과 성찰을 원하시는군요.", scentDesc: "신성한 의식에 쓰이는 스모키하고 신비로운 나무진액 향" },
+      { name: "바닐라", category: "Earthy", note: "B", tags: ["다정", "추억"], desc: "다정한 손길이 그리운 날, 달콤한 추억으로 마음을 채워보세요.", scentDesc: "아이스크림처럼 부드럽고 달콤한 바닐라빈 향" },
+  ];
+
+  const CATEGORY_PERSONA = {
+    "Floral": "💐 <strong>공감 능력 200% 감성 천재</strong><br>타인의 감정을 누구보다 잘 이해하고, 따뜻한 말 한마디로 사람을 살리는 능력이 있으세요. 당신은 사랑받기 위해 태어난 사람이에요.",
+    "Citrus": "🍊 <strong>대체불가! 인간 비타민</strong><br>어디서든 분위기를 주도하는 기질과 낙천적인 마인드를 가지셨군요! 실패해도 툭 털고 일어나는 당신의 회복탄력성은 모두의 부러움을 사요.",
+    "Herb": "🌿 <strong>담백하고 쿨한 미니멀리스트</strong><br>복잡한 건 딱 질색이시군요! 남들의 시선보다는 나만의 평화와 안정을 중요시하는 주관 뚜렷한 모습이 정말 멋져요.",
+    "Woody": "🌲 <strong>신뢰도 1위, 리더형 인재</strong><br>가벼운 말보다는 묵직한 행동으로 보여주는 분이시군요. 친구들이 고민이 있을 때 가장 먼저 찾는 멘토 같은 존재예요.",
+    "Earthy": "🍂 <strong>정 많고 속 깊은 '진국'</strong><br>첫인상은 조용해 보일 수 있지만, 알면 알수록 진국인 분이세요. 묵묵히 내 사람을 챙기는 당신의 의리는 그 무엇보다 깊고 단단해요."
+  };
+
+  const OIL_QUESTIONS = [
+      { 
+        id: "pref", 
+        q: "Q1. 평소 당신이 가장 좋아하는 향기는?", 
+        options: [
+          { text: "시트러스", desc: "오렌지, 레몬, 라임", tag: "Citrus", img: "citrus.png" },
+          { text: "플로럴", desc: "장미, 라벤더, 꽃향기", tag: "Floral", img: "floral.png" },
+          { text: "허브/그린", desc: "풀내음, 유칼립투스", tag: "Herb", img: "herb.png" },
+          { text: "우디/어스", desc: "나무, 흙, 숲 냄새", tag: "Woody", img: "woody.png" } 
+        ]
+      },
+      { q: "Q2. 낯선 숲길을 걷다 문득 걸음을 멈췄습니다.<br>그곳에서 당신은 무엇을 보고 있나요?", options: [
+          { text: "나무 사이로 쏟아지는 찬란한 햇살", tag: "햇살" },
+          { text: "아무도 밟지 않은 깊은 흙과 나무뿌리", tag: "뿌리" },
+          { text: "바람에 흔들리는 작은 야생화 한 송이", tag: "플로럴" },
+          { text: "코끝을 스치는 서늘하고 맑은 공기", tag: "시원" }
+      ]},
+      { q: "Q3. 지금 나에게 가장 필요한 '공간'의 느낌은?", options: [
+          { text: "누구에게도 방해받지 않는 동굴 같은 곳", tag: "차분함" },
+          { text: "사람들의 소리가 들리는 밝은 카페", tag: "웃음" },
+          { text: "모든 것이 제자리에 정리된 깔끔한 서재", tag: "정돈" },
+          { text: "폭신한 이불이 있는 다락방", tag: "포근" }
+      ]},
+      { q: "Q4. 스트레스를 받을 때 나의 반응은?", options: [
+          { text: "속으로 꾹 참으며 삭힌다", tag: "해소" },
+          { text: "예민해져서 날카롭게 반응한다", tag: "안정" },
+          { text: "아무것도 하기 싫어 무기력해진다", tag: "활력" },
+          { text: "머리가 복잡해져 생각이 멈추지 않는다", tag: "명상" }
+      ]},
+      { q: "Q5. 여행지에서 우연히 받은 선물,<br>무엇이었으면 좋겠나요?", options: [
+          { text: "지혜가 담긴 책", tag: "깊이" },
+          { text: "상큼한 맛이 톡 터지는 열대과일", tag: "자극" },
+          { text: "화려하고 향기로운 꽃다발", tag: "아름다움" },
+          { text: "마음을 씻어줄 맑은 차 한 잔", tag: "정화" }
+      ]},
+      { q: "Q6. 내일 아침 눈을 떴을 때,<br>가장 바라는 나의 상태는?", options: [
+          { text: "걱정 없이 마음이 깃털처럼 가볍기를", tag: "가벼움" },
+          { text: "무엇이든 할 수 있는 자신감이 넘치기를", tag: "선명" },
+          { text: "세상이 따뜻하고 안전하게 느껴지기를", tag: "신뢰" },
+          { text: "어제와는 다른 새로운 내가 되어있기를", tag: "새로움" }
+      ]},
+      { q: "Q7. 친구들과의 모임에서 나는 어떤 모습인가요?", options: [
+          { text: "분위기를 주도하고 에너지를 발산한다", tag: "매혹" },
+          { text: "상대의 이야기를 들어주며 맞장구친다", tag: "다정" },
+          { text: "주변 사람들을 챙기고 보살핀다", tag: "위로" },
+          { text: "빨리 집에 가서 쉬고 싶다는 생각 뿐", tag: "휴식" }
+      ]},
+      { q: "Q8. 지금 가장 끌리는 '질감'은?", options: [
+          { text: "거칠지만 자연스러운 나무껍질", tag: "우디" },
+          { text: "부드럽고 매끄러운 실크", tag: "감각" },
+          { text: "깨끗하고 바스락거리는 린넨", tag: "청결" },
+          { text: "말랑말랑하고 따뜻한 솜", tag: "순수" }
+      ]},
+      { q: "Q9. 당신의 인생에서 가장 중요한 가치는?", options: [
+          { text: "흔들리지 않는 균형과 평화", tag: "균형" },
+          { text: "끊임없이 성장하고 나아가는 힘", tag: "희망" },
+          { text: "나를 지키는 단단한 보호막", tag: "방어" },
+          { text: "영혼을 울리는 깊은 깨달음", tag: "영혼" }
+      ]}
+  ];
+
+  const state = {
+    view: 'menu',
+    oilStep: 0,
+    oilTags: [],
+    selectedRecipeOils: [],
+    top5ResultOils: [],
+    userPreference: null,
+    isProcessing: false
+  };
+
+  const mainContent = document.getElementById("mainContent");
+  const pageTitle = document.getElementById("pageTitle");
+  const pageSub = document.getElementById("pageSub");
+  const stepPill = document.getElementById("stepPill");
+  const barFill = document.getElementById("barFill");
+
+  function render() {
+    barFill.style.width = '0%';
+    state.isProcessing = false;
+
+    if (state.view === 'menu') {
+        setTitle("에센셜 오일 테라피", "원하는 메뉴를 선택해주세요.", "Oil");
+        mainContent.innerHTML = `
+        <div class="choices">
+          <button class="choice" onclick="startOilQuiz()">1. 에센셜오일 취향 찾기</button>
+          <button class="choice" onclick="setView('oil_recipe_intro')">2. DIY 아로마 롤온 레시피</button>
+        </div>`;
+    } 
+    else if (state.view === 'oil_recipe_intro') {
+      setTitle("DIY 롤온 레시피", "어떤 방식으로 오일을 선택하시겠어요?", "Selection");
+      mainContent.innerHTML = `
+        <div style="display:grid; gap:12px;">
+            <button class="recipe-intro-btn" onclick="setView('oil_recipe_manual')">
+                <strong>🖐️ 직접 모든 오일 선택하기</strong>
+                <span>내가 원하는 향 3가지를<br>자유롭게 골라 조합합니다.</span>
+            </button>
+            <button class="recipe-intro-btn" onclick="checkAndGoAutoRecipe()">
+                <strong>🤖 결과 기반으로 추천받기</strong>
+                <span>나의 오일 테스트 결과(Top 5)를<br>바탕으로 어울리는 향을 추천받습니다.</span>
+            </button>
+        </div>
+        <div class="nav"><button class="btn" onclick="setView('menu')">← 이전으로</button></div>
+      `;
+    }
+    else if (state.view === 'quiz_oil') { renderOilQuiz(); }
+    else if (state.view === 'oil_recipe_manual') { renderRecipeManual(); }
+    else if (state.view === 'oil_recipe_auto') { renderRecipeAuto(); }
+  }
+
+  // --- OIL QUIZ ---
+  window.startOilQuiz = () => {
+    state.view = 'quiz_oil';
+    state.oilStep = 0;
+    state.oilTags = [];
+    state.userPreference = null;
+    render();
+  };
+
+  function renderOilQuiz() {
+    const progress = (state.oilStep / OIL_QUESTIONS.length) * 100;
+    barFill.style.width = `${progress}%`;
+    if (state.oilStep >= OIL_QUESTIONS.length) { renderOilResult(); return; }
+    
+    const q = OIL_QUESTIONS[state.oilStep];
+    const isPref = q.id === "pref";
+    
+    setTitle(isPref ? "취향 탐색" : "내면 탐색", 
+             isPref ? "평소 선호하는 향기를 알려주세요." : "당신의 감각을 따라가보세요.", 
+             `${state.oilStep+1} / ${OIL_QUESTIONS.length}`);
+             
+    let optionsHtml = '';
+    
+    if (isPref) {
+      optionsHtml = `<div class="pref-grid">
+        ${q.options.map((opt) => `
+          <div class="pref-card" onclick="handleOptionClick(this, '${opt.tag}')">
+            <img src="${opt.img}" alt="${opt.text}" class="pref-img">
+            <div class="pref-name">${opt.text}</div>
+            <div class="pref-desc">${opt.desc}</div>
+          </div>
+        `).join("")}
+      </div>`;
+    } else {
+      optionsHtml = `<div class="choices">
+        ${q.options.map((opt) => `<button class="choice" onclick="handleOptionClick(this, '${opt.tag}')">${opt.text}</button>`).join("")}
+      </div>`;
+    }
+
+    mainContent.innerHTML = `
+      <h2 class="q-title">${q.q}</h2>
+      ${optionsHtml}
+      <div class="nav"><button class="btn" onclick="prevOilStep()" ${state.oilStep===0 ? 'disabled':''}>이전</button><button class="btn danger" onclick="setView('menu')">취소</button></div>`;
+  }
+
+  window.handleOptionClick = (element, tag) => {
+    if (state.isProcessing) return;
+    state.isProcessing = true;
+    element.classList.add('clicked');
+    setTimeout(() => { pickOilAnswer(tag); }, 150); 
+  };
+
+  window.pickOilAnswer = (tag) => {
+    if (OIL_QUESTIONS[state.oilStep].id === "pref") { state.userPreference = tag; } 
+    else { state.oilTags[state.oilStep] = tag; }
+    state.oilStep++; render(); 
+  };
+  
+  window.prevOilStep = () => { if (state.oilStep > 0) { state.oilStep--; render(); } };
+
+  function renderOilResult() {
+    let scoredOils = OIL_DATA.map(oil => {
+        let score = oil.tags.filter(t => state.oilTags.includes(t)).length;
+        return { ...oil, score: score + Math.random() * 0.5 }; 
+    });
+    scoredOils.sort((a, b) => b.score - a.score);
+    const top5 = scoredOils.slice(0, 5);
+    state.top5ResultOils = top5; 
+    const bestOil = top5[0];
+
+    const catCounts = {};
+    top5.forEach(o => { catCounts[o.category] = (catCounts[o.category] || 0) + 1; });
+    const topCat = Object.keys(catCounts).sort((a,b) => catCounts[b] - catCounts[a])[0];
+    const personaMsg = CATEGORY_PERSONA[topCat] || "다채로운 매력을 지닌 조화로운 사람";
+    const userPref = state.userPreference || "Floral";
+
+    let analysisTitle = "", analysisDesc = "";
+    const isMatch = userPref === topCat || (userPref === "Woody" && topCat === "Earthy") || (userPref === "Earthy" && topCat === "Woody");
+
+    if (isMatch) {
+        analysisTitle = "🌿 나를 사랑하는 마음, 그 평온한 일치";
+        analysisDesc = `오늘 당신의 마음을 가만히 들여다보니, 참 평온하고 단단한 상태이시군요.<br><br>평소 좋아하시던 <strong>[${userPref}]</strong> 향기가 오늘 당신의 몸과 마음이 원하는 에너지와 정확히 맞닿아 있어요.`;
+    } else {
+        analysisTitle = "💌 미처 몰랐던 내 마음의 작은 목소리";
+        analysisDesc = `조금은 낯선 결과에 고개를 갸우뚱하셨나요? 평소 좋아하던 향기가 당신의 '멋진 모습'을 대변했다면, 오늘 발견된 이 향기는 당신의 무의식이 조심스레 보내온 <strong>'진짜 위로'</strong>의 편지예요.`;
+    }
+
+    let noteAdvice = "";
+    if (bestOil.note === 'T') noteAdvice = `<br><br><strong>💡 Top Note 처방:</strong><br>"지금 당신의 어깨가 조금 무거운 건 아닌가요? 가벼운 전환이 필요한 시기예요."`;
+    else if (bestOil.note === 'M') noteAdvice = `<br><br><strong>💡 Middle Note 처방:</strong><br>"누군가에게 내준 마음만큼, 정작 당신의 마음은 조금 허전했나 봐요."`;
+    else if (bestOil.note === 'B') noteAdvice = `<br><br><strong>💡 Base Note 처방:</strong><br>"잠시 휘청여도 괜찮아요. 대지처럼 굳건한 버팀목이 필요해요."`;
+
+    barFill.style.width = '100%';
+    setTitle("상담 결과", "당신의 마음을 읽어보았습니다.", "완료");
+
+    mainContent.innerHTML = `
+      <section class="result">
+        <div class="box" style="padding:24px 20px;">
+          <div style="display:flex; justify-content:center; gap:10px; margin-bottom:24px;">
+            <div style="background:#f5f5f5; padding:8px 16px; border-radius:20px; font-size:13px; color:#6d4c41;">
+              ❤️ 의식의 향: <strong>${userPref}</strong>
+            </div>
+            <div style="background:#e8f5e9; padding:8px 16px; border-radius:20px; font-size:13px; color:#2e7d32; border:1px solid #2e7d32;">
+              💊 무의식의 향: <strong>${topCat}</strong>
+            </div>
+          </div>
+          <div class="analysis-box">
+             <div class="analysis-title">${analysisTitle}</div>
+             <div class="analysis-text">${analysisDesc}${noteAdvice}</div>
+          </div>
+          <div class="persona-card">
+            <div class="persona-title">#${topCat} Type 성향</div>
+            <div class="persona-desc">${personaMsg}</div>
+          </div>
+          <div class="empathy-msg">"지금은, ${bestOil.desc}"</div>
+          <div id="oil-list">
+            ${top5.map((oil, idx) => `
+              <div class="oil-card ${idx===0 ? 'best' : ''}">
+                <div style="flex:1;">
+                  <div style="font-size:${idx===0? '18px':'16px'}; margin-bottom:6px; ${idx===0?'color:#d4a024; font-weight:700;':''}">
+                    ${idx+1}. ${oil.name}
+                  </div>
+                  <div class="scent-desc" style="font-size:13px; color:#5d4037; line-height:1.4;">${oil.scentDesc}</div>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+          <button class="btn accent" onclick="checkAndGoAutoRecipe()">🧪 이 처방대로 롤온 만들기</button>
+          <div class="closing-q">"이 향기를 맡으며,<br>오늘 가장 하고 싶은 일은 무엇인가요?"</div>
+        </div>
+        <div style="display:flex; gap:6px; margin-top:12px;">
+          <button class="btn capture" onclick="captureResult('app', '${bestOil.name}_결과')">📷 저장</button>
+          <button class="btn primary" onclick="shareResult('${bestOil.name}')">공유</button>
+          <button class="btn" onclick="startOilQuiz()">다시하기</button>
+          <button class="btn" onclick="setView('menu')">메뉴</button>
+        </div>
+      </section>
+    `;
+  }
+
+  // --- MANUAL RECIPE ---
+  function renderRecipeManual() {
+    setTitle("나만의 레시피 (직접 선택)", "원하는 오일을 최대 3개 선택하세요.", "Manual");
+    const isBtnDisabled = state.selectedRecipeOils.length === 0;
+    
+    mainContent.innerHTML = `
+      <div class="selection-grid">
+        ${OIL_DATA.map(oil => {
+            const isSelected = state.selectedRecipeOils.some(o => o.name === oil.name);
+            return `<div class="oil-select-item ${isSelected ? 'selected' : ''}" onclick="toggleRecipeOil('${oil.name}')">${oil.name}</div>`;
+        }).join('')}
+      </div>
+      <button id="recipeBtn" class="wide-btn" style="text-align:center; justify-content:center; background:var(--accent); color:#fff; font-weight:bold;" 
+        ${isBtnDisabled ? 'disabled' : ''} onclick="calcRecipe('manual')">🌿 레시피 도출하기</button>
+      <div id="recipeResult" style="display:none; margin-top:20px;"></div>
+      <div class="nav"><button class="btn" onclick="setView('oil_recipe_intro')">이전으로</button></div>`;
+  }
+
+  // --- AUTO RECIPE ---
+  function renderRecipeAuto() {
+    setTitle("맞춤 레시피 (자동 추천)", "결과 목록에서 1~2개를 선택해주세요.", "Auto");
+    const selCount = state.selectedRecipeOils.length;
+    let btnText = "오일을 선택해주세요", isBtnDisabled = true;
+    if (selCount === 1) { btnText = "나머지 2개 자동 추천받기"; isBtnDisabled = false; }
+    else if (selCount === 2) { btnText = "나머지 1개 자동 추천받기"; isBtnDisabled = false; }
+    else if (selCount >= 3) { btnText = "2개까지만 선택 가능합니다"; isBtnDisabled = true; }
+
+    mainContent.innerHTML = `
+      <div style="background:#fff3e0; padding:12px; border-radius:12px; font-size:14px; color:#ef6c00; margin-bottom:16px; text-align:center; word-break:keep-all;">
+        💡 테스트 결과(Top 5) 중 가장 마음에 드는 오일을 1~2개만 골라주세요. 나머지는 AI가 조화롭게 채워드립니다.
+      </div>
+      <div class="selection-grid">
+        ${state.top5ResultOils.map(oil => {
+            const isSelected = state.selectedRecipeOils.some(o => o.name === oil.name);
+            return `<div class="oil-select-item ${isSelected ? 'selected' : ''}" onclick="toggleAutoRecipeOil('${oil.name}')">
+                <div style="font-size:12px; margin-bottom:4px; opacity:0.8;">${oil.category}</div>
+                ${oil.name}
+            </div>`;
+        }).join('')}
+      </div>
+      <button id="autoRecipeBtn" class="wide-btn" style="text-align:center; justify-content:center; background:var(--accent); color:#fff; font-weight:bold;" 
+        ${isBtnDisabled ? 'disabled' : ''} onclick="runAutoRecommend()">✨ ${btnText}</button>
+      <div id="recipeResult" style="display:none; margin-top:20px;"></div>
+      <div class="nav"><button class="btn" onclick="setView('oil_recipe_intro')">이전으로</button></div>`;
+  }
+
+  window.checkAndGoAutoRecipe = () => {
+    if (!state.top5ResultOils || state.top5ResultOils.length === 0) {
+        alert("이전 테스트 결과가 없습니다.\n먼저 '1. 에센셜오일 취향 찾기'를 진행해주세요."); return;
+    }
+    state.selectedRecipeOils = []; setView('oil_recipe_auto');
+  };
+  window.toggleRecipeOil = (name) => {
+    const oil = OIL_DATA.find(o => o.name === name);
+    const idx = state.selectedRecipeOils.findIndex(o => o.name === name);
+    if (idx > -1) { state.selectedRecipeOils.splice(idx, 1); }
+    else { if (state.selectedRecipeOils.length >= 3) { alert("최대 3개까지만 선택 가능합니다."); return; } state.selectedRecipeOils.push(oil); }
+    renderRecipeManual(); 
+  };
+  window.toggleAutoRecipeOil = (name) => {
+    const oil = OIL_DATA.find(o => o.name === name);
+    const idx = state.selectedRecipeOils.findIndex(o => o.name === name);
+    if (idx > -1) { state.selectedRecipeOils.splice(idx, 1); }
+    else { if (state.selectedRecipeOils.length >= 2) { alert("자동 추천을 위해 최대 2개까지만 선택해주세요."); return; } state.selectedRecipeOils.push(oil); }
+    renderRecipeAuto(); 
+  };
+  window.runAutoRecommend = () => {
+    const currentPicks = [...state.selectedRecipeOils];
+    const targetCount = 3;
+    const needed = targetCount - currentPicks.length;
+    const currentNotes = currentPicks.map(o => o.note);
+    const currentNames = currentPicks.map(o => o.name);
+    let candidates = OIL_DATA.filter(o => !currentNames.includes(o.name));
+    candidates.forEach(c => {
+        c.tempScore = 0;
+        if (!currentNotes.includes(c.note)) c.tempScore += 5; 
+        const isSameCat = currentPicks.some(p => p.category === c.category);
+        if (!isSameCat) c.tempScore += 2;
+        c.tempScore += Math.random(); 
+    });
+    candidates.sort((a,b) => b.tempScore - a.tempScore);
+    const recommendations = candidates.slice(0, needed);
+    const finalOils = [...currentPicks, ...recommendations];
+    displayRecipeResult(finalOils, recommendations.map(r => r.name));
+  };
+  window.calcRecipe = () => { displayRecipeResult(state.selectedRecipeOils, []); };
+  function displayRecipeResult(oils, aiPickNames) {
+    const resultDiv = document.getElementById('recipeResult');
+    resultDiv.style.display = 'block';
+    let distribution = oils.length === 1 ? [20] : (oils.length === 2 ? [12, 8] : [10, 6, 4]);
+    let rows = oils.map((oil, idx) => {
+        const isAi = aiPickNames.includes(oil.name);
+        return `<div class="drop-row">
+            <span>
+                ${isAi ? '<span style="font-size:11px; background:#d4a024; color:#fff; padding:2px 5px; border-radius:4px; margin-right:4px;">AI</span>' : ''}
+                💧 ${oil.name} <span style="font-size:12px; color:#888;">(${oil.note} Note)</span>
+            </span>
+            <strong>${distribution[idx]} 방울</strong>
+        </div>`;
+    }).join('');
+    resultDiv.innerHTML = `
+      <div class="recipe-box"><h3 style="margin:0 0 15px; text-align:center; color:#2f8a58;">📋 나만의 블렌딩 (10ml 기준)</h3>${rows}<div style="margin-top:15px; text-align:center; font-weight:bold; color:#d4a024; font-size:14px;">+ 캐리어 오일(호호바 등) 9ml 채우기</div></div>
+      <div style="margin-top:15px; display:flex; gap:10px;"><button class="btn capture" style="flex:1" onclick="captureResult('app', '나만의_레시피')">📷 레시피 저장</button><button class="btn" style="flex:1" onclick="setView('menu')">처음으로</button></div>`;
+      setTimeout(() => { resultDiv.scrollIntoView({ behavior: 'smooth' }); }, 100);
+  }
+
+  window.setView = (viewName) => { 
+      state.view = viewName; 
+      if (viewName === 'oil_recipe_manual') state.selectedRecipeOils = []; 
+      render(); 
+  };
+  function setTitle(title, sub, pill) { pageTitle.textContent = title; pageSub.textContent = sub; stepPill.textContent = pill; }
+  window.captureResult = (elementId, fileName) => {
+    const element = document.getElementById(elementId);
+    alert("이미지를 생성 중입니다. 잠시만 기다려주세요...");
+    html2canvas(element, { backgroundColor: "#ffffff", scale: 2 }).then(canvas => {
+        const link = document.createElement('a'); link.download = fileName + '.png'; link.href = canvas.toDataURL(); link.click();
+    }).catch(err => { alert("이미지 저장 중 오류가 발생했습니다."); });
+  };
+  
+ const REAL_URL = "https://wngml090256-sudo.github.io/oil.html"; // 오일 전용 주소
+window.openShareModal = async () => {
+  const title = document.title;
+  const input = document.getElementById('shareUrlInput');
+  const qr = document.getElementById('qrImage');
+  const modal = document.getElementById('shareModal');
+  
+  if(input) input.value = REAL_URL;
+  if(qr) qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(REAL_URL)}`;
+  
+  if (navigator.share) { 
+      try { await navigator.share({ title: title, text: '나에게 맞는 자연의 향기와 차를 찾아보세요.', url: REAL_URL }); return; } catch (e) {} 
+  } 
+  if(modal) modal.classList.remove('hidden'); 
+};
+window.closeShareModal = () => {
+  const modal = document.getElementById('shareModal');
+  if(modal) modal.classList.add('hidden');
+};
+window.copyShareUrl = () => { 
+  const input = document.getElementById('shareUrlInput'); 
+  if(input) {
+      input.select(); 
+      try { navigator.clipboard.writeText(input.value).then(() => alert("주소가 복사되었습니다.")); } catch(err) { document.execCommand('copy'); alert("주소가 복사되었습니다."); }
+  }
+};
+window.shareResult = async (key, name) => { 
+    const text = `[자연 속 오감테라피] 결과 공유: "${name}"`; 
+    try { 
+        if (navigator.share) { await navigator.share({ title: "오감테라피 결과", text: text, url: REAL_URL }); } 
+        else { await navigator.clipboard.writeText(REAL_URL); alert("링크가 복사되었습니다."); } 
+    } catch(e) {} 
+};
+
+  render();
+})();
+</script>
+</body>
+</html>

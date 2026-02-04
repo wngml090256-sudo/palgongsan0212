@@ -10,218 +10,80 @@
     gtag('js', new Date());
     gtag('config', 'G-MSE8XGWE33');
   </script>
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   
+  <!-- [추가됨] 링크 공유 시 보여질 미리보기 정보 -->
   <title>자연 속 오감테라피 BOOK</title>
   <meta property="og:title" content="자연 속 오감테라피 BOOK" />
   <meta property="og:description" content="나에게 맞는 자연의 향기와 차를 찾아보세요." />
   <meta property="og:image" content="https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1200&auto=format&fit=crop" />
   
+  <!-- CSS 연결 -->
+  <link rel="stylesheet" href="style.css">
+  <!-- 폰트 연결 -->
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Pretendard:wght@400;600&display=swap" rel="stylesheet">
-
-  <style>
-    /* 폰트 및 기본 설정 */
-    @font-face {
-        font-family: 'Binggrae';
-        src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Binggrae.woff') format('woff');
-        font-weight: normal; font-style: normal;
-    }
-    @font-face {
-        font-family: 'Binggrae-Bold';
-        src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Binggrae-Bold.woff') format('woff');
-        font-weight: 700; font-style: normal;
-    }
-
-    :root{
-      --accent:#2f8a58; 
-      --accent2:#d4a024; 
-      --font-title: 'Binggrae-Bold', 'Binggrae', sans-serif;
-      --font-body: 'Binggrae', "Pretendard", sans-serif;
-      --font-hand: "Nanum Pen Script", cursive;
-    }
-
-    *{box-sizing:border-box}
-
-    body{
-      margin:0; font-family: var(--font-body);
-      background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)), url('forest.jpeg');
-      background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat;
-      color: #fff; min-height:100svh; display:flex; align-items:center; justify-content:center;
-      padding:16px; overflow-x:hidden; -webkit-tap-highlight-color: transparent; letter-spacing: -0.02em;
-    }
-
-    .wrap{width:min(720px, 100%)}
-
-    .card{
-      --text: #4e342e; --muted: #8d6e63; --border: rgba(0,0,0,0.1);
-      background: rgba(255, 255, 255, 0.96); border:1px solid rgba(255,255,255,0.6);
-      border-radius:24px; padding: 24px; 
-      box-shadow: 0 10px 40px rgba(0,0,0,.25); backdrop-filter: blur(12px);
-      min-height: 600px; height: auto; display: flex; flex-direction: column; color: var(--text); position: relative;
-    }
-
-    header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; gap: 8px; }
-    .header-left { flex: 1; min-width: 0; } 
-    .header-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-
-    h1 { font-family: var(--font-title); font-size: 26px; margin: 0; letter-spacing: -0.5px; line-height: 1.3; color: #2e7d32; word-break: keep-all; }
-    .sub { color: var(--muted); font-size: 15px; margin-top: 6px; line-height: 1.4; word-break: keep-all; }
-
-    .pill{ display:inline-flex; align-items:center; gap:8px; padding:6px 12px; border-radius:999px; border:1px solid var(--border); color: #5d4037; font-size:13px; white-space:nowrap; background: rgba(255,255,255,0.6); }
-
-    .icon-btn { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: #fff; border: 1px solid var(--border); border-radius: 50%; color: var(--accent); cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: all 0.2s ease; }
-    .icon-btn svg { width: 18px; height: 18px; }
-
-    .bar{ height:8px; border-radius:999px; background: rgba(0,0,0,.08); overflow:hidden; margin:10px 0 20px; }
-    .bar > div{ height:100%; width:0%; background: linear-gradient(90deg, #a5d6a7, #2f8a58); transition: width .3s ease; }
-
-    .btn{ border:1px solid var(--border); background: #fff; color: var(--text); padding:14px 16px; border-radius:16px; cursor:pointer; font-size:16px; transition: all .2s; font-family: var(--font-title); word-break: keep-all; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-    .btn:hover{ background: #f1f8e9; border-color: var(--accent); }
-    .btn.primary{ background: #e8f5e9; border-color: #a5d6a7; color: #1b5e20; }
-    .btn.capture { border-color: #4e342e; color: #fff; background: #4e342e; }
-    .btn.danger{ border-color: #ffccbc; color: #d84315; background: #fbe9e7; }
-    .btn.accent { background: #2f8a58; color: #fff; border: none; margin-top: 20px; padding: 16px; font-size: 17px; font-family: var(--font-title); }
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; background: #eee; color: #aaa; border-color: #ddd; }
-
-    .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-    @media(max-width: 500px) { .menu-grid { grid-template-columns: 1fr; } }
-
-    .hero-btn { position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 220px; padding: 16px; border: 1px solid var(--border); border-radius: 24px; background: rgba(255,255,255,0.7); color: var(--text); cursor: pointer; text-align: center; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
-    .hero-btn:active { transform: scale(0.98); background: #fff; }
-    .hero-btn .icon-area { flex: 0 0 auto; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; }
-    .hero-btn svg { width: 64px; height: 64px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
-    .hero-btn .label { font-size: 19px; margin-bottom: 4px; color: #2e7d32; font-family: var(--font-title); }
-    .hero-btn .desc { font-size: 13px; color: var(--muted); line-height: 1.4; }
-
-    .tea-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    .tea-btn { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 14px 8px; border: 1px solid var(--border); border-radius: 20px; background: rgba(255,255,255,0.6); color: var(--text); cursor: pointer; }
-    .tea-btn svg { width: 36px; height: 36px; }
-    .tea-btn span { font-size: 14px; font-family: var(--font-title); text-align: center; }
-
-    .q-title{ font-size:20px; margin:0 0 20px; line-height:1.45; font-family: var(--font-title); color: #2e7d32; word-break: keep-all; }
-    .choices{display:grid; gap:10px;}
-    button.choice{ text-align:left; width:100%; border-radius:18px; border:1px solid var(--border); background: #fff; color: var(--text); padding:18px; font-size:16px; cursor:pointer; font-family: var(--font-body); line-height: 1.4; word-break: keep-all; }
-    @media (hover: hover) { button.choice:hover { background: #f1f8e9; border-color: var(--accent); } }
-    button.choice.clicked { background: #e8f5e9; border-color: var(--accent); color: #1b5e20; font-family: var(--font-title); }
-
-    .pref-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; max-width: 340px; margin: 0 auto 20px; }
-    .pref-card { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px; background: #fff; border: 1px solid #eee; border-radius: 20px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.03); transition: all 0.15s ease-out; -webkit-user-select: none; user-select: none; outline: none; }
-    .pref-card.clicked { background-color: #e8f5e9 !important; border-color: var(--accent) !important; transform: scale(0.96); box-shadow: 0 0 0 2px rgba(47, 138, 88, 0.2); }
-    .pref-img { width: 100px; height: 100px; object-fit: contain; margin-bottom: 8px; pointer-events: none; }
-    .pref-name { font-size: 16px; font-family: var(--font-title); color: #3e2723; margin-bottom: 2px; pointer-events: none; }
-    .pref-desc { font-size: 11px; color: #8d6e63; text-align: center; word-break: keep-all; line-height: 1.2; pointer-events: none; }
-
-    .wide-btn { width: 100%; margin-top: 12px; padding: 16px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); border-radius: 18px; background: #fff; color: var(--text); cursor: pointer; font-family: var(--font-title); }
-
-    .result .box{ border:1px solid #d7ccc8; border-radius:20px; padding: 24px; background: #fffaf0; margin-bottom: 14px; box-shadow: 0 4px 12px rgba(62, 39, 35, 0.05); word-break: keep-all; }
-    .tag{ display:inline-flex; padding:4px 10px; border-radius:999px; border:1px solid #a1887f; font-size:13px; color: #5d4037; margin-right:6px; margin-bottom: 6px; background: #fff; }
-
-    .oil-card { background: #fff; border-left: 5px solid var(--accent2); padding: 16px; margin-bottom: 12px; border-radius: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); color: #3e2723; display: flex; align-items: center; }
-    .oil-card.best { background: linear-gradient(135deg, #fff8e1 0%, #fff 100%); border: 2px solid var(--accent2); transform: scale(1.02); margin-bottom: 20px; box-shadow: 0 8px 24px rgba(212, 160, 36, 0.15); position: relative; }
-    .oil-card.best::after { content: '👑 Best Pick'; position: absolute; top: -12px; right: 12px; background: #d4a024; color: #fff; font-size: 12px; padding: 4px 10px; border-radius: 12px; font-family: var(--font-title); }
-    
-    .persona-card { background: #efebe9; border: 1px dashed #a1887f; padding: 18px; border-radius: 16px; margin-bottom: 20px; text-align: center; }
-    .persona-title { color: #5d4037; font-size: 17px; margin-bottom: 8px; font-family: var(--font-title); }
-    .persona-desc { font-size: 15px; color: #4e342e; line-height: 1.6; word-break: keep-all; }
-    
-    .empathy-msg { background: #e8f5e9; padding: 18px; border-radius: 16px; margin-bottom: 24px; text-align: center; font-size: 16px; font-weight: 600; line-height: 1.6; color: #1b5e20; word-break: keep-all; box-shadow: 0 2px 8px rgba(47, 138, 88, 0.1); }
-    .analysis-box { background:#fff; border:1px solid #d7ccc8; border-left:5px solid #2f8a58; border-radius:12px; padding:18px; margin-bottom:24px; text-align:left; }
-    .analysis-title { font-size: 18px; font-family: var(--font-title); color: #2f8a58; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
-    .analysis-text { font-size: 16px; color: #4e342e; line-height: 1.65; word-break: keep-all; }
-
-    /* 레시피 관련 스타일 */
-    .recipe-intro-btn {
-        display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
-        padding: 24px; height: 160px;
-        border: 1px solid var(--border); border-radius: 20px;
-        background: #fff; color: var(--text); cursor: pointer; transition: all 0.2s;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-    }
-    .recipe-intro-btn:hover { border-color: var(--accent); background: #f1f8e9; }
-    .recipe-intro-btn strong { font-size: 18px; color: #2e7d32; font-family: var(--font-title); }
-    .recipe-intro-btn span { font-size: 14px; color: var(--muted); line-height: 1.4; }
-
-    .selection-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
-    .oil-select-item { 
-        padding: 14px; border: 1px solid #d7ccc8; border-radius: 16px; 
-        background: #fff; cursor: pointer; text-align: center; font-size: 15px; 
-        transition: 0.2s; word-break: keep-all; font-family: var(--font-title); position: relative;
-    }
-    .oil-select-item.selected { background-color: var(--accent); color: white; border-color: var(--accent); }
-    .oil-select-item.ai-pick { background-color: #fff8e1; color: #d4a024; border-color: #d4a024; font-weight: bold; }
-    .oil-select-item.ai-pick::after { content: 'AI 추천'; position: absolute; top: -6px; right: -6px; background: #d4a024; color: white; font-size: 10px; padding: 2px 6px; border-radius: 8px; }
-
-    .recipe-box { background: #e8f5e9; padding: 20px; border-radius: 20px; margin-bottom: 16px; border: 1px dashed var(--accent); }
-    .drop-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.05); font-size: 16px;}
-    
-    .footer{ margin-top:auto; padding-top:24px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; color: #8d6e63; font-size:12px; word-break: keep-all; line-height: 1.4; }
-    .nav { display:flex; justify-content:space-between; margin-top:24px; }
-    .hidden { display: none !important; }
-    .tiny { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
-
-    .closing-q { text-align: center; margin-top: 24px; font-size: 19px; color: #5d4037; font-family: var(--font-hand); line-height: 1.4; }
-    .signature { text-align: right; margin-top: 12px; font-size: 22px; color: #8d6e63; font-family: var(--font-hand); }
-
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); display: flex; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(3px); }
-    .modal-box { background: white; width: 300px; padding: 24px; border-radius: 24px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
-    .qr-img { width: 160px; height: 160px; margin: 0 auto 16px; display: block; }
-    .url-input { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #d7ccc8; border-radius: 12px; background: #f5f5f5; font-family: var(--font-body); }
-    
-    @media(max-width: 480px) {
-        body { padding: 12px; }
-        .card { padding: 16px; min-height: 90svh; border-radius: 20px; }
-        .result .box { padding: 20px 16px; }
-        h1 { font-size: 22px; }
-        .analysis-text { font-size: 16px !important; }
-        .persona-desc { font-size: 16px !important; }
-        .oil-card .scent-desc { font-size: 14px !important; }
-    }
-  </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="card" id="app">
+    <div class="card">
       <header>
         <div class="header-left">
-          <h1 id="pageTitle">자연 속 오감테라피 BOOK</h1>
-          <div class="sub" id="pageSub">나에게 맞는 자연의 향기와 차를 찾아보세요.</div>
+          <h1>자연 속 오감테라피 BOOK</h1>
+          <div class="sub">나에게 맞는 자연의 향기와 차를 찾아보세요.</div>
         </div>
+        
+        <!-- [추가됨] 상단 공유 버튼 -->
         <div class="header-right">
-          <button class="icon-btn" onclick="openShareModal()" aria-label="공유하기">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="18" cy="5" r="3"></circle>
-              <circle cx="6" cy="12" r="3"></circle>
-              <circle cx="18" cy="19" r="3"></circle>
-              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-            </svg>
-          </button>
-          <button class="icon-btn" onclick="setView('home')" aria-label="처음으로">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-              <polyline points="9 22 9 12 15 12 15 22"></polyline>
-            </svg>
-          </button>
+            <button class="icon-btn" onclick="openShareModal()" aria-label="공유하기">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="18" cy="5" r="3"></circle>
+                <circle cx="6" cy="12" r="3"></circle>
+                <circle cx="18" cy="19" r="3"></circle>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+              </svg>
+            </button>
         </div>
+
       </header>
-      <div style="margin-bottom:10px;"><div class="pill" id="stepPill">HOME</div></div>
+      
+      <div style="margin-bottom:10px;"><div class="pill">HOME</div></div>
+      <div class="bar" style="opacity:0;"></div>
 
-      <div class="bar" aria-hidden="true"><div id="barFill"></div></div>
-
-      <main id="mainContent">
+      <main>
+        <div class="menu-grid">
+          <!-- 오일 페이지로 이동 -->
+          <a class="hero-btn" href="oil.html" style="text-decoration:none;">
+            <div class="icon-area">
+                <img src="titleoil.png" alt="에센셜오일" style="width: 100px; height: 100px; object-fit: contain; margin-bottom: 12px;">
+            </div>
+            <div>
+              <div class="label">에센셜 오일</div>
+              <div class="desc">1. 취향 찾기<br>2. 블랜딩 오일 레시피</div>
+            </div>
+          </a>
+          
+          <!-- 차 페이지로 이동 -->
+          <a class="hero-btn" href="tea.html" style="text-decoration:none;">
+            <div class="icon-area">
+                <img src="teaset.png" alt="다도세트" style="width: 100px; height: 100px; object-fit: contain; margin-bottom: 12px;">
+            </div>
+            <div>
+              <div class="label">다도 (Tea Therapy)</div>
+              <div class="desc">약선차 / 허브차 / 녹차<br>티 블랜딩 레시피</div>
+            </div>
+          </a>
+        </div>
       </main>
 
       <div class="footer">
         <div>© 자연환경해설사 정주희 · 링크 공유 환영</div>
-        <div>* 의학적 진단이 아닌 취향/컨디션 기반 추천입니다.</div>
       </div>
     </div>
   </div>
 
+  <!-- [추가됨] 공유 모달창 및 스크립트 -->
   <div id="shareModal" class="modal-overlay hidden" onclick="closeShareModal(event)">
     <div class="modal-box" onclick="event.stopPropagation()">
       <h3>QR코드 공유</h3>
@@ -234,667 +96,35 @@
     </div>
   </div>
 
-<script>
-(() => {
-  let CURRENT_URL = window.location.href;
-
-  const ICONS = {
-    oil: `<img src="titleoil.png" alt="에센셜오일" style="width: 100px; height: 100px; object-fit: contain; margin-bottom: 12px;">`,
-    tea: `<img src="teaset.png" alt="다도세트" style="width: 100px; height: 100px; object-fit: contain; margin-bottom: 12px;">`,
-    yakseon: `<svg viewBox="0 0 24 24" fill="none" stroke="#d68c00" stroke-width="1.5"><path d="M12 3v18m-9-9h18" stroke="currentColor"/><circle cx="12" cy="12" r="5" fill="rgba(214,140,0,0.1)"/></svg>`, 
-    herb: `<svg viewBox="0 0 24 24" fill="none" stroke="#4caf50" stroke-width="1.5"><path d="M12 22s8-10 8-16a8 8 0 0 0-16 0c0 6 8 16 8 16z"/><path d="M12 6v8"/></svg>`, 
-    green: `<svg viewBox="0 0 24 24" fill="none" stroke="#2e7d32" stroke-width="1.5"><path d="M2 22h20M12 2v20M5 10c0-4 3-8 7-8s7 4 7 8v12H5V10z"/></svg>`,
-  };
-
-  const state = {
-    view: 'home',
-    quizStep: 0,
-    quizPicks: [],
-    oilStep: 0,
-    oilTags: [],
-    selectedRecipeOils: [], // 최종 선택된 오일들
-    top5ResultOils: [],     // 퀴즈 결과 Top 5 저장
-    userPreference: null,
-    isProcessing: false,
-    recipeMode: 'manual'    // 'manual' or 'auto'
-  };
-
-  const OIL_DATA = [
-      { name: "라벤더", category: "Floral", note: "M", tags: ["휴식", "수면"], desc: "많은 배려로 지치셨군요. 지금은 엄마 품 같은 온전한 쉼이 필요해요.", scentDesc: "보랏빛 꽃밭이 바람에 흩날리는 듯한 편안한 향" },
-      { name: "일랑일랑", category: "Floral", note: "B", tags: ["매혹", "감각"], desc: "감성이 풍부한 당신, 억눌린 감정을 로맨틱하게 표현해보세요.", scentDesc: "달콤하고 묵직하게 피어오르는 관능적인 꽃향기" },
-      { name: "자스민", category: "Floral", note: "B", tags: ["우아", "신뢰"], desc: "당신은 이미 고귀한 사람입니다. 스스로를 더 믿어주세요.", scentDesc: "달빛 아래 핀 하얀 꽃처럼 그윽하고 깊은 향" },
-      { name: "로즈", category: "Floral", note: "M", tags: ["사랑", "행복"], desc: "마음 깊은 곳 따뜻한 사랑이 필요하시군요. 상처를 부드럽게 감싸주세요.", scentDesc: "수천 송이 장미 꽃잎에 파묻힌 듯한 풍성한 향" },
-      { name: "네롤리", category: "Floral", note: "M", tags: ["순수", "안식"], desc: "여린 마음을 다치셨나요? 깊은 슬픔을 부드럽게 어루만져 주세요.", scentDesc: "오렌지 꽃에서 배어나오는 섬세하고 청초한 향" },
-      { name: "제라늄", category: "Floral", note: "M", tags: ["균형", "안정"], desc: "감정의 롤러코스터 속에서 평정심을 찾고 싶으시군요.", scentDesc: "장미와 풀내음이 섞인 듯한 싱그러운 꽃향기" },
-      
-      { name: "베르가못", category: "Citrus", note: "T", tags: ["밝음", "희망"], desc: "꽉 막힌 마음을 풀어주고 햇살 같은 희망을 채워보세요.", scentDesc: "홍차(얼그레이)에 담긴 듯한 고급스럽고 쌉쌀한 귤향" },
-      { name: "레몬그라스", category: "Citrus", note: "T", tags: ["활력", "자극"], desc: "무기력함을 느끼시나요? 야생의 생명력이 당신을 깨워줄 거예요.", scentDesc: "흙내음이 섞인 거칠고 강렬한 레몬 풀향" },
-      { name: "스위트오렌지", category: "Citrus", note: "T", tags: ["웃음", "천진"], desc: "걱정은 내려놓고 아이처럼 해맑게 웃고 싶은 날이군요.", scentDesc: "껍질을 막 깠을 때 퍼지는 달콤하고 상큼한 과즙향" },
-      { name: "라임", category: "Citrus", note: "T", tags: ["재치", "가벼움"], desc: "삶이 너무 무겁나요? 탄산수처럼 가볍고 유쾌하게 기분 전환하세요.", scentDesc: "입안에 침이 고이게 하는 쨍하고 쌉싸름한 라임향" },
-      { name: "레몬", category: "Citrus", note: "T", tags: ["상쾌", "시작"], desc: "지루한 일상을 끝내고 맑은 에너지로 새로 시작하고 싶으시군요.", scentDesc: "정신이 번쩍 들 만큼 시고 상쾌한 노란색 향기" },
-      
-      { name: "로즈마리", category: "Herb", note: "T", tags: ["기억", "선명"], desc: "생각이 너무 많으시군요. 안개를 걷어내고 정신을 맑게 깨워보세요.", scentDesc: "머리가 맑아지는 톡 쏘는 푸른 허브의 향" },
-      { name: "유칼립투스", category: "Herb", note: "T", tags: ["정화", "시원"], desc: "답답한 상황에 갇힌 기분인가요? 시원한 바람으로 환기가 필요해요.", scentDesc: "코가 뻥 뚫리는 듯한 시원하고 청량한 숲의 향" },
-      { name: "페퍼민트", category: "Herb", note: "T", tags: ["깨어남", "충격"], desc: "나태해진 정신에 찬물 같은 자극과 새로운 에너지를 주세요.", scentDesc: "박하사탕처럼 화하고 차가운 멘톨의 향" },
-      { name: "티트리", category: "Herb", note: "T", tags: ["방어", "청결"], desc: "외부 스트레스로부터 나를 지킬 단단한 방패가 필요하군요.", scentDesc: "약초처럼 쌉싸름하고 깨끗한 소독의 향" },
-      { name: "카모마일", category: "Herb", note: "M", tags: ["위로", "포용"], desc: "예민해진 신경을 '괜찮아'라고 다독여주는 따뜻한 위로가 필요해요.", scentDesc: "말린 사과와 국화차에서 나는 은은하고 달큰한 향" },
-      { name: "시트로넬라", category: "Herb", note: "T", tags: ["경계", "방향"], desc: "불필요한 관계를 끊어내고 나만의 공간을 확실히 확보하세요.", scentDesc: "벌레가 싫어할 만큼 강렬하고 날카로운 풀향" },
-      { name: "화이트티", category: "Herb", note: "M", tags: ["여백", "심플"], desc: "복잡한 건 싫고 정갈한 상태를 원하시는군요. 마음에 여백을 주세요.", scentDesc: "이슬 맺힌 찻잎처럼 은은하고 깨끗한 향" },
-
-      { name: "샌달우드", category: "Woody", note: "B", tags: ["명상", "철학"], desc: "소란스러운 세상에서 벗어나 내면의 소리에 집중할 시간이에요.", scentDesc: "오래된 사원에서 날 법한 고요하고 묵직한 나무향" },
-      { name: "시더우드", category: "Woody", note: "B", tags: ["뿌리", "기둥"], desc: "흔들리는 상황 속에서 대지처럼 굳건한 버팀목이 되어주세요.", scentDesc: "연필심에서 나는 듯한 건조하고 씁쓸한 나무향" },
-      { name: "프랑킨센스", category: "Woody", note: "B", tags: ["영혼", "성찰"], desc: "현실의 고민을 넘어 영적인 평온함과 성찰을 원하시는군요.", scentDesc: "신성한 의식에 쓰이는 스모키하고 신비로운 나무진액 향" },
-      
-      { name: "바닐라", category: "Earthy", note: "B", tags: ["다정", "추억"], desc: "다정한 손길이 그리운 날, 달콤한 추억으로 마음을 채워보세요.", scentDesc: "아이스크림처럼 부드럽고 달콤한 바닐라빈 향" },
-  ];
-
-  const CATEGORY_PERSONA = {
-    "Floral": "💐 <strong>공감 능력 200% 감성 천재</strong><br>타인의 감정을 누구보다 잘 이해하고, 따뜻한 말 한마디로 사람을 살리는 능력이 있으세요. 당신은 사랑받기 위해 태어난 사람이에요.",
-    "Citrus": "🍊 <strong>대체불가! 인간 비타민</strong><br>어디서든 분위기를 주도하는 기질과 낙천적인 마인드를 가지셨군요! 실패해도 툭 털고 일어나는 당신의 회복탄력성은 모두의 부러움을 사요.",
-    "Herb": "🌿 <strong>담백하고 쿨한 미니멀리스트</strong><br>복잡한 건 딱 질색이시군요! 남들의 시선보다는 나만의 평화와 안정을 중요시하는 주관 뚜렷한 모습이 정말 멋져요.",
-    "Woody": "🌲 <strong>신뢰도 1위, 리더형 인재</strong><br>가벼운 말보다는 묵직한 행동으로 보여주는 분이시군요. 친구들이 고민이 있을 때 가장 먼저 찾는 멘토 같은 존재예요.",
-    "Earthy": "🍂 <strong>정 많고 속 깊은 '진국'</strong><br>첫인상은 조용해 보일 수 있지만, 알면 알수록 진국인 분이세요. 묵묵히 내 사람을 챙기는 당신의 의리는 그 무엇보다 깊고 단단해요."
-  };
-
-  const OIL_QUESTIONS = [
-      { 
-        id: "pref", 
-        q: "Q1. 평소 당신이 가장 좋아하는 향기는?", 
-        options: [
-          { text: "시트러스", desc: "오렌지, 레몬, 라임", tag: "Citrus", img: "citrus.png" },
-          { text: "플로럴", desc: "장미, 라벤더, 꽃향기", tag: "Floral", img: "floral.png" },
-          { text: "허브/그린", desc: "풀내음, 유칼립투스", tag: "Herb", img: "herb.png" },
-          { text: "우디/어스", desc: "나무, 흙, 숲 냄새", tag: "Woody", img: "woody.png" } 
-        ]
-      },
-      { q: "Q2. 낯선 숲길을 걷다 문득 걸음을 멈췄습니다.<br>그곳에서 당신은 무엇을 보고 있나요?", options: [
-          { text: "나무 사이로 쏟아지는 찬란한 햇살", tag: "햇살" },
-          { text: "아무도 밟지 않은 깊은 흙과 나무뿌리", tag: "뿌리" },
-          { text: "바람에 흔들리는 작은 야생화 한 송이", tag: "플로럴" },
-          { text: "코끝을 스치는 서늘하고 맑은 공기", tag: "시원" }
-      ]},
-      { q: "Q3. 지금 나에게 가장 필요한 '공간'의 느낌은?", options: [
-          { text: "누구에게도 방해받지 않는 동굴 같은 곳", tag: "차분함" },
-          { text: "사람들의 소리가 들리는 밝은 카페", tag: "웃음" },
-          { text: "모든 것이 제자리에 정리된 깔끔한 서재", tag: "정돈" },
-          { text: "폭신한 이불이 있는 다락방", tag: "포근" }
-      ]},
-      { q: "Q4. 스트레스를 받을 때 나의 반응은?", options: [
-          { text: "속으로 꾹 참으며 삭힌다", tag: "해소" },
-          { text: "예민해져서 날카롭게 반응한다", tag: "안정" },
-          { text: "아무것도 하기 싫어 무기력해진다", tag: "활력" },
-          { text: "머리가 복잡해져 생각이 멈추지 않는다", tag: "명상" }
-      ]},
-      { q: "Q5. 여행지에서 우연히 받은 선물,<br>무엇이었으면 좋겠나요?", options: [
-          { text: "지혜가 담긴 책", tag: "깊이" },
-          { text: "상큼한 맛이 톡 터지는 열대과일", tag: "자극" },
-          { text: "화려하고 향기로운 꽃다발", tag: "아름다움" },
-          { text: "마음을 씻어줄 맑은 차 한 잔", tag: "정화" }
-      ]},
-      { q: "Q6. 내일 아침 눈을 떴을 때,<br>가장 바라는 나의 상태는?", options: [
-          { text: "걱정 없이 마음이 깃털처럼 가볍기를", tag: "가벼움" },
-          { text: "무엇이든 할 수 있는 자신감이 넘치기를", tag: "선명" },
-          { text: "세상이 따뜻하고 안전하게 느껴지기를", tag: "신뢰" },
-          { text: "어제와는 다른 새로운 내가 되어있기를", tag: "새로움" }
-      ]},
-      { q: "Q7. 친구들과의 모임에서 나는 어떤 모습인가요?", options: [
-          { text: "분위기를 주도하고 에너지를 발산한다", tag: "매혹" },
-          { text: "상대의 이야기를 들어주며 맞장구친다", tag: "다정" },
-          { text: "주변 사람들을 챙기고 보살핀다", tag: "위로" },
-          { text: "빨리 집에 가서 쉬고 싶다는 생각 뿐", tag: "휴식" }
-      ]},
-      { q: "Q8. 지금 가장 끌리는 '질감'은?", options: [
-          { text: "거칠지만 자연스러운 나무껍질", tag: "우디" },
-          { text: "부드럽고 매끄러운 실크", tag: "감각" },
-          { text: "깨끗하고 바스락거리는 린넨", tag: "청결" },
-          { text: "말랑말랑하고 따뜻한 솜", tag: "순수" }
-      ]},
-      { q: "Q9. 당신의 인생에서 가장 중요한 가치는?", options: [
-          { text: "흔들리지 않는 균형과 평화", tag: "균형" },
-          { text: "끊임없이 성장하고 나아가는 힘", tag: "희망" },
-          { text: "나를 지키는 단단한 보호막", tag: "방어" },
-          { text: "영혼을 울리는 깊은 깨달음", tag: "영혼" }
-      ]}
-  ];
-
-  const TEA_TYPES = {
-    warm:   { name: "따뜻순환차", example: "생강차(또는 생강+대추)", pitch: "포근하게 감싸주는 한 잔이 필요해요.", tags:["따뜻함","손발차가움","포근"], },
-    cool:   { name: "맑은쿨링차", example: "국화차(또는 박하)", pitch: "머리까지 맑아지는 상쾌함이 필요해요.", tags:["상쾌","두통","리셋"], },
-    digest: { name: "소화편안차", example: "보리차(또는 진피)", pitch: "속을 편안하게 비우고 싶어요.", tags:["구수함","더부룩","소화"], },
-    calm:   { name: "긴장완화차", example: "대추차", pitch: "마음을 차분하게 낮춰보세요.", tags:["안정","불면","휴식"], },
-    energy: { name: "기력충전차", example: "인삼차(또는 쌍화)", pitch: "방전된 에너지, 충전이 필요해요.", tags:["에너지","지침","활력"], },
-    water:  { name: "수분정리차", example: "옥수수수염차", pitch: "가볍게 몸을 정돈하고 싶어요.", tags:["붓기","가벼움","배출"], },
-    five:   { name: "오미자차", example: "오미자차", pitch: "다섯가지 맛으로 리듬을 되찾으세요.", tags:["새콤달콤","갈증","균형"], }
-  };
-
-  const TEA_QUESTIONS = [
-    { q: "Q1. 지금 내 몸의 “온도 감각”은?", a: [{t:"손발이 차고 따뜻한 게 좋다",s:{warm:2,energy:1}}, {t:"더위를 타고 시원한 게 좋다",s:{cool:2}}, {t:"그때그때 다르다",s:{digest:1,calm:1}}, {t:"잘 모르겠다",s:{}}] },
-    { q: "Q2. 요즘 가장 불편한 점은?", a: [{t:"속이 더부룩/가스",s:{digest:2}}, {t:"목마름/건조함",s:{five:2}}, {t:"몸이 붓고 무거움",s:{water:2}}, {t:"딱히 없음/기분전환",s:{cool:1,calm:1}}] },
-    { q: "Q3. 스트레스 정도는?", a: [{t:"예민하고 머리가 복잡",s:{calm:2}}, {t:"축 처지고 기운 없음",s:{energy:2}}, {t:"스트레스 적음",s:{digest:1}}, {t:"감정 기복이 심함",s:{five:1,calm:1}}] },
-    { q: "Q4. 잠은 잘 주무시나요?", a: [{t:"잠들기 힘듦",s:{calm:2}}, {t:"자주 깨거나 개운치 않음",s:{energy:1,calm:1}}, {t:"잘 자는 편",s:{cool:1}}, {t:"수면시간 불규칙",s:{five:1}}] },
-    { q: "Q5. 음식 먹은 후 반응은?", a: [{t:"기름진 것 먹으면 부담",s:{digest:2}}, {t:"매운/뜨거운 것 먹으면 확 달아오름",s:{cool:2}}, {t:"찬 것 먹으면 배 아픔",s:{warm:2}}, {t:"상관 없음",s:{}}] },
-    { q: "Q6. 오늘 바라는 차의 역할은?", a: [{t:"따뜻하게 위로받기",s:{warm:2}}, {t:"상쾌하게 리셋",s:{cool:2}}, {t:"속 편하게",s:{digest:2}}, {t:"마음의 안정",s:{calm:2}}] },
-    { q: "Q7. 선호하는 향/맛은?", a: [{t:"알싸한 향(생강/계피)",s:{warm:2}}, {t:"향긋한 꽃/허브향",s:{cool:2}}, {t:"구수한 곡물맛",s:{digest:2}}, {t:"새콤달콤한 맛",s:{five:2}}] },
-    { q: "Q8. 평소 물 섭취량은?", a: [{t:"잘 안 마심",s:{five:1,water:1}}, {t:"많이 마셔도 갈증 남",s:{five:2}}, {t:"보통",s:{}}, {t:"짠 음식 먹으면 잘 부음",s:{water:2}}] },
-    { q: "Q9. 현재 에너지 상태는?", a: [{t:"배터리 10% (지침)",s:{energy:2,calm:1}}, {t:"평범함",s:{digest:1}}, {t:"과열/흥분 상태",s:{cool:2}}, {t:"들쭉날쭉함",s:{five:1}}] },
-  ];
-
-  const mainContent = document.getElementById("mainContent");
-  const pageTitle = document.getElementById("pageTitle");
-  const pageSub = document.getElementById("pageSub");
-  const stepPill = document.getElementById("stepPill");
-  const barFill = document.getElementById("barFill");
-
-  function render() {
-    barFill.style.width = '0%';
-    state.isProcessing = false; 
-    CURRENT_URL = window.location.href;
-
-    if (state.view === 'home') {
-      setTitle("자연 속 오감테라피 BOOK", "그림 버튼을 눌러 에센셜오일/티테라피를 선택하세요.", "HOME");
-      mainContent.innerHTML = `
-        <div class="menu-grid">
-          <button class="hero-btn" onclick="setView('essential')">
-            <div class="icon-area">${ICONS.oil}</div>
-            <div>
-              <div class="label">에센셜 오일</div>
-              <div class="desc">1. 취향 찾기<br>2. 블랜딩 오일 레시피</div>
-            </div>
-          </button>
-          <button class="hero-btn" onclick="setView('tea')">
-            <div class="icon-area">${ICONS.tea}</div>
-            <div>
-              <div class="label">다도 (Tea Therapy)</div>
-              <div class="desc">약선차 / 허브차 / 녹차<br>티 블랜딩 레시피</div>
-            </div>
-          </button>
-        </div>
-      `;
-    } 
-    else if (state.view === 'essential') {
-      setTitle("에센셜 오일 테라피", "원하는 메뉴를 선택해주세요.", "Oil");
-      mainContent.innerHTML = `
-        <div class="choices">
-          <button class="choice" onclick="startOilQuiz()">1. 에센셜오일 취향 찾기</button>
-          <button class="choice" onclick="setView('oil_recipe_intro')">2. DIY 아로마 롤온 레시피</button>
-        </div>
-        <div class="nav">
-          <button class="btn" onclick="setView('home')">← 뒤로가기</button>
-        </div>
-      `;
-    }
-    else if (state.view === 'oil_recipe_intro') {
-      setTitle("DIY 롤온 레시피", "어떤 방식으로 오일을 선택하시겠어요?", "Selection");
-      mainContent.innerHTML = `
-        <div style="display:grid; gap:12px;">
-            <button class="recipe-intro-btn" onclick="setView('oil_recipe_manual')">
-                <strong>🖐️ 직접 모든 오일 선택하기</strong>
-                <span>내가 원하는 향 3가지를<br>자유롭게 골라 조합합니다.</span>
-            </button>
-            <button class="recipe-intro-btn" onclick="checkAndGoAutoRecipe()">
-                <strong>🤖 결과 기반으로 추천받기</strong>
-                <span>나의 오일 테스트 결과(Top 5)를<br>바탕으로 어울리는 향을 추천받습니다.</span>
-            </button>
-        </div>
-        <div class="nav"><button class="btn" onclick="setView('essential')">← 이전으로</button></div>
-      `;
-    }
-    else if (state.view === 'tea') {
-      setTitle("티 테라피 (Tea Therapy)", "오늘의 나에게 필요한 차를 골라보세요.", "Tea");
-      mainContent.innerHTML = `
-        <div class="tea-grid">
-          <button class="tea-btn" onclick="startQuiz()">
-            ${ICONS.yakseon}
-            <span>약선차<br><span class="tiny">(추천받기)</span></span>
-          </button>
-          <button class="tea-btn" onclick="alert('허브차 정보는 준비 중입니다.')">
-            ${ICONS.herb}
-            <span>허브차</span>
-          </button>
-          <button class="tea-btn" onclick="alert('녹차 정보는 준비 중입니다.')">
-            ${ICONS.green}
-            <span>녹차</span>
-          </button>
-        </div>
-        <button class="wide-btn" onclick="alert('티 블랜딩 레시피는 준비 중입니다.')">
-          <span>🍵 티 블랜딩 레시피 보기</span>
-          <span>OPEN ></span>
-        </button>
-        <div class="nav">
-          <button class="btn" onclick="setView('home')">← 홈으로</button>
-        </div>
-      `;
-    }
-    else if (state.view === 'quiz_tea') { renderQuiz(); }
-    else if (state.view === 'quiz_oil') { renderOilQuiz(); }
-    else if (state.view === 'oil_recipe_manual') { renderRecipeManual(); }
-    else if (state.view === 'oil_recipe_auto') { renderRecipeAuto(); }
-  }
-
-  window.checkAndGoAutoRecipe = () => {
-    if (!state.top5ResultOils || state.top5ResultOils.length === 0) {
-        alert("이전 테스트 결과가 없습니다.\n먼저 '에센셜오일 취향 찾기'를 진행해주세요.");
-        return;
-    }
-    state.selectedRecipeOils = []; // 초기화
-    setView('oil_recipe_auto');
-  };
-
-  function startQuiz() {
-    state.view = 'quiz_tea';
-    state.quizStep = 0;
-    state.quizPicks = Array(TEA_QUESTIONS.length).fill(null);
-    state.quizScores = {};
-    Object.keys(TEA_TYPES).forEach(k => state.quizScores[k] = 0);
-    render();
-  }
-  window.startQuiz = startQuiz;
-
-  function renderQuiz() {
-    const progress = (state.quizStep / TEA_QUESTIONS.length) * 100;
-    barFill.style.width = `${progress}%`;
-    if (state.quizStep >= TEA_QUESTIONS.length) { renderResult(); return; }
-    const q = TEA_QUESTIONS[state.quizStep];
-    const picked = state.quizPicks[state.quizStep];
-    setTitle("약선차 추천", "나의 상태를 체크해보세요.", `${state.quizStep+1} / ${TEA_QUESTIONS.length}`);
-    mainContent.innerHTML = `
-      <h2 class="q-title">${q.q}</h2>
-      <div class="choices">${q.a.map((ans, idx) => `<button class="choice" onclick="pickAnswer(${idx})" aria-pressed="${picked===idx}">${ans.t}</button>`).join("")}</div>
-      <div class="nav"><button class="btn" onclick="prevStep()" ${state.quizStep===0 ? 'disabled':''}>이전</button><button class="btn danger" onclick="setView('tea')">취소</button></div>`;
-  }
-
-  window.pickAnswer = (idx) => { state.quizPicks[state.quizStep] = idx; if (state.quizStep < TEA_QUESTIONS.length) { state.quizStep++; render(); } };
-  window.prevStep = () => { if (state.quizStep > 0) { state.quizStep--; render(); } };
-
-  function renderResult() {
-    const finalScores = {};
-    Object.keys(TEA_TYPES).forEach(k => finalScores[k] = 0);
-    state.quizPicks.forEach((pidx, qidx) => {
-      if (pidx === null) return;
-      const scores = TEA_QUESTIONS[qidx].a[pidx].s;
-      for (const [k, v] of Object.entries(scores)) finalScores[k] += v;
-    });
-    const ranking = Object.entries(finalScores).sort((a,b) => b[1]-a[1]);
-    const topKey = ranking[0][0];
-    const topType = TEA_TYPES[topKey];
-    setTitle("결과 확인", "오늘 당신에게 가장 필요한 차는?", "완료");
-    barFill.style.width = '100%';
-    mainContent.innerHTML = `
-      <section class="result">
-        <div class="box" style="text-align:center; padding:30px 20px;">
-          <div style="font-size:14px; color:#2f8a58; font-weight:700; margin-bottom:10px;">오늘의 추천 약선차</div>
-          <h2 style="font-size:26px; margin:0 0 10px; color:#000;">${topType.name}</h2>
-          <div style="color:#333; font-weight:600; font-size:16px; margin-bottom:12px;">${topType.example}</div>
-          <p style="color:#555; line-height:1.6;">"${topType.pitch}"</p>
-          <div style="margin-top:20px">${topType.tags.map(t => `<span class="tag">#${t}</span>`).join("")}</div>
-        </div>
-        <div class="box">
-          <div class="tiny">결과 활용하기</div>
-          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;">
-            <button class="btn capture" onclick="captureResult('app', '${topType.name}_결과')">📷 이미지 저장</button>
-            <button class="btn primary" onclick="shareResult('${topKey}', '${topType.name}')">결과 공유</button>
-            <button class="btn" onclick="startQuiz()">다시 테스트</button>
-            <button class="btn" onclick="setView('tea')">메뉴로</button>
-          </div>
-        </div>
-      </section>
-    `;
-  }
-
-  // --- OIL QUIZ ---
-  window.startOilQuiz = () => {
-    state.view = 'quiz_oil';
-    state.oilStep = 0;
-    state.oilTags = [];
-    state.userPreference = null;
-    render();
-  };
-
-  function renderOilQuiz() {
-    const progress = (state.oilStep / OIL_QUESTIONS.length) * 100;
-    barFill.style.width = `${progress}%`;
-    if (state.oilStep >= OIL_QUESTIONS.length) { renderOilResult(); return; }
-    
-    const q = OIL_QUESTIONS[state.oilStep];
-    const isPref = q.id === "pref";
-    
-    setTitle(isPref ? "취향 탐색" : "내면 탐색", 
-             isPref ? "평소 선호하는 향기를 알려주세요." : "당신의 감각을 따라가보세요.", 
-             `${state.oilStep+1} / ${OIL_QUESTIONS.length}`);
-             
-    let optionsHtml = '';
-    
-    if (isPref) {
-      optionsHtml = `<div class="pref-grid">
-        ${q.options.map((opt) => `
-          <div class="pref-card" onclick="handleOptionClick(this, '${opt.tag}')">
-            <img src="${opt.img}" alt="${opt.text}" class="pref-img">
-            <div class="pref-name">${opt.text}</div>
-            <div class="pref-desc">${opt.desc}</div>
-          </div>
-        `).join("")}
-      </div>`;
-    } else {
-      optionsHtml = `<div class="choices">
-        ${q.options.map((opt) => `<button class="choice" onclick="handleOptionClick(this, '${opt.tag}')">${opt.text}</button>`).join("")}
-      </div>`;
-    }
-
-    mainContent.innerHTML = `
-      <h2 class="q-title">${q.q}</h2>
-      ${optionsHtml}
-      <div class="nav"><button class="btn" onclick="prevOilStep()" ${state.oilStep===0 ? 'disabled':''}>이전</button><button class="btn danger" onclick="setView('essential')">취소</button></div>`;
-  }
-
-  window.handleOptionClick = (element, tag) => {
-    if (state.isProcessing) return;
-    state.isProcessing = true;
-    element.classList.add('clicked');
-    setTimeout(() => {
-        pickOilAnswer(tag);
-    }, 150); 
-  };
-
-  window.pickOilAnswer = (tag) => {
-    if (OIL_QUESTIONS[state.oilStep].id === "pref") {
-        state.userPreference = tag; 
-    } else {
-        state.oilTags[state.oilStep] = tag; 
-    }
-    state.oilStep++; 
-    render(); 
-  };
+  <script>
+const REAL_URL = "https://wngml090256-sudo.github.io/"; 
+window.openShareModal = async () => {
+  const title = document.title;
   
-  window.prevOilStep = () => { if (state.oilStep > 0) { state.oilStep--; render(); } };
-
-  function renderOilResult() {
-    let scoredOils = OIL_DATA.map(oil => {
-        let score = oil.tags.filter(t => state.oilTags.includes(t)).length;
-        return { ...oil, score: score + Math.random() * 0.5 }; 
-    });
-    
-    scoredOils.sort((a, b) => b.score - a.score);
-    const top5 = scoredOils.slice(0, 5);
-    state.top5ResultOils = top5; // 결과 저장
-    const bestOil = top5[0];
-
-    const catCounts = {};
-    top5.forEach(o => { catCounts[o.category] = (catCounts[o.category] || 0) + 1; });
-    const topCat = Object.keys(catCounts).sort((a,b) => catCounts[b] - catCounts[a])[0];
-    const personaMsg = CATEGORY_PERSONA[topCat] || "다채로운 매력을 지닌 조화로운 사람";
-    const userPref = state.userPreference || "Floral";
-    let analysisTitle = "";
-    let analysisDesc = "";
-    
-    const isMatch = userPref === topCat || (userPref === "Woody" && topCat === "Earthy") || (userPref === "Earthy" && topCat === "Woody");
-
-    if (isMatch) {
-        analysisTitle = "🌿 나를 사랑하는 마음, 그 평온한 일치";
-        analysisDesc = `오늘 당신의 마음을 가만히 들여다보니, 참 평온하고 단단한 상태이시군요.<br><br>평소 좋아하시던 <strong>[${userPref}]</strong> 향기가 오늘 당신의 몸과 마음이 원하는 에너지와 정확히 맞닿아 있어요.`;
-    } else {
-        analysisTitle = "💌 미처 몰랐던 내 마음의 작은 목소리";
-        analysisDesc = `조금은 낯선 결과에 고개를 갸우뚱하셨나요? 평소 좋아하던 향기가 당신의 '멋진 모습'을 대변했다면, 오늘 발견된 이 향기는 당신의 무의식이 조심스레 보내온 <strong>'진짜 위로'</strong>의 편지예요.`;
-    }
-
-    let noteAdvice = "";
-    if (bestOil.note === 'T') {
-        noteAdvice = `<br><br><strong>💡 Top Note 처방:</strong><br>"지금 당신의 어깨가 조금 무거운 건 아닌가요? 가벼운 전환이 필요한 시기예요."`;
-    } else if (bestOil.note === 'M') {
-        noteAdvice = `<br><br><strong>💡 Middle Note 처방:</strong><br>"누군가에게 내준 마음만큼, 정작 당신의 마음은 조금 허전했나 봐요."`;
-    } else if (bestOil.note === 'B') {
-        noteAdvice = `<br><br><strong>💡 Base Note 처방:</strong><br>"잠시 휘청여도 괜찮아요. 대지처럼 굳건한 버팀목이 필요해요."`;
-    }
-
-    barFill.style.width = '100%';
-    setTitle("상담 결과", "당신의 마음을 읽어보았습니다.", "완료");
-
-    mainContent.innerHTML = `
-      <section class="result">
-        <div class="box" style="padding:24px 20px;">
-          <div style="display:flex; justify-content:center; gap:10px; margin-bottom:24px;">
-            <div style="background:#f5f5f5; padding:8px 16px; border-radius:20px; font-size:13px; color:#6d4c41;">
-              ❤️ 의식의 향: <strong>${userPref}</strong>
-            </div>
-            <div style="background:#e8f5e9; padding:8px 16px; border-radius:20px; font-size:13px; color:#2e7d32; border:1px solid #2e7d32;">
-              💊 무의식의 향: <strong>${topCat}</strong>
-            </div>
-          </div>
-
-          <div class="analysis-box">
-             <div class="analysis-title">${analysisTitle}</div>
-             <div class="analysis-text">${analysisDesc}${noteAdvice}</div>
-          </div>
-          
-          <div class="persona-card">
-            <div class="persona-title">#${topCat} Type 성향</div>
-            <div class="persona-desc">${personaMsg}</div>
-          </div>
-
-          <div style="width:100%; height:1px; background:#d7ccc8; margin:24px 0; opacity:0.5;"></div>
-
-          <div class="empathy-msg">"지금은, ${bestOil.desc}"</div>
-          
-          <div id="oil-list">
-            ${top5.map((oil, idx) => `
-              <div class="oil-card ${idx===0 ? 'best' : ''}">
-                <div style="flex:1;">
-                  <div style="font-size:${idx===0? '18px':'16px'}; margin-bottom:6px; ${idx===0?'color:#d4a024; font-weight:700;':''}">
-                    ${idx+1}. ${oil.name}
-                  </div>
-                  <div class="scent-desc" style="font-size:13px; color:#5d4037; line-height:1.4;">${oil.scentDesc}</div>
-                </div>
-              </div>
-            `).join("")}
-          </div>
-
-          <button class="btn accent" onclick="checkAndGoAutoRecipe()">
-            🧪 이 처방대로 롤온 만들기
-          </button>
-
-          <div class="closing-q">"이 향기를 맡으며,<br>오늘 가장 하고 싶은 일은 무엇인가요?"</div>
-          <div class="signature">자연환경해설사 정주희 드림 🌿</div>
-
-        </div>
-        
-        <div style="display:flex; gap:6px; margin-top:12px;">
-          <button class="btn capture" onclick="captureResult('app', '${bestOil.name}_결과')">📷 저장</button>
-          <button class="btn primary" onclick="shareResult('${bestOil.name}')">공유</button>
-          <button class="btn" onclick="startOilQuiz()">다시하기</button>
-          <button class="btn" onclick="setView('essential')">메뉴</button>
-        </div>
-      </section>
-    `;
-  }
-
-  // --- MANUAL RECIPE ---
-  function renderRecipeManual() {
-    setTitle("나만의 레시피 (직접 선택)", "원하는 오일을 최대 3개 선택하세요.", "Manual");
-    const isBtnDisabled = state.selectedRecipeOils.length === 0;
-    
-    mainContent.innerHTML = `
-      <div class="selection-grid">
-        ${OIL_DATA.map(oil => {
-            const isSelected = state.selectedRecipeOils.some(o => o.name === oil.name);
-            return `<div class="oil-select-item ${isSelected ? 'selected' : ''}" onclick="toggleRecipeOil('${oil.name}')">${oil.name}</div>`;
-        }).join('')}
-      </div>
-      <button id="recipeBtn" class="wide-btn" style="text-align:center; justify-content:center; background:var(--accent); color:#fff; font-weight:bold;" 
-        ${isBtnDisabled ? 'disabled' : ''} onclick="calcRecipe('manual')">🌿 레시피 도출하기</button>
-      <div id="recipeResult" style="display:none; margin-top:20px;"></div>
-      <div class="nav"><button class="btn" onclick="setView('oil_recipe_intro')">이전으로</button></div>`;
-  }
-
-  // --- AUTO RECIPE (NEW) ---
-  function renderRecipeAuto() {
-    setTitle("맞춤 레시피 (자동 추천)", "결과 목록에서 1~2개를 선택해주세요.", "Auto");
-    
-    // 선택된 오일 개수에 따른 버튼 텍스트 변경
-    const selCount = state.selectedRecipeOils.length;
-    let btnText = "오일을 선택해주세요";
-    let isBtnDisabled = true;
-    
-    if (selCount === 1) {
-        btnText = "나머지 2개 자동 추천받기";
-        isBtnDisabled = false;
-    } else if (selCount === 2) {
-        btnText = "나머지 1개 자동 추천받기";
-        isBtnDisabled = false;
-    } else if (selCount >= 3) {
-        btnText = "2개까지만 선택 가능합니다";
-        isBtnDisabled = true;
-    }
-
-    mainContent.innerHTML = `
-      <div style="background:#fff3e0; padding:12px; border-radius:12px; font-size:14px; color:#ef6c00; margin-bottom:16px; text-align:center; word-break:keep-all;">
-        💡 테스트 결과(Top 5) 중 가장 마음에 드는 오일을 1~2개만 골라주세요. 나머지는 AI가 조화롭게 채워드립니다.
-      </div>
-      <div class="selection-grid">
-        ${state.top5ResultOils.map(oil => {
-            const isSelected = state.selectedRecipeOils.some(o => o.name === oil.name);
-            return `<div class="oil-select-item ${isSelected ? 'selected' : ''}" onclick="toggleAutoRecipeOil('${oil.name}')">
-                <div style="font-size:12px; margin-bottom:4px; opacity:0.8;">${oil.category}</div>
-                ${oil.name}
-            </div>`;
-        }).join('')}
-      </div>
-      
-      <button id="autoRecipeBtn" class="wide-btn" style="text-align:center; justify-content:center; background:var(--accent); color:#fff; font-weight:bold;" 
-        ${isBtnDisabled ? 'disabled' : ''} onclick="runAutoRecommend()">✨ ${btnText}</button>
-      
-      <div id="recipeResult" style="display:none; margin-top:20px;"></div>
-      <div class="nav"><button class="btn" onclick="setView('oil_recipe_intro')">이전으로</button></div>`;
-  }
-
-  // --- Handlers ---
-  window.toggleRecipeOil = (name) => {
-    const oil = OIL_DATA.find(o => o.name === name);
-    const idx = state.selectedRecipeOils.findIndex(o => o.name === name);
-    if (idx > -1) { state.selectedRecipeOils.splice(idx, 1); }
-    else { 
-        if (state.selectedRecipeOils.length >= 3) { alert("최대 3개까지만 선택하는 것이 향이 가장 조화롭습니다."); return; } 
-        state.selectedRecipeOils.push(oil); 
-    }
-    renderRecipeManual(); 
-  };
-
-  window.toggleAutoRecipeOil = (name) => {
-    const oil = OIL_DATA.find(o => o.name === name);
-    const idx = state.selectedRecipeOils.findIndex(o => o.name === name);
-    if (idx > -1) { state.selectedRecipeOils.splice(idx, 1); }
-    else { 
-        if (state.selectedRecipeOils.length >= 2) { alert("자동 추천을 위해 최대 2개까지만 선택해주세요."); return; } 
-        state.selectedRecipeOils.push(oil); 
-    }
-    renderRecipeAuto(); 
-  };
-
-  // AI 추천 알고리즘
-  window.runAutoRecommend = () => {
-    const currentPicks = [...state.selectedRecipeOils];
-    const targetCount = 3;
-    const needed = targetCount - currentPicks.length;
-    
-    // 현재 선택된 노트들 파악 (Top, Middle, Base)
-    const currentNotes = currentPicks.map(o => o.note);
-    const currentNames = currentPicks.map(o => o.name);
-    
-    // 후보군: 이미 선택되지 않은 모든 오일
-    let candidates = OIL_DATA.filter(o => !currentNames.includes(o.name));
-    
-    // 1. 노트 밸런싱 점수 부여
-    // 없는 노트를 채워주는 오일에 가산점
-    candidates.forEach(c => {
-        c.tempScore = 0;
-        if (!currentNotes.includes(c.note)) c.tempScore += 5; // 없는 노트면 +5점
-        
-        // 카테고리 다양성 (같은 카테고리 피하기)
-        const isSameCat = currentPicks.some(p => p.category === c.category);
-        if (!isSameCat) c.tempScore += 2;
-        
-        c.tempScore += Math.random(); // 랜덤 요소
-    });
-    
-    // 점수 높은 순 정렬
-    candidates.sort((a,b) => b.tempScore - a.tempScore);
-    
-    // 필요한 만큼 추가
-    const recommendations = candidates.slice(0, needed);
-    
-    // State 업데이트 (AI 픽 표시를 위해)
-    const finalOils = [...currentPicks, ...recommendations];
-    
-    // 결과 표시
-    displayRecipeResult(finalOils, recommendations.map(r => r.name));
-  };
-
-  window.calcRecipe = () => {
-     displayRecipeResult(state.selectedRecipeOils, []);
-  };
-
-  function displayRecipeResult(oils, aiPickNames) {
-    const resultDiv = document.getElementById('recipeResult');
-    resultDiv.style.display = 'block';
-    
-    // 오일 순서: 베이스 -> 미들 -> 탑 (무게감 순으로 보여주기 or 그냥 순서대로)
-    // 여기선 그냥 순서대로 하되 비율 계산
-    let distribution = oils.length === 1 ? [20] : (oils.length === 2 ? [12, 8] : [10, 6, 4]);
-    
-    let rows = oils.map((oil, idx) => {
-        const isAi = aiPickNames.includes(oil.name);
-        return `<div class="drop-row">
-            <span>
-                ${isAi ? '<span style="font-size:11px; background:#d4a024; color:#fff; padding:2px 5px; border-radius:4px; margin-right:4px;">AI</span>' : ''}
-                💧 ${oil.name} <span style="font-size:12px; color:#888;">(${oil.note} Note)</span>
-            </span>
-            <strong>${distribution[idx]} 방울</strong>
-        </div>`;
-    }).join('');
-
-    resultDiv.innerHTML = `
-      <div class="recipe-box">
-        <h3 style="margin:0 0 15px; text-align:center; color:#2f8a58;">📋 나만의 블렌딩 (10ml 기준)</h3>
-        ${rows}
-        <div style="margin-top:15px; text-align:center; font-weight:bold; color:#d4a024; font-size:14px;">+ 캐리어 오일(호호바 등) 9ml 채우기</div>
-      </div>
-      <div class="guide-box"><strong>💡 만들기 가이드:</strong><br>1. 소독된 10ml 롤온 병을 준비합니다.<br>2. 위 레시피대로 <strong>에센셜 오일을 먼저</strong> 넣습니다.<br>3. 나머지 공간을 캐리어 오일로 채웁니다.<br>4. 흔들어서 하루 뒤 사용하세요.</div>
-      <div style="margin-top:15px; display:flex; gap:10px;">
-        <button class="btn capture" style="flex:1" onclick="captureResult('app', '나만의_레시피')">📷 레시피 저장</button>
-        <button class="btn" style="flex:1" onclick="setView('essential')">처음으로</button>
-      </div>`;
-      
-    setTimeout(() => { resultDiv.scrollIntoView({ behavior: 'smooth' }); }, 100);
-  }
-
-  window.setView = (viewName) => { 
-      state.view = viewName; 
-      if (viewName === 'oil_recipe_manual') state.selectedRecipeOils = []; 
-      // intro나 auto에서 나올때는 초기화하지 않음 (auto 내부에서 로직 처리)
-      render(); 
-  };
+  const input = document.getElementById('shareUrlInput');
+  const qr = document.getElementById('qrImage');
+  const modal = document.getElementById('shareModal');
   
-  function setTitle(title, sub, pill) { pageTitle.textContent = title; pageSub.textContent = sub; stepPill.textContent = pill; }
+  if(input) input.value = REAL_URL;
+  if(qr) qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(REAL_URL)}`;
   
-  window.captureResult = (elementId, fileName) => {
-    const element = document.getElementById(elementId);
-    alert("이미지를 생성 중입니다. 잠시만 기다려주세요...");
-    html2canvas(element, { backgroundColor: "#ffffff", scale: 2 }).then(canvas => {
-        const link = document.createElement('a'); link.download = fileName + '.png'; link.href = canvas.toDataURL(); link.click();
-    }).catch(err => { alert("이미지 저장 중 오류가 발생했습니다."); });
-  };
-  
-  window.openShareModal = async () => {
-    const url = window.location.href; 
-    document.getElementById('shareUrlInput').value = url;
-    document.getElementById('qrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(url)}`;
-    if (navigator.share) { try { await navigator.share({ title: '자연 속 오감테라피', text: '나에게 맞는 자연의 향기와 차를 찾아보세요.', url: url }); return; } catch (e) {} } 
-    document.getElementById('shareModal').classList.remove('hidden'); 
-  };
-  window.closeShareModal = () => document.getElementById('shareModal').classList.add('hidden');
-  window.copyShareUrl = () => { const input = document.getElementById('shareUrlInput'); input.select(); try { navigator.clipboard.writeText(input.value).then(() => alert("주소가 복사되었습니다.")); } catch(err) { document.execCommand('copy'); alert("주소가 복사되었습니다."); } };
-  window.shareResult = async (key, name) => { const url = window.location.href; const text = `[자연 속 오감테라피] 결과 공유: "${name}"`; try { if (navigator.share) { await navigator.share({ title: "오감테라피 결과", text: text, url: url }); } else { await navigator.clipboard.writeText(url); alert("링크가 복사되었습니다."); } } catch(e) {} };
-
-  render();
-})();
-</script>
+  if (navigator.share) { 
+      try { await navigator.share({ title: title, text: '나에게 맞는 자연의 향기와 차를 찾아보세요.', url: REAL_URL }); return; } catch (e) {} 
+  }
+  if(modal) modal.classList.remove('hidden');
+};
+window.closeShareModal = () => {
+  const modal = document.getElementById('shareModal');
+  if(modal) modal.classList.add('hidden');
+};
+window.copyShareUrl = () => {
+  const input = document.getElementById('shareUrlInput');
+  if(input) {
+    input.select();
+    try { navigator.clipboard.writeText(input.value).then(() => alert("주소가 복사되었습니다.")); } 
+    catch(err) { document.execCommand('copy'); alert("주소가 복사되었습니다."); }
+  }
+};
+  </script>
 </body>
 </html>
