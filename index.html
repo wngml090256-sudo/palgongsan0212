@@ -97,26 +97,36 @@
   </div>
 
   <script>
-const REAL_URL = "https://wngml090256-sudo.github.io/"; 
+// ▼▼▼ 진짜 주소로 업데이트했습니다! ▼▼▼
+const REAL_URL = "https://wngml090256-sudo.github.io/wngml090256.github.io/"; 
+
 window.openShareModal = async () => {
+  const url = window.location.href; // (혹시 몰라 현재 주소도 가져오게 둠)
   const title = document.title;
   
   const input = document.getElementById('shareUrlInput');
   const qr = document.getElementById('qrImage');
   const modal = document.getElementById('shareModal');
   
+  // 입력창과 QR코드에는 '진짜 주소'를 넣습니다.
   if(input) input.value = REAL_URL;
   if(qr) qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(REAL_URL)}`;
   
   if (navigator.share) { 
-      try { await navigator.share({ title: title, text: '나에게 맞는 자연의 향기와 차를 찾아보세요.', url: REAL_URL }); return; } catch (e) {} 
+      try { 
+        // 공유하기 버튼 누를 때도 '진짜 주소'를 공유합니다.
+        await navigator.share({ title: title, text: '나에게 맞는 자연의 향기와 차를 찾아보세요.', url: REAL_URL }); 
+        return; 
+      } catch (e) {} 
   }
   if(modal) modal.classList.remove('hidden');
 };
+
 window.closeShareModal = () => {
   const modal = document.getElementById('shareModal');
   if(modal) modal.classList.add('hidden');
 };
+
 window.copyShareUrl = () => {
   const input = document.getElementById('shareUrlInput');
   if(input) {

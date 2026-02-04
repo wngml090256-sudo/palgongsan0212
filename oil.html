@@ -468,8 +468,11 @@
         const link = document.createElement('a'); link.download = fileName + '.png'; link.href = canvas.toDataURL(); link.click();
     }).catch(err => { alert("이미지 저장 중 오류가 발생했습니다."); });
   };
-  
- const REAL_URL = "https://wngml090256-sudo.github.io/oil.html"; // 오일 전용 주소
+
+    render();
+})();
+
+const REAL_URL = "https://wngml090256-sudo.github.io/wngml090256.github.io/oil.html";
 window.openShareModal = async () => {
   const title = document.title;
   const input = document.getElementById('shareUrlInput');
@@ -503,8 +506,6 @@ window.shareResult = async (key, name) => {
     } catch(e) {} 
 };
 
-  render();
-})();
 </script>
 </body>
 </html>
