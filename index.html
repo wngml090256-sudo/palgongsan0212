@@ -13,16 +13,189 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   
-  <!-- [추가됨] 링크 공유 시 보여질 미리보기 정보 -->
   <title>자연 속 오감테라피 BOOK</title>
   <meta property="og:title" content="자연 속 오감테라피 BOOK" />
   <meta property="og:description" content="나에게 맞는 자연의 향기와 차를 찾아보세요." />
   <meta property="og:image" content="https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1200&auto=format&fit=crop" />
   
-  <!-- CSS 연결 -->
-  <link rel="stylesheet" href="style.css">
   <!-- 폰트 연결 -->
-  <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Pretendard:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Pretendard:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #4A6C56; /* 세이지 그린 */
+      --text-main: #2C2C2C;
+      --text-sub: #666666;
+      --font-main: 'Pretendard', sans-serif;
+      --font-hand: 'Nanum Pen Script', cursive;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    
+    body {
+      /* 배경 이미지 설정 */
+      background: url('forest.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      
+      font-family: var(--font-main);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 520px; /* 너비 약간 여유 있게 */
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center; /* 화면 세로 중앙 정렬 */
+    }
+
+    /* 메인 카드 스타일 */
+    .card {
+      background: rgba(255, 255, 255, 0.95); /* 살짝 투명해서 배경이 은은하게 보임 */
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      padding: 40px 30px;
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+
+    /* 헤더 */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .header-left h1 {
+      font-family: var(--font-hand);
+      font-size: 2.4rem;
+      color: var(--primary);
+      margin-bottom: 6px;
+      line-height: 1.1;
+    }
+
+    .sub {
+      font-size: 1rem;
+      color: var(--text-sub);
+    }
+
+    .icon-btn {
+      background: #f0f0f0;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #555;
+    }
+
+    .pill {
+      display: inline-block;
+      background: #eee;
+      color: #666;
+      font-size: 0.8rem;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    /* 메뉴 버튼 그리드 */
+    .menu-grid {
+      display: flex;
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    /* 버튼 스타일 (중앙 정렬 핵심) */
+    .hero-btn {
+      flex: 1; /* 두 버튼 크기 동일하게 */
+      background: #FFFFFF;
+      border: 1px solid #EAEAEA;
+      border-radius: 20px;
+      padding: 30px 10px; /* 상하 여유, 좌우 좁게 */
+      text-decoration: none;
+      color: var(--text-main);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+      transition: all 0.2s ease;
+      
+      /* ★ Flexbox로 내용물 중앙 정렬 ★ */
+      display: flex;
+      flex-direction: column; /* 위아래로 배치 */
+      align-items: center;    /* 가로 중앙 정렬 */
+      justify-content: center;/* 세로 중앙 정렬 */
+      text-align: center;     /* 텍스트 중앙 정렬 */
+    }
+
+    .hero-btn:hover {
+      transform: translateY(-5px);
+      border-color: var(--primary);
+      box-shadow: 0 8px 20px rgba(74, 108, 86, 0.15);
+    }
+
+    .hero-btn img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      margin-bottom: 16px; /* 이미지와 텍스트 사이 간격 */
+    }
+
+    .hero-btn .label {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .hero-btn .desc {
+      font-size: 0.85rem;
+      color: #777;
+      line-height: 1.4;
+    }
+
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+
+    /* 모달 */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: flex; justify-content: center; align-items: center;
+      z-index: 1000;
+      backdrop-filter: blur(4px);
+    }
+    .hidden { display: none !important; }
+    .modal-box {
+      background: white;
+      padding: 24px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 320px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    .qr-img { width: 100%; max-width: 180px; margin: 16px 0; border-radius: 8px; }
+    .url-input { width: 100%; padding: 10px; background: #f5f5f5; border: none; border-radius: 8px; margin-bottom: 16px; font-size: 0.85rem; color: #555; }
+    
+    .btn { padding: 12px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; }
+    .btn.primary { background: var(--primary); color: white; }
+    .btn:not(.primary) { background: #eee; color: #333; }
+  </style>
 </head>
 <body>
   <div class="wrap">
@@ -33,7 +206,6 @@
           <div class="sub">나에게 맞는 자연의 향기와 차를 찾아보세요.</div>
         </div>
         
-        <!-- [추가됨] 상단 공유 버튼 -->
         <div class="header-right">
             <button class="icon-btn" onclick="openShareModal()" aria-label="공유하기">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -45,34 +217,24 @@
               </svg>
             </button>
         </div>
-
       </header>
       
-      <div style="margin-bottom:10px;"><div class="pill">HOME</div></div>
-      <div class="bar" style="opacity:0;"></div>
+      <div><div class="pill">HOME</div></div>
 
       <main>
         <div class="menu-grid">
           <!-- 오일 페이지로 이동 -->
-          <a class="hero-btn" href="oil.html" style="text-decoration:none;">
-            <div class="icon-area">
-                <img src="titleoil.png" alt="에센셜오일" style="width: 100px; height: 100px; object-fit: contain; margin-bottom: 12px;">
-            </div>
-            <div>
-              <div class="label">에센셜 오일</div>
-              <div class="desc">1. 취향 찾기<br>2. 블랜딩 오일 레시피</div>
-            </div>
+          <a class="hero-btn" href="oil.html">
+            <img src="titleoil.png" alt="에센셜오일">
+            <div class="label">에센셜 오일</div>
+            <div class="desc">1. 취향 찾기<br>2. 블랜딩 오일 레시피</div>
           </a>
           
           <!-- 차 페이지로 이동 -->
-          <a class="hero-btn" href="tea.html" style="text-decoration:none;">
-            <div class="icon-area">
-                <img src="teaset.png" alt="다도세트" style="width: 100px; height: 100px; object-fit: contain; margin-bottom: 12px;">
-            </div>
-            <div>
-              <div class="label">다도 (Tea Therapy)</div>
-              <div class="desc">약선차 / 허브차 / 녹차<br>티 블랜딩 레시피</div>
-            </div>
+          <a class="hero-btn" href="tea.html">
+            <img src="teaset.png" alt="다도세트">
+            <div class="label">다도 (Tea Therapy)</div>
+            <div class="desc">약선차 / 허브차 / 녹차<br>티 블랜딩 레시피</div>
           </a>
         </div>
       </main>
@@ -83,7 +245,7 @@
     </div>
   </div>
 
-  <!-- [추가됨] 공유 모달창 및 스크립트 -->
+  <!-- 공유 모달창 -->
   <div id="shareModal" class="modal-overlay hidden" onclick="closeShareModal(event)">
     <div class="modal-box" onclick="event.stopPropagation()">
       <h3>QR코드 공유</h3>
@@ -97,35 +259,32 @@
   </div>
 
   <script>
-// ▼▼▼ 진짜 주소로 업데이트했습니다! ▼▼▼
-const REAL_URL = "https://wngml090256-sudo.github.io/wngml090256.github.io/"; 
+    const REAL_URL = "https://wngml090256-sudo.github.io/wngml090256.github.io/"; 
 
-window.openShareModal = async () => {
-  const title = document.title;
-  
-  // HTML 요소 가져오기
-  const input = document.getElementById('shareUrlInput');
-  const qr = document.getElementById('qrImage');
-  const modal = document.getElementById('shareModal');
-  
-  // 모달 내용 미리 채워두기 (PC용)
-  if(input) input.value = REAL_URL;
-  if(qr) qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(REAL_URL)}`;
-  
-  // 1. 모바일(공유 기능 지원)인 경우
-  if (navigator.share) { 
-      try { 
-          // 모바일 자체 공유창 띄우기
-          await navigator.share({ title: title, text: '나에게 맞는 자연의 향기와 차를 찾아보세요.', url: REAL_URL }); 
-      } catch (e) {
-          // 사용자가 취소해도 아무것도 하지 않음 (조용히 종료)
-      }
-      return; // ★핵심★ 모바일이면 여기서 무조건 끝냅니다. 밑으로 안 내려감!
-  } 
-  
-  // 2. PC(공유 기능 미지원)인 경우에만 모달창 띄우기
-  if(modal) modal.classList.remove('hidden'); 
-};
+    window.openShareModal = async () => {
+      const title = document.title;
+      const input = document.getElementById('shareUrlInput');
+      const qr = document.getElementById('qrImage');
+      const modal = document.getElementById('shareModal');
+      
+      if(input) input.value = REAL_URL;
+      if(qr) qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(REAL_URL)}`;
+      
+      if (navigator.share) { 
+          try { 
+              await navigator.share({ title: title, text: '나에게 맞는 자연의 향기와 차를 찾아보세요.', url: REAL_URL }); 
+          } catch (e) {}
+          return; 
+      } 
+      if(modal) modal.classList.remove('hidden'); 
+    };
+
+    window.closeShareModal = () => { document.getElementById('shareModal').classList.add('hidden'); };
+    window.copyShareUrl = () => {
+        const input = document.getElementById('shareUrlInput');
+        input.select(); document.execCommand('copy');
+        alert('주소가 복사되었습니다.');
+    };
   </script>
 </body>
 </html>

@@ -1,127 +1,338 @@
-/* 폰트 정의 */
-@font-face {
-    font-family: 'Binggrae';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Binggrae.woff') format('woff');
-    font-weight: normal; font-style: normal;
-}
-@font-face {
-    font-family: 'Binggrae-Bold';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Binggrae-Bold.woff') format('woff');
-    font-weight: 700; font-style: normal;
-}
-:root{
-  --accent:#2f8a58; 
-  --accent2:#d4a024; 
-  --font-title: 'Binggrae-Bold', 'Binggrae', sans-serif;
-  --font-body: 'Binggrae', "Pretendard", sans-serif;
-  --font-hand: "Nanum Pen Script", cursive;
-}
-*{box-sizing:border-box}
-body{
-  margin:0; font-family: var(--font-body);
-  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)), url('forest.jpeg');
-  background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat;
-  color: #fff; min-height:100svh; display:flex; align-items:center; justify-content:center;
-  padding:16px; overflow-x:hidden; -webkit-tap-highlight-color: transparent; letter-spacing: -0.02em;
-}
-.wrap{width:min(720px, 100%)}
-.card{
-  --text: #4e342e; --muted: #8d6e63; --border: rgba(0,0,0,0.1);
-  background: rgba(255, 255, 255, 0.96); border:1px solid rgba(255,255,255,0.6);
-  border-radius:24px; padding: 24px; 
-  box-shadow: 0 10px 40px rgba(0,0,0,.25); backdrop-filter: blur(12px);
-  min-height: 600px; height: auto; display: flex; flex-direction: column; color: var(--text); position: relative;
-}
-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; gap: 8px; }
-.header-left { flex: 1; min-width: 0; } 
-.header-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-h1 { font-family: var(--font-title); font-size: 26px; margin: 0; letter-spacing: -0.5px; line-height: 1.3; color: #2e7d32; word-break: keep-all; }
-.sub { color: var(--muted); font-size: 15px; margin-top: 6px; line-height: 1.4; word-break: keep-all; }
-.pill{ display:inline-flex; align-items:center; gap:8px; padding:6px 12px; border-radius:999px; border:1px solid var(--border); color: #5d4037; font-size:13px; white-space:nowrap; background: rgba(255,255,255,0.6); }
-.icon-btn { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: #fff; border: 1px solid var(--border); border-radius: 50%; color: var(--accent); cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: all 0.2s ease; }
-.icon-btn svg { width: 18px; height: 18px; }
-.bar{ height:8px; border-radius:999px; background: rgba(0,0,0,.08); overflow:hidden; margin:10px 0 20px; }
-.bar > div{ height:100%; width:0%; background: linear-gradient(90deg, #a5d6a7, #2f8a58); transition: width .3s ease; }
-.btn{ border:1px solid var(--border); background: #fff; color: var(--text); padding:14px 16px; border-radius:16px; cursor:pointer; font-size:16px; transition: all .2s; font-family: var(--font-title); word-break: keep-all; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-.btn:hover{ background: #f1f8e9; border-color: var(--accent); }
-.btn.primary{ background: #e8f5e9; border-color: #a5d6a7; color: #1b5e20; }
-.btn.capture { border-color: #4e342e; color: #fff; background: #4e342e; }
-.btn.danger{ border-color: #ffccbc; color: #d84315; background: #fbe9e7; }
-.btn.accent { background: #2f8a58; color: #fff; border: none; margin-top: 20px; padding: 16px; font-size: 17px; font-family: var(--font-title); }
-.btn:disabled { opacity: 0.5; cursor: not-allowed; background: #eee; color: #aaa; border-color: #ddd; }
-.menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-@media(max-width: 500px) { .menu-grid { grid-template-columns: 1fr; } }
-.hero-btn { position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 220px; padding: 16px; border: 1px solid var(--border); border-radius: 24px; background: rgba(255,255,255,0.7); color: var(--text); cursor: pointer; text-align: center; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.03); text-decoration: none; }
-.hero-btn:active { transform: scale(0.98); background: #fff; }
-.hero-btn .icon-area { flex: 0 0 auto; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; }
-.hero-btn svg { width: 64px; height: 64px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
-.hero-btn .label { font-size: 19px; margin-bottom: 4px; color: #2e7d32; font-family: var(--font-title); }
-.hero-btn .desc { font-size: 13px; color: var(--muted); line-height: 1.4; }
-.tea-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.tea-btn { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 14px 8px; border: 1px solid var(--border); border-radius: 20px; background: rgba(255,255,255,0.6); color: var(--text); cursor: pointer; }
-.tea-btn svg { width: 36px; height: 36px; }
-.tea-btn span { font-size: 14px; font-family: var(--font-title); text-align: center; }
-.q-title{ font-size:20px; margin:0 0 20px; line-height:1.45; font-family: var(--font-title); color: #2e7d32; word-break: keep-all; }
-.choices{display:grid; gap:10px;}
-button.choice{ text-align:left; width:100%; border-radius:18px; border:1px solid var(--border); background: #fff; color: var(--text); padding:18px; font-size:16px; cursor:pointer; font-family: var(--font-body); line-height: 1.4; word-break: keep-all; }
-@media (hover: hover) { button.choice:hover { background: #f1f8e9; border-color: var(--accent); } }
-button.choice.clicked { background: #e8f5e9; border-color: var(--accent); color: #1b5e20; font-family: var(--font-title); }
-.pref-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; max-width: 340px; margin: 0 auto 20px; }
-.pref-card { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px; background: #fff; border: 1px solid #eee; border-radius: 20px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.03); transition: all 0.15s ease-out; -webkit-user-select: none; user-select: none; outline: none; }
-.pref-card.clicked { background-color: #e8f5e9 !important; border-color: var(--accent) !important; transform: scale(0.96); box-shadow: 0 0 0 2px rgba(47, 138, 88, 0.2); }
-.pref-img { width: 100px; height: 100px; object-fit: contain; margin-bottom: 8px; pointer-events: none; }
-.pref-name { font-size: 16px; font-family: var(--font-title); color: #3e2723; margin-bottom: 2px; pointer-events: none; }
-.pref-desc { font-size: 11px; color: #8d6e63; text-align: center; word-break: keep-all; line-height: 1.2; pointer-events: none; }
-.wide-btn { width: 100%; margin-top: 12px; padding: 16px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); border-radius: 18px; background: #fff; color: var(--text); cursor: pointer; font-family: var(--font-title); }
-.result .box{ border:1px solid #d7ccc8; border-radius:20px; padding: 24px; background: #fffaf0; margin-bottom: 14px; box-shadow: 0 4px 12px rgba(62, 39, 35, 0.05); word-break: keep-all; }
-.tag{ display:inline-flex; padding:4px 10px; border-radius:999px; border:1px solid #a1887f; font-size:13px; color: #5d4037; margin-right:6px; margin-bottom: 6px; background: #fff; }
-.oil-card { background: #fff; border-left: 5px solid var(--accent2); padding: 16px; margin-bottom: 12px; border-radius: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); color: #3e2723; display: flex; align-items: center; }
-.oil-card.best { background: linear-gradient(135deg, #fff8e1 0%, #fff 100%); border: 2px solid var(--accent2); transform: scale(1.02); margin-bottom: 20px; box-shadow: 0 8px 24px rgba(212, 160, 36, 0.15); position: relative; }
-.oil-card.best::after { content: '👑 Best Pick'; position: absolute; top: -12px; right: 12px; background: #d4a024; color: #fff; font-size: 12px; padding: 4px 10px; border-radius: 12px; font-family: var(--font-title); }
-.persona-card { background: #efebe9; border: 1px dashed #a1887f; padding: 18px; border-radius: 16px; margin-bottom: 20px; text-align: center; }
-.persona-title { color: #5d4037; font-size: 17px; margin-bottom: 8px; font-family: var(--font-title); }
-.persona-desc { font-size: 15px; color: #4e342e; line-height: 1.6; word-break: keep-all; }
-.empathy-msg { background: #e8f5e9; padding: 18px; border-radius: 16px; margin-bottom: 24px; text-align: center; font-size: 16px; font-weight: 600; line-height: 1.6; color: #1b5e20; word-break: keep-all; box-shadow: 0 2px 8px rgba(47, 138, 88, 0.1); }
-.analysis-box { background:#fff; border:1px solid #d7ccc8; border-left:5px solid #2f8a58; border-radius:12px; padding:18px; margin-bottom:24px; text-align:left; }
-.analysis-title { font-size: 18px; font-family: var(--font-title); color: #2f8a58; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
-.analysis-text { font-size: 16px; color: #4e342e; line-height: 1.65; word-break: keep-all; }
-.recipe-intro-btn {
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
-    padding: 24px; height: 160px;
-    border: 1px solid var(--border); border-radius: 20px;
-    background: #fff; color: var(--text); cursor: pointer; transition: all 0.2s;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-}
-.recipe-intro-btn:hover { border-color: var(--accent); background: #f1f8e9; }
-.recipe-intro-btn strong { font-size: 18px; color: #2e7d32; font-family: var(--font-title); }
-.recipe-intro-btn span { font-size: 14px; color: var(--muted); line-height: 1.4; }
-.selection-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
-.oil-select-item { 
-    padding: 14px; border: 1px solid #d7ccc8; border-radius: 16px; 
-    background: #fff; cursor: pointer; text-align: center; font-size: 15px; 
-    transition: 0.2s; word-break: keep-all; font-family: var(--font-title); position: relative;
-}
-.oil-select-item.selected { background-color: var(--accent); color: white; border-color: var(--accent); }
-.oil-select-item.ai-pick { background-color: #fff8e1; color: #d4a024; border-color: #d4a024; font-weight: bold; }
-.oil-select-item.ai-pick::after { content: 'AI 추천'; position: absolute; top: -6px; right: -6px; background: #d4a024; color: white; font-size: 10px; padding: 2px 6px; border-radius: 8px; }
-.recipe-box { background: #e8f5e9; padding: 20px; border-radius: 20px; margin-bottom: 16px; border: 1px dashed var(--accent); }
-.drop-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.05); font-size: 16px;}
-.footer{ margin-top:auto; padding-top:24px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; color: #8d6e63; font-size:12px; word-break: keep-all; line-height: 1.4; }
-.nav { display:flex; justify-content:space-between; margin-top:24px; }
-.hidden { display: none !important; }
-.tiny { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
-.closing-q { text-align: center; margin-top: 24px; font-size: 19px; color: #5d4037; font-family: var(--font-hand); line-height: 1.4; }
-.signature { text-align: right; margin-top: 12px; font-size: 22px; color: #8d6e63; font-family: var(--font-hand); }
-.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); display: flex; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(3px); }
-.modal-box { background: white; width: 300px; padding: 24px; border-radius: 24px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
-.qr-img { width: 160px; height: 160px; margin: 0 auto 16px; display: block; }
-.url-input { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #d7ccc8; border-radius: 12px; background: #f5f5f5; font-family: var(--font-body); }
-@media(max-width: 480px) {
-    body { padding: 12px; }
-    .card { padding: 16px; min-height: 90svh; border-radius: 20px; }
-    .result .box { padding: 20px 16px; }
-    h1 { font-size: 22px; }
-    .analysis-text { font-size: 16px !important; }
-    .persona-desc { font-size: 16px !important; }
-    .oil-card .scent-desc { font-size: 14px !important; }
-}
+
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  
+  <title>티 테라피 (Tea Therapy)</title>
+  <meta property="og:title" content="티 테라피 (Tea Therapy)" />
+  <meta property="og:description" content="내 몸과 마음에 딱 맞는 차를 처방받으세요." />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1200&auto=format&fit=crop" />
+
+  <!-- 라이브러리 로드 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <style>
+    /* [폰트 정의] */
+    @font-face { font-family: 'Binggrae'; src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Binggrae.woff') format('woff'); font-weight: normal; font-style: normal; }
+    @font-face { font-family: 'Binggrae-Bold'; src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Binggrae-Bold.woff') format('woff'); font-weight: 700; font-style: normal; }
+    @import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Pretendard:wght@400;600&display=swap');
+
+    /* [변수 및 기본 설정 - 오일 앱과 동일] */
+    :root{
+      --accent:#2f8a58; 
+      --accent2:#d4a024; 
+      --font-title: 'Binggrae-Bold', 'Binggrae', sans-serif;
+      --font-body: 'Binggrae', "Pretendard", sans-serif;
+      --font-hand: "Nanum Pen Script", cursive;
+      --text: #4e342e; 
+      --muted: #8d6e63; 
+      --border: rgba(0,0,0,0.1);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family: var(--font-body);
+      background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1200&auto=format&fit=crop');
+      background-size: cover; background-position: center; background-attachment: fixed;
+      color: #fff; min-height:100svh; display:flex; align-items:center; justify-content:center;
+      padding:16px; overflow-x:hidden; -webkit-tap-highlight-color: transparent; letter-spacing: -0.02em;
+    }
+    .wrap{width:min(720px, 100%)}
+    .card{
+      background: rgba(255, 255, 255, 0.96); border:1px solid rgba(255,255,255,0.6);
+      border-radius:24px; padding: 24px; 
+      box-shadow: 0 10px 40px rgba(0,0,0,.25); backdrop-filter: blur(12px);
+      min-height: 600px; display: flex; flex-direction: column; color: var(--text); position: relative;
+    }
+
+    /* [헤더 & UI 요소] */
+    header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; gap: 8px; }
+    h1 { font-family: var(--font-title); font-size: 26px; margin: 0; letter-spacing: -0.5px; line-height: 1.3; color: var(--accent); word-break: keep-all; }
+    .sub { color: var(--muted); font-size: 15px; margin-top: 6px; line-height: 1.4; }
+    .pill{ display:inline-flex; align-items:center; gap:8px; padding:6px 12px; border-radius:999px; border:1px solid var(--border); color: #5d4037; font-size:13px; background: rgba(255,255,255,0.6); margin-bottom: 10px; }
+    .bar{ height:8px; border-radius:999px; background: rgba(0,0,0,.08); overflow:hidden; margin:0 0 20px; }
+    .bar > div{ height:100%; width:0%; background: linear-gradient(90deg, #a5d6a7, var(--accent)); transition: width .3s ease; }
+    
+    .icon-btn { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: #fff; border: 1px solid var(--border); border-radius: 50%; color: var(--accent); cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+
+    /* [버튼 스타일] */
+    .btn{ border:1px solid var(--border); background: #fff; color: var(--text); padding:14px 16px; border-radius:16px; cursor:pointer; font-size:16px; transition: all .2s; font-family: var(--font-title); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .btn:hover{ background: #f1f8e9; border-color: var(--accent); transform: translateY(-2px); }
+    .btn.primary{ background: #e8f5e9; border-color: #a5d6a7; color: #1b5e20; }
+    .btn.capture { border-color: #4e342e; color: #fff; background: #4e342e; }
+
+    /* [메뉴 그리드 버튼 (Hero Btn)] */
+    .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .hero-btn { 
+        display: flex; flex-direction: column; justify-content: center; align-items: center; 
+        height: 180px; padding: 16px; border: 1px solid var(--border); border-radius: 24px; 
+        background: #fff; color: var(--text); cursor: pointer; text-align: center; 
+        box-shadow: 0 4px 12px rgba(0,0,0,0.03); transition: 0.2s;
+    }
+    .hero-btn:hover { border-color: var(--accent); background: #f9fffb; transform: translateY(-2px); }
+    .hero-btn svg { width: 48px; height: 48px; margin-bottom: 12px; color: var(--accent); }
+    .hero-btn .label { font-size: 18px; margin-bottom: 6px; color: var(--accent); font-family: var(--font-title); }
+    .hero-btn .desc { font-size: 13px; color: var(--muted); line-height: 1.4; }
+
+    /* [바디 스캐너 SVG 스타일] */
+    .body-map-container { position: relative; display: flex; justify-content: center; margin: 20px 0; }
+    .body-svg { height: 280px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05)); }
+    .body-part { fill: #fff; stroke: #d7ccc8; stroke-width: 2; transition: all 0.3s ease; cursor: pointer; }
+    .body-part:hover { fill: #e8f5e9; stroke: var(--accent); transform: scale(1.02); transform-origin: center; }
+    .body-part:active { fill: var(--accent); stroke: var(--accent); }
+    .part-label { position: absolute; background: rgba(255,255,255,0.95); padding: 5px 12px; border-radius: 16px; font-size: 13px; font-weight: 700; color: var(--accent); border: 1px solid #e8f5e9; box-shadow: 0 2px 8px rgba(0,0,0,0.08); pointer-events: none; }
+
+    /* [선택지 버튼 (Symptom)] */
+    .choices { display:grid; gap:10px; }
+    button.choice { 
+        text-align:left; width:100%; border-radius:18px; border:1px solid var(--border); 
+        background: #fff; color: var(--text); padding:18px; font-size:16px; cursor:pointer; 
+        font-family: var(--font-body); line-height: 1.4; display:flex; justify-content:space-between; 
+    }
+    button.choice:hover { background: #f1f8e9; border-color: var(--accent); transform: translateX(4px); transition:0.2s; }
+
+    /* [결과 카드 스타일] */
+    .result .box { border:1px solid #d7ccc8; border-radius:20px; padding: 24px; background: #fffaf0; margin-bottom: 14px; box-shadow: 0 4px 12px rgba(62, 39, 35, 0.05); text-align: center; }
+    .tea-title { font-size: 28px; color: var(--text); font-family: var(--font-hand); margin-bottom: 12px; }
+    .tea-desc { font-size: 16px; line-height: 1.6; color: #5d4037; margin-bottom: 20px; word-break: keep-all; }
+    
+    .recipe-box { background: #fff; border: 1px dashed var(--accent2); padding: 20px; border-radius: 16px; text-align: left; position: relative; margin-top: 20px; }
+    .recipe-label { position: absolute; top: -10px; left: 16px; background: var(--accent2); color: #fff; font-size: 11px; padding: 4px 10px; border-radius: 10px; font-weight: bold; }
+    .tag { display:inline-flex; padding:4px 10px; border-radius:999px; border:1px solid #a1887f; font-size:13px; color: #5d4037; margin: 4px; background: #fff; }
+
+    /* [푸터 & 모달] */
+    .footer { margin-top:auto; padding-top:24px; display:flex; justify-content:center; gap:10px; color: #8d6e63; font-size:12px; text-align: center; }
+    .nav { display:flex; justify-content:space-between; margin-top:24px; gap: 8px; }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); display: flex; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(3px); }
+    .modal-box { background: white; width: 300px; padding: 24px; border-radius: 24px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+    .hidden { display: none !important; }
+    .url-input { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #d7ccc8; border-radius: 12px; background: #f5f5f5; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" id="app">
+      <header>
+        <div class="header-left">
+          <h1 id="pageTitle">티 테라피</h1>
+          <div class="sub" id="pageSub">오늘의 나에게 필요한 차를 처방합니다.</div>
+        </div>
+        <div class="header-right">
+          <button class="icon-btn" onclick="location.href='index.html'">🏠</button>
+          <button class="icon-btn" onclick="openShareModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+          </button>
+        </div>
+      </header>
+      
+      <div style="margin-bottom:10px;"><div class="pill" id="stepPill">Menu</div></div>
+      <div class="bar"><div id="barFill"></div></div>
+
+      <main id="mainContent" style="flex:1; display:flex; flex-direction:column;"></main>
+
+      <div class="footer">
+        <div>© 자연환경해설사 정주희<br>* 의학적 진단이 아닌 취향/컨디션 기반 추천입니다.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 공유 모달 -->
+  <div id="shareModal" class="modal-overlay hidden" onclick="closeShareModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <h3>QR코드 공유</h3>
+      <img id="qrImage" src="" alt="QR Code" style="width:160px; height:160px; margin-bottom:16px;">
+      <input type="text" id="shareUrlInput" class="url-input" readonly>
+      <div style="display:flex; gap:8px;">
+        <button class="btn primary" style="flex:1" onclick="copyShareUrl()">복사</button>
+        <button class="btn" style="flex:1" onclick="closeShareModal()">닫기</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+(() => {
+  // [TEA DATABASE]
+  const TEA_DB = {
+    head: {
+      label: "머리 / 정신",
+      symptoms: [
+        { txt: "생각이 많고 머리가 무거움", tea: "박하차", desc: "박하의 멘톨 성분이 막힌 기운을 뚫어주고 머리를 맑게 합니다.", recipe: "박하잎 조금 + 따뜻한 물 (오래 우리면 쓴맛이 날 수 있어요)", tags: ["두통", "리프레시"] },
+        { txt: "눈이 침침하고 피로함", tea: "결명자차", desc: "결명자는 '눈을 밝게 하는 씨앗'입니다. 스마트폰으로 지친 눈에 휴식을 주세요.", recipe: "결명자 티백 1개 또는 볶은 결명자 1큰술 + 뜨거운 물 300ml", tags: ["눈피로", "열내림"] },
+        { txt: "화가 나고 열이 뻗침", tea: "치자차 (+감초)", desc: "가슴 속의 화(火)를 내려주고 마음을 진정시켜 줍니다.", recipe: "말린 치자 1개를 부셔서 우림 (너무 쓰면 감초 한 조각 추가)", tags: ["화병", "진정"] },
+        { txt: "집중력이 필요함", tea: "녹차", desc: "은은한 카페인이 정신을 깨우고, 카테킨이 몸을 가볍게 합니다.", recipe: "녹차 잎/티백 + 70~80도 물 (너무 뜨겁지 않게!)", tags: ["집중", "맑음"] }
+      ]
+    },
+    throat: {
+      label: "호흡기 / 목",
+      symptoms: [
+        { txt: "목이 따갑고 칼칼함", tea: "도라지 감초차", desc: "도라지의 사포닌이 기관지를 보호하고, 감초가 목을 부드럽게 감싸줍니다.", recipe: "말린 도라지 + 감초 한 조각을 넣고 5분 이상 충분히 우려주세요.", tags: ["목감기", "기관지"] },
+        { txt: "콧물, 비염이 심함", tea: "유근피차", desc: "'코 나무'라 불리는 유근피는 콧물과 염증 완화에 탁월합니다.", recipe: "유근피 조각을 넣고 물이 붉어질 때까지 끓이거나 오래 우림", tags: ["비염", "염증"] },
+        { txt: "으슬으슬 감기 기운", tea: "따뜻한 유자/레몬티", desc: "비타민 C가 가득한 따뜻한 과일차로 면역력을 충전하세요.", recipe: "청 2큰술 + 뜨거운 물 250ml", tags: ["감기", "비타민"] }
+      ]
+    },
+    stomach: {
+      label: "소화 / 속",
+      symptoms: [
+        { txt: "속이 더부룩하고 답답함", tea: "귤피차 (진피차)", desc: "귤껍질은 기운을 돌게 하고 소화를 돕는 천연 소화제입니다.", recipe: "말린 귤피 + 뜨거운 물 (오래될수록 약효가 좋습니다)", tags: ["소화불량", "가스"] },
+        { txt: "기름진 음식을 먹음", tea: "자몽티 / 녹차", desc: "자몽의 쌉쌀한 맛과 녹차는 지방 분해를 돕고 입안을 개운하게 합니다.", recipe: "자몽청 + 따뜻한 물 (또는 탄산수)", tags: ["다이어트", "분해"] }
+      ]
+    },
+    mood: {
+      label: "기분 / 힐링",
+      symptoms: [
+        { txt: "오후 3시, 나른함", tea: "복숭아 홍차", desc: "향긋한 복숭아 향이 기분을 띄워주고, 홍차의 카페인이 에너지를 줍니다.", recipe: "따뜻하게도 좋지만, 얼음 가득 채워 '아이스'로 드셔보세요!", tags: ["카페인", "에너지"] },
+        { txt: "상큼한 리프레시", tea: "사과 히비스커스", desc: "붉은 수색과 사과의 달콤함이 우울한 기분을 날려버립니다.", recipe: "히비스커스 베이스 + 사과청 1큰술", tags: ["활력", "새콤달콤"] },
+        { txt: "당 떨어지고 지침", tea: "애플 시나몬 티", desc: "달콤한 사과청 따뜻하게 한 잔이면 피로가 사르르 녹습니다.", recipe: "사과청 2큰술 + (계피가루 톡톡) + 뜨거운 물", tags: ["당충전", "따뜻함"] }
+      ]
+    }
+  };
+
+  const state = { view: 'menu', selectedCategory: null, selectedResult: null };
+
+  // Elements
+  const mainContent = document.getElementById("mainContent");
+  const pageTitle = document.getElementById("pageTitle");
+  const pageSub = document.getElementById("pageSub");
+  const stepPill = document.getElementById("stepPill");
+  const barFill = document.getElementById("barFill");
+
+  function render() {
+    barFill.style.width = '0%';
+
+    if (state.view === 'menu') {
+      setTitle("티 테라피", "원하는 메뉴를 선택해주세요.", "Menu");
+      mainContent.innerHTML = `
+        <div class="menu-grid">
+            <button class="hero-btn" onclick="startScanner()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z"/><path d="M12 7v5l3 3"/></svg>
+                <div class="label">바디 스캐너</div>
+                <div class="desc">내 몸의 불편한 곳을<br>체크하고 처방받기</div>
+            </button>
+            <button class="hero-btn" onclick="alert('준비 중인 기능입니다.')" style="opacity:0.6;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+                <div class="label">티 블렌딩</div>
+                <div class="desc">나만의 차 만들기<br>(Coming Soon)</div>
+            </button>
+        </div>
+      `;
+    } 
+    else if (state.view === 'scanner_parts') {
+      barFill.style.width = '50%';
+      setTitle("바디 스캐너", "가장 불편한 부위를 선택하세요.", "Step 1/2");
+      mainContent.innerHTML = `
+        <div class="body-map-container">
+          <svg class="body-svg" viewBox="0 0 200 360" xmlns="http://www.w3.org/2000/svg">
+            <g onclick="selectPart('head')" style="cursor:pointer">
+              <circle class="body-part" cx="100" cy="50" r="35" />
+              <text x="100" y="58" font-size="20" text-anchor="middle" fill="#d7ccc8" style="pointer-events:none;">🤯</text>
+            </g>
+            <path class="body-part" onclick="selectPart('throat')" d="M 80 90 Q 100 100 120 90 L 130 110 Q 130 140 100 140 Q 70 140 70 110 Z" />
+            <path class="body-part" onclick="selectPart('stomach')" d="M 70 150 Q 100 145 130 150 L 125 220 Q 100 230 75 220 Z" />
+            <path fill="none" stroke="#e0e0e0" stroke-width="2" d="M 70 110 Q 40 150 30 200 M 130 110 Q 160 150 170 200 M 75 220 L 70 330 M 125 220 L 130 330" />
+          </svg>
+          <div class="part-label" style="top: 10px;">머리/정신</div>
+          <div class="part-label" style="top: 100px; right: 20px;">목/호흡기</div>
+          <div class="part-label" style="top: 180px; left: 20px;">속/소화</div>
+        </div>
+        
+        <button class="choice" onclick="selectPart('mood')" style="background:#fff8e1; border-color:#d4a024;">
+          <span style="color:#d4a024; font-weight:700;">✨ 특별히 아픈 곳은 없어요</span>
+          <span>기분전환 ></span>
+        </button>
+
+        <div class="nav">
+          <button class="btn" onclick="setView('menu')">취소</button>
+        </div>
+      `;
+    }
+    else if (state.view === 'scanner_symptoms') {
+      barFill.style.width = '75%';
+      const data = TEA_DB[state.selectedCategory];
+      setTitle(data.label, "구체적인 증상을 선택해주세요.", "Step 2/2");
+      
+      let html = `<div class="choices">`;
+      data.symptoms.forEach((item, idx) => {
+        html += `<button class="choice" onclick="showResult(${idx})"><span>${item.txt}</span><span style="color:#ccc;">></span></button>`;
+      });
+      html += `</div>
+        <div class="nav">
+          <button class="btn" onclick="setView('scanner_parts')">이전</button>
+        </div>`;
+      mainContent.innerHTML = html;
+    }
+    else if (state.view === 'result') {
+      barFill.style.width = '100%';
+      const result = state.selectedResult;
+      setTitle("처방 결과", "회원님을 위한 맞춤 차입니다.", "완료");
+
+      mainContent.innerHTML = `
+        <section class="result">
+          <div class="box">
+            <div style="font-size:14px; color:#2f8a58; font-weight:700; margin-bottom:10px;">Today's Tea</div>
+            <h2 class="tea-title">${result.tea}</h2>
+            <p class="tea-desc">"${result.desc}"</p>
+            
+            <div class="recipe-box">
+              <div class="recipe-label">RECIPE</div>
+              <div style="font-size:15px; color:#3e2723; line-height:1.6;">${result.recipe}</div>
+            </div>
+
+            <div style="margin-top:20px;">
+              ${result.tags.map(tag => `<span class="tag">#${tag}</span>`).join('')}
+            </div>
+          </div>
+          
+          <div style="display:flex; gap:8px; margin-top:10px;">
+              <button class="btn capture" onclick="captureResult('app', '${result.tea}_처방전')">📷 저장</button>
+              <button class="btn primary" onclick="shareResult('${result.tea}')">공유하기</button>
+          </div>
+          <div class="nav">
+              <button class="btn" onclick="setView('scanner_parts')">다른 증상</button>
+              <button class="btn" onclick="setView('menu')">처음으로</button>
+          </div>
+        </section>
+      `;
+    }
+  }
+
+  // Logic Functions
+  window.startScanner = () => { state.view = 'scanner_parts'; render(); };
+  window.selectPart = (key) => { state.selectedCategory = key; state.view = 'scanner_symptoms'; render(); };
+  window.showResult = (idx) => { state.selectedResult = TEA_DB[state.selectedCategory].symptoms[idx]; state.view = 'result'; render(); };
+  window.setView = (viewName) => { state.view = viewName; render(); };
+  function setTitle(title, sub, pill) { pageTitle.textContent = title; pageSub.textContent = sub; stepPill.textContent = pill; }
+
+  // Utils
+  window.captureResult = (elementId, fileName) => {
+    const element = document.getElementById(elementId);
+    const btns = element.querySelectorAll('.btn, .icon-btn, .choice, .hero-btn');
+    btns.forEach(b => b.style.opacity = '0'); 
+    html2canvas(element, { backgroundColor: "#fff", scale: 2 }).then(canvas => {
+        const link = document.createElement('a'); link.download = fileName + '.png'; link.href = canvas.toDataURL(); link.click();
+        btns.forEach(b => b.style.opacity = '1'); 
+    }).catch(err => { alert("오류발생"); btns.forEach(b => b.style.opacity = '1'); });
+  };
+
+  const REAL_URL = "https://wngml090256-sudo.github.io/wngml090256.github.io/tea.html"; 
+  window.shareResult = async (teaName) => {
+    if (navigator.share) {
+        try { await navigator.share({ title: '티 테라피 처방전', text: `나에게 필요한 차는 '${teaName}' 입니다.`, url: REAL_URL }); } catch (e) {}
+    } else { openShareModal(); }
+  };
+  window.openShareModal = () => {
+    const modal = document.getElementById('shareModal');
+    const input = document.getElementById('shareUrlInput');
+    const qr = document.getElementById('qrImage');
+    if(input) input.value = REAL_URL;
+    if(qr) qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(REAL_URL)}`;
+    modal.classList.remove('hidden');
+  };
+  window.closeShareModal = () => { document.getElementById('shareModal').classList.add('hidden'); };
+  window.copyShareUrl = () => { document.getElementById("shareUrlInput").select(); document.execCommand("copy"); alert("주소가 복사되었습니다."); };
+
+  render(); // Start
+})();
+</script>
+</body>
+</html>

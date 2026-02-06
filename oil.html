@@ -5,15 +5,393 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   
-  <!-- [추가됨] 링크 공유 시 보여질 미리보기 정보 -->
   <title>에센셜 오일 테라피</title>
   <meta property="og:title" content="에센셜 오일 테라피" />
   <meta property="og:description" content="나에게 맞는 향기를 찾고, DIY 레시피를 만들어보세요." />
   <meta property="og:image" content="https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1200&auto=format&fit=crop" />
 
-  <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Pretendard:wght@400;600&display=swap" rel="stylesheet">
+  <!-- 폰트 로드 -->
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Pretendard:wght@300;400;600;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <style>
+    :root {
+      /* 배경은 이미지로 대체되므로 bg-color는 폴백용 */
+      --bg-color: #F9F7F2; 
+      --card-bg: rgba(255, 255, 255, 0.95); /* 배경이 살짝 비치는 불투명 흰색 */
+      --primary: #4A6C56; /* 세이지 그린 */
+      --primary-dark: #35503D;
+      --accent: #D4A024; /* 골드 */
+      --text-main: #2C2C2C;
+      --text-sub: #666666;
+      --border-radius: 20px;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      --font-main: 'Pretendard', sans-serif;
+      --font-hand: 'Nanum Pen Script', cursive;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    
+    body {
+      /* 숲 배경 이미지 설정 */
+      background: url(forest.jpeg) no-repeat center center fixed;
+      background-size: cover;
+      font-family: var(--font-main);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    /* 배경 오버레이 (텍스트 가독성을 위해 어둡게 처리하고 싶으면 주석 해제) */
+    /* body::before {
+      content: ""; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.2); z-index: -1;
+    } */
+
+    .wrap {
+      width: 100%;
+      max-width: 480px; /* 모바일 최적화 너비 */
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* 카드 스타일 */
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px); /* 글래스모피즘 효과 */
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      padding: 30px 24px;
+      position: relative;
+      overflow: hidden;
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s ease;
+    }
+
+    /* 헤더 영역 */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+
+    .header-left h1 {
+      font-family: var(--font-hand);
+      font-size: 2.2rem;
+      color: var(--primary);
+      margin-bottom: 4px;
+      line-height: 1.1;
+    }
+
+    .sub {
+      font-size: 0.9rem;
+      color: var(--text-sub);
+      font-weight: 400;
+    }
+
+    .header-right {
+      display: flex;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      background: rgba(0,0,0,0.05);
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      font-size: 1.2rem;
+    }
+    .icon-btn svg { width: 18px; height: 18px; color: #555; }
+    .icon-btn:hover { background: rgba(0,0,0,0.1); }
+
+    /* 진행바 */
+    .progress-area { margin-bottom: 24px; }
+    .pill {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      font-size: 0.75rem;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .bar {
+      width: 100%;
+      height: 6px;
+      background: #EAEAEA;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    #barFill {
+      height: 100%;
+      background: var(--primary);
+      width: 0%;
+      transition: width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    /* 메인 콘텐츠 */
+    #mainContent {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 버튼 공통 */
+    .btn {
+      padding: 14px 20px;
+      border-radius: 12px;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: #F0F0F0;
+      color: var(--text-main);
+    }
+    .btn.primary { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(74, 108, 86, 0.3); }
+    .btn.primary:active { transform: scale(0.98); }
+    .btn.accent { background: var(--accent); color: white; }
+    .btn.danger { background: #fff; border: 1px solid #ffcccc; color: #d32f2f; }
+    .btn.capture { background: #333; color: #fff; }
+
+    /* 메뉴 버튼 */
+    .choices { display: flex; flex-direction: column; gap: 12px; }
+    .choice {
+      background: #FFFFFF;
+      border: 1px solid #EAEAEA;
+      padding: 18px;
+      border-radius: 16px;
+      text-align: left;
+      font-size: 1rem;
+      color: var(--text-main);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    .choice:hover { border-color: var(--primary); background: #F7FAF8; transform: translateY(-2px); }
+    .choice.clicked { background: var(--primary); color: white; border-color: var(--primary); }
+
+    /* 취향 이미지 그리드 */
+    .pref-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .pref-card {
+      background: #FFF;
+      border: 1px solid #EAEAEA;
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .pref-card:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+    .pref-card.clicked { border-color: var(--primary); background: #EFF5F1; }
+    
+    /* 이미지 스타일 수정 */
+    .pref-img { 
+      width: 100px; 
+      height: 100px; 
+      object-fit: contain; 
+      margin-bottom: 12px; 
+      /* 이미지가 너무 튀지 않게 약간 부드럽게 */
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05)); 
+    }
+    
+    .pref-name { font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
+    .pref-desc { font-size: 0.75rem; color: #888; line-height: 1.3; }
+
+    /* 질문 스타일 */
+    .q-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+      word-break: keep-all;
+      color: var(--text-main);
+    }
+
+    /* 하단 네비게이션 */
+    .nav {
+      margin-top: auto;
+      padding-top: 24px;
+      display: flex;
+      gap: 10px;
+    }
+    .nav .btn { flex: 1; }
+
+    /* 결과 페이지 */
+    .result-section {
+        background: rgba(255,255,255,0.5);
+        border-radius: 16px;
+    }
+    .analysis-box {
+        background: #F7FAF8;
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-left: 4px solid var(--primary);
+    }
+    .analysis-title { font-weight: 700; font-size: 1.1rem; color: var(--primary); margin-bottom: 10px; }
+    .analysis-text { font-size: 0.95rem; color: #555; line-height: 1.6; }
+    
+    .persona-card {
+        background: #FFF8E1; /* 연한 노랑 */
+        padding: 20px;
+        border-radius: 16px;
+        margin-bottom: 24px;
+        text-align: center;
+    }
+    .persona-title { font-weight: 700; color: #D4A024; margin-bottom: 8px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+    .persona-desc { font-size: 1rem; line-height: 1.5; color: #4e342e; }
+
+    .empathy-msg {
+        text-align: center;
+        font-family: var(--font-hand);
+        font-size: 1.8rem;
+        color: var(--text-sub);
+        margin: 30px 0 20px;
+    }
+
+    /* 오일 리스트 스타일 */
+    #oil-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
+    .oil-card {
+        display: flex;
+        align-items: center;
+        background: #fff;
+        border: 1px solid #eee;
+        padding: 16px;
+        border-radius: 14px;
+        transition: transform 0.2s;
+    }
+    .oil-card.best {
+        border: 1px solid var(--accent);
+        background: #FFFEFA;
+        box-shadow: 0 4px 15px rgba(212, 160, 36, 0.15);
+        transform: scale(1.02);
+    }
+
+    /* 레시피 선택 그리드 */
+    .selection-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-bottom: 24px;
+    }
+    .oil-select-item {
+        background: #fff;
+        border: 1px solid #eaeaea;
+        border-radius: 12px;
+        padding: 12px 4px;
+        text-align: center;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .oil-select-item.selected {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+    }
+    
+    .recipe-intro-btn {
+        background: #fff;
+        border: 1px solid #eaeaea;
+        padding: 24px;
+        border-radius: 16px;
+        text-align: left;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    }
+    .recipe-intro-btn:hover { border-color: var(--primary); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+    .recipe-intro-btn strong { display: block; font-size: 1.1rem; margin-bottom: 6px; color: var(--text-main); }
+    .recipe-intro-btn span { font-size: 0.9rem; color: #888; }
+
+    .wide-btn {
+        width: 100%;
+        padding: 16px;
+        border-radius: 14px;
+        border: none;
+        font-size: 1rem;
+        margin-top: 10px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .drop-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px;
+        border-bottom: 1px dashed #ddd;
+    }
+    .drop-row:last-child { border-bottom: none; }
+    
+    .recipe-box {
+        background: #FFF;
+        border: 2px dashed #AACCAE;
+        padding: 20px;
+        border-radius: 16px;
+    }
+
+    /* 푸터 */
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #888;
+      padding-bottom: 10px;
+    }
+
+    /* 모달 */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: flex; justify-content: center; align-items: center;
+      z-index: 1000;
+      backdrop-filter: blur(4px);
+    }
+    .hidden { display: none !important; }
+    .modal-box {
+      background: white;
+      padding: 24px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 320px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    .qr-img { width: 100%; max-width: 180px; margin: 16px 0; border-radius: 8px; }
+    .url-input {
+      width: 100%; padding: 10px; background: #f5f5f5; border: none;
+      border-radius: 8px; margin-bottom: 16px; font-size: 0.85rem; color: #555;
+    }
+
+  </style>
 </head>
 <body>
   <div class="wrap">
@@ -39,8 +417,10 @@
         </div>
       </header>
       
-      <div style="margin-bottom:10px;"><div class="pill" id="stepPill">Oil</div></div>
-      <div class="bar"><div id="barFill"></div></div>
+      <div class="progress-area">
+          <div class="pill" id="stepPill">Oil</div>
+          <div class="bar"><div id="barFill"></div></div>
+      </div>
 
       <main id="mainContent"></main>
 
@@ -54,7 +434,8 @@
   <!-- 공유 모달창 -->
   <div id="shareModal" class="modal-overlay hidden" onclick="closeShareModal(event)">
     <div class="modal-box" onclick="event.stopPropagation()">
-      <h3>QR코드 공유</h3>
+      <h3 style="margin-bottom:10px;">QR코드 공유</h3>
+      <div style="font-size:12px; color:#888;">친구에게 향기를 선물하세요</div>
       <img id="qrImage" src="" alt="QR Code" class="qr-img">
       <input type="text" id="shareUrlInput" class="url-input" readonly>
       <div style="display:flex; gap:8px;">
@@ -181,15 +562,21 @@
     state.isProcessing = false;
 
     if (state.view === 'menu') {
-        setTitle("에센셜 오일 테라피", "원하는 메뉴를 선택해주세요.", "Oil");
+        setTitle("에센셜 오일 테라피", "원하는 메뉴를 선택해주세요.", "HOME");
         mainContent.innerHTML = `
         <div class="choices">
-          <button class="choice" onclick="startOilQuiz()">1. 에센셜오일 취향 찾기</button>
-          <button class="choice" onclick="setView('oil_recipe_intro')">2. DIY 아로마 롤온 레시피</button>
+          <button class="choice" onclick="startOilQuiz()">
+             <div style="font-weight:700; color:var(--primary); font-size:1.1rem; margin-bottom:4px;">1. 에센셜오일 취향 찾기</div>
+             <div style="color:#666; font-size:0.9rem;">내 마음 깊은 곳이 원하는 향을 알아봅니다.</div>
+          </button>
+          <button class="choice" onclick="setView('oil_recipe_intro')">
+             <div style="font-weight:700; color:var(--primary); font-size:1.1rem; margin-bottom:4px;">2. DIY 아로마 레시피</div>
+             <div style="color:#666; font-size:0.9rem;">원하는 향을 조합해 나만의 레시피를 만듭니다.</div>
+          </button>
         </div>`;
     } 
     else if (state.view === 'oil_recipe_intro') {
-      setTitle("DIY 롤온 레시피", "어떤 방식으로 오일을 선택하시겠어요?", "Selection");
+      setTitle("DIY 아로마 레시피", "어떤 방식으로 오일을 선택하시겠어요?", "Selection");
       mainContent.innerHTML = `
         <div style="display:grid; gap:12px;">
             <button class="recipe-intro-btn" onclick="setView('oil_recipe_manual')">
@@ -220,7 +607,8 @@
 
   function renderOilQuiz() {
     const progress = (state.oilStep / OIL_QUESTIONS.length) * 100;
-    barFill.style.width = `${progress}%`;
+    setTimeout(() => { barFill.style.width = `${progress}%`; }, 50);
+    
     if (state.oilStep >= OIL_QUESTIONS.length) { renderOilResult(); return; }
     
     const q = OIL_QUESTIONS[state.oilStep];
@@ -236,7 +624,7 @@
       optionsHtml = `<div class="pref-grid">
         ${q.options.map((opt) => `
           <div class="pref-card" onclick="handleOptionClick(this, '${opt.tag}')">
-            <img src="${opt.img}" alt="${opt.text}" class="pref-img">
+            <img src="${opt.img}" class="pref-img" alt="${opt.text}">
             <div class="pref-name">${opt.text}</div>
             <div class="pref-desc">${opt.desc}</div>
           </div>
@@ -305,8 +693,8 @@
     setTitle("상담 결과", "당신의 마음을 읽어보았습니다.", "완료");
 
     mainContent.innerHTML = `
-      <section class="result">
-        <div class="box" style="padding:24px 20px;">
+      <section class="result-section">
+        <div style="padding:10px 0;">
           <div style="display:flex; justify-content:center; gap:10px; margin-bottom:24px;">
             <div style="background:#f5f5f5; padding:8px 16px; border-radius:20px; font-size:13px; color:#6d4c41;">
               ❤️ 의식의 향: <strong>${userPref}</strong>
@@ -328,18 +716,18 @@
             ${top5.map((oil, idx) => `
               <div class="oil-card ${idx===0 ? 'best' : ''}">
                 <div style="flex:1;">
-                  <div style="font-size:${idx===0? '18px':'16px'}; margin-bottom:6px; ${idx===0?'color:#d4a024; font-weight:700;':''}">
+                  <div style="font-size:${idx===0? '1.1rem':'1rem'}; margin-bottom:6px; ${idx===0?'color:var(--accent); font-weight:700;':''}">
                     ${idx+1}. ${oil.name}
                   </div>
-                  <div class="scent-desc" style="font-size:13px; color:#5d4037; line-height:1.4;">${oil.scentDesc}</div>
+                  <div class="scent-desc" style="font-size:0.9rem; color:#666; line-height:1.4;">${oil.scentDesc}</div>
                 </div>
               </div>
             `).join("")}
           </div>
-          <button class="btn accent" onclick="checkAndGoAutoRecipe()">🧪 이 처방대로 롤온 만들기</button>
-          <div class="closing-q">"이 향기를 맡으며,<br>오늘 가장 하고 싶은 일은 무엇인가요?"</div>
+          <button class="wide-btn primary" onclick="checkAndGoAutoRecipe()">🧪 이 처방대로 롤온 만들기</button>
+          <div style="text-align:center; font-family:var(--font-hand); font-size:1.4rem; margin:30px 0 10px; color:#888;">"이 향기를 맡으며,<br>오늘 가장 하고 싶은 일은 무엇인가요?"</div>
         </div>
-        <div style="display:flex; gap:6px; margin-top:12px;">
+        <div style="display:flex; gap:6px; margin-top:20px;">
           <button class="btn capture" onclick="captureResult('app', '${bestOil.name}_결과')">📷 저장</button>
           <button class="btn primary" onclick="shareResult('${bestOil.name}')">공유</button>
           <button class="btn" onclick="startOilQuiz()">다시하기</button>
@@ -361,8 +749,7 @@
             return `<div class="oil-select-item ${isSelected ? 'selected' : ''}" onclick="toggleRecipeOil('${oil.name}')">${oil.name}</div>`;
         }).join('')}
       </div>
-      <button id="recipeBtn" class="wide-btn" style="text-align:center; justify-content:center; background:var(--accent); color:#fff; font-weight:bold;" 
-        ${isBtnDisabled ? 'disabled' : ''} onclick="calcRecipe('manual')">🌿 레시피 도출하기</button>
+      <button id="recipeBtn" class="wide-btn primary" ${isBtnDisabled ? 'disabled' : ''} onclick="calcRecipe('manual')">🌿 레시피 도출하기</button>
       <div id="recipeResult" style="display:none; margin-top:20px;"></div>
       <div class="nav"><button class="btn" onclick="setView('oil_recipe_intro')">이전으로</button></div>`;
   }
@@ -377,20 +764,19 @@
     else if (selCount >= 3) { btnText = "2개까지만 선택 가능합니다"; isBtnDisabled = true; }
 
     mainContent.innerHTML = `
-      <div style="background:#fff3e0; padding:12px; border-radius:12px; font-size:14px; color:#ef6c00; margin-bottom:16px; text-align:center; word-break:keep-all;">
+      <div style="background:#FFF3E0; padding:12px; border-radius:12px; font-size:0.9rem; color:#EF6C00; margin-bottom:16px; text-align:center; word-break:keep-all;">
         💡 테스트 결과(Top 5) 중 가장 마음에 드는 오일을 1~2개만 골라주세요. 나머지는 AI가 조화롭게 채워드립니다.
       </div>
       <div class="selection-grid">
         ${state.top5ResultOils.map(oil => {
             const isSelected = state.selectedRecipeOils.some(o => o.name === oil.name);
             return `<div class="oil-select-item ${isSelected ? 'selected' : ''}" onclick="toggleAutoRecipeOil('${oil.name}')">
-                <div style="font-size:12px; margin-bottom:4px; opacity:0.8;">${oil.category}</div>
+                <div style="font-size:10px; margin-bottom:2px; opacity:0.8; text-transform:uppercase;">${oil.category}</div>
                 ${oil.name}
             </div>`;
         }).join('')}
       </div>
-      <button id="autoRecipeBtn" class="wide-btn" style="text-align:center; justify-content:center; background:var(--accent); color:#fff; font-weight:bold;" 
-        ${isBtnDisabled ? 'disabled' : ''} onclick="runAutoRecommend()">✨ ${btnText}</button>
+      <button id="autoRecipeBtn" class="wide-btn primary" ${isBtnDisabled ? 'disabled' : ''} onclick="runAutoRecommend()">✨ ${btnText}</button>
       <div id="recipeResult" style="display:none; margin-top:20px;"></div>
       <div class="nav"><button class="btn" onclick="setView('oil_recipe_intro')">이전으로</button></div>`;
   }
@@ -443,14 +829,14 @@
         const isAi = aiPickNames.includes(oil.name);
         return `<div class="drop-row">
             <span>
-                ${isAi ? '<span style="font-size:11px; background:#d4a024; color:#fff; padding:2px 5px; border-radius:4px; margin-right:4px;">AI</span>' : ''}
+                ${isAi ? '<span style="font-size:11px; background:var(--accent); color:#fff; padding:2px 6px; border-radius:4px; margin-right:4px;">AI</span>' : ''}
                 💧 ${oil.name} <span style="font-size:12px; color:#888;">(${oil.note} Note)</span>
             </span>
             <strong>${distribution[idx]} 방울</strong>
         </div>`;
     }).join('');
     resultDiv.innerHTML = `
-      <div class="recipe-box"><h3 style="margin:0 0 15px; text-align:center; color:#2f8a58;">📋 나만의 블렌딩 (10ml 기준)</h3>${rows}<div style="margin-top:15px; text-align:center; font-weight:bold; color:#d4a024; font-size:14px;">+ 캐리어 오일(호호바 등) 9ml 채우기</div></div>
+      <div class="recipe-box"><h3 style="margin:0 0 15px; text-align:center; color:var(--primary);">📋 나만의 블렌딩 (10ml 기준)</h3>${rows}<div style="margin-top:15px; text-align:center; font-weight:bold; color:var(--accent); font-size:14px;">+ 캐리어 오일(호호바 등) 9ml 채우기</div></div>
       <div style="margin-top:15px; display:flex; gap:10px;"><button class="btn capture" style="flex:1" onclick="captureResult('app', '나만의_레시피')">📷 레시피 저장</button><button class="btn" style="flex:1" onclick="setView('menu')">처음으로</button></div>`;
       setTimeout(() => { resultDiv.scrollIntoView({ behavior: 'smooth' }); }, 100);
   }
@@ -468,6 +854,15 @@
         const link = document.createElement('a'); link.download = fileName + '.png'; link.href = canvas.toDataURL(); link.click();
     }).catch(err => { alert("이미지 저장 중 오류가 발생했습니다."); });
   };
+  window.shareResult = (oilName) => {
+    openShareModal();
+  };
+  window.closeShareModal = () => { document.getElementById('shareModal').classList.add('hidden'); };
+  window.copyShareUrl = () => {
+    const input = document.getElementById('shareUrlInput');
+    input.select(); document.execCommand('copy');
+    alert('주소가 복사되었습니다.');
+  };
 
     render();
 })();
@@ -475,28 +870,19 @@
 const REAL_URL = "https://wngml090256-sudo.github.io/wngml090256.github.io/oil.html";
 window.openShareModal = async () => {
   const title = document.title;
-  
-  // HTML 요소 가져오기
   const input = document.getElementById('shareUrlInput');
   const qr = document.getElementById('qrImage');
   const modal = document.getElementById('shareModal');
   
-  // 모달 내용 미리 채워두기 (PC용)
   if(input) input.value = REAL_URL;
   if(qr) qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(REAL_URL)}`;
   
-  // 1. 모바일(공유 기능 지원)인 경우
   if (navigator.share) { 
       try { 
-          // 모바일 자체 공유창 띄우기
-          await navigator.share({ title: title, text: '나에게 맞는 자연의 향기와 차를 찾아보세요.', url: REAL_URL }); 
-      } catch (e) {
-          // 사용자가 취소해도 아무것도 하지 않음 (조용히 종료)
-      }
-      return; // ★핵심★ 모바일이면 여기서 무조건 끝냅니다. 밑으로 안 내려감!
+          await navigator.share({ title: title, text: '나에게 맞는 자연의 향기를 찾아보세요.', url: REAL_URL }); 
+      } catch (e) {}
+      return; 
   } 
-  
-  // 2. PC(공유 기능 미지원)인 경우에만 모달창 띄우기
   if(modal) modal.classList.remove('hidden'); 
 };
 </script>
