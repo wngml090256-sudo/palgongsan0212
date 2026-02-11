@@ -1,567 +1,1089 @@
-
 <!doctype html>
+
 <html lang="ko">
+
 <head>
+
   <meta charset="utf-8" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 
+
+
   <title>티 테라피 (Tea Therapy)</title>
+
   <meta property="og:title" content="티 테라피 (Tea Therapy)" />
+
   <meta property="og:description" content="내 몸과 마음에 딱 맞는 차를 처방받으세요." />
+
   <meta property="og:image" content="https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1200&auto=format&fit=crop" />
 
+
+
   <!-- 폰트 & 라이브러리 -->
+
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
+
+
   <style>
+
     /* [기본 설정] */
+
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; -webkit-tap-highlight-color: transparent; }
 
+
+
     body {
+
       background: url('./tea.jpeg') no-repeat center center fixed;
+
       background-size: cover;
+
       color: #333;
+
       display: flex; justify-content: center; align-items: center;
+
       min-height: 100vh; padding: 20px 10px;
+
       backdrop-filter: blur(2px);
+
     }
+
+
 
     /* [카드 컨테이너] */
+
     .wrap { width: 100%; max-width: 460px; }
+
     .card {
+
       background: rgba(255, 255, 255, 0.96);
+
       border-radius: 24px;
+
       padding: 28px 24px;
+
       box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+
       min-height: 680px;
+
       display: flex; flex-direction: column; position: relative;
+
     }
+
+
 
     /* [헤더] */
+
     header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+
     h1 { font-family: 'Nanum Pen Script', cursive; font-size: 34px; color: #2e7d32; line-height: 1.1; margin-bottom: 4px; }
+
     .sub { font-size: 14px; color: #666; font-weight: 500; }
+
     .icon-btn { background: none; border: none; padding: 8px; cursor: pointer; border-radius: 50%; transition: background 0.2s; color: #555; }
+
     .icon-btn:hover { background: #f0f0f0; }
 
+
+
     /* [진행 상태] */
+
     .pill { display: inline-block; padding: 5px 14px; background: #e8f5e9; color: #2e7d32; border-radius: 20px; font-size: 12px; font-weight: 700; margin-bottom: 12px; }
+
     .bar { width: 100%; height: 6px; background: #eee; border-radius: 3px; overflow: hidden; margin-bottom: 24px; }
+
     #barFill { height: 100%; background: #2f8a58; width: 0%; transition: width 0.4s ease; }
 
+
+
     /* [버튼 스타일] */
+
     .wide-btn { width: 100%; background: #fff; border: 1px solid #e0e0e0; padding: 20px; border-radius: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.03); margin-bottom: 10px; }
+
     .wide-btn:hover { border-color: #2f8a58; background: #fdfdfd; transform: translateY(-2px); }
+
     .wide-btn strong { display: block; font-size: 16px; color: #333; margin-bottom: 4px; }
+
     .wide-btn span { font-size: 13px; color: #888; font-weight: 400; text-align: left; }
 
+
+
     .nav { margin-top: auto; display: flex; gap: 8px; padding-top: 20px; }
+
     .btn { flex: 1; padding: 15px; border-radius: 14px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; background: #f5f5f5; color: #666; font-size: 14px; }
-    .btn.primary { background: #2f8a58; color: white; box-shadow: 0 4px 12px rgba(47, 138, 88, 0.3); }
-    .btn.capture { background: #5d4037; color: white; }
+
+    .btn.primary { background: #A0BAED; color: white; box-shadow: 0 4px 12px rgba(47, 138, 88, 0.3); }
+
+    .btn.capture { background: #9FC93C; color: white; }
+
     .btn.danger { background: #fff0f0; color: #d32f2f; }
+
     .btn:hover { transform: translateY(-2px); opacity: 0.95; }
 
+
+
     /* [맛 선택 그리드] */
-    .taste-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
-    .taste-btn { background: #fff; border: 1px solid #ddd; border-radius: 16px; padding: 20px 10px; text-align: center; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
-    .taste-btn:hover { border-color: #2f8a58; background: #f9fffb; }
-    .taste-icon { font-size: 24px; margin-bottom: 4px; }
+
+    .taste-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
+
+    .taste-btn { 
+
+        background: #fff; border: 1px solid #ddd; border-radius: 20px; padding: 24px 10px; text-align: center; cursor: pointer; transition: 0.2s; 
+
+        display: flex; flex-direction: column; align-items: center; justify-content: center; 
+
+    }
+
+    .taste-btn:hover { border-color: #2f8a58; background: #f9fffb; transform: translateY(-2px); }
+
+    /* taste-img 스타일 수정: 크기 대폭 확대 */
+
+    .taste-img { width: 120px; height: 120px; object-fit: contain; margin-bottom: 12px; }
+
+    .taste-btn strong { font-size: 18px; }
+
+
 
     /* [바디 스캐너: 좌우 배치 레이아웃] */
+
     .scanner-layout {
+
         display: flex;
+
         align-items: center;
+
         gap: 10px; /* 간격 줄임 */
+
         margin: 10px 0 20px;
+
     }
+
     .scanner-left {
+
         flex: 0 0 180px; /* 사람 그림 영역 대폭 확대 */
+
         display: flex;
+
         justify-content: center;
+
     }
+
     .body-svg {
+
         width: 100%;
+
         height: auto;
+
         /* 그림자 효과 */
+
         filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+
     }
+
+
 
     .scanner-right {
+
         flex: 1; /* 나머지 공간 */
+
         display: flex;
+
         flex-direction: column;
+
         gap: 6px; /* 버튼 사이 간격 좁힘 */
+
     }
+
+
 
     /* 버튼 크기 축소 스타일 */
+
     .part-btn {
+
         background: #fff;
+
         border: 1px solid #ddd;
+
         padding: 10px 10px; /* 패딩 줄임 */
+
         border-radius: 10px;
+
         text-align: left;
+
         font-size: 13px; /* 폰트 사이즈 줄임 */
+
         font-weight: 600;
+
         color: #555;
+
         cursor: pointer;
+
         transition: 0.2s;
+
         display: flex; justify-content: space-between; align-items: center;
+
     }
+
     .part-btn:hover, .part-btn.active {
+
         background: #2f8a58;
+
         color: #fff;
+
         border-color: #2f8a58;
+
     }
+
     
+
     /* 하이라이트 스타일 */
+
     .hlt { opacity: 0; transition: 0.2s; fill: rgba(47, 138, 88, 0.4); stroke: #2f8a58; stroke-width: 3; }
+
     .hlt.on { opacity: 1; }
 
+
+
     /* [증상 리스트] */
+
     .symptom-list { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+
     .symptom-btn { width: 100%; background: #fff; border: 1px solid #ddd; padding: 18px 16px; border-radius: 14px; text-align: left; font-size: 15px; color: #444; transition: 0.2s; font-weight: 500; display: flex; justify-content: space-between; align-items: center; }
+
     .symptom-btn:hover { background: #2f8a58; color: #fff; border-color: #2f8a58; transform: translateX(5px); }
 
+
+
     /* [결과 화면] */
+
     .result .box { background: #fff; border-radius: 20px; margin-bottom: 16px; padding: 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); text-align: center; }
+
     .result-title { font-size: 14px; color: #2f8a58; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+
     .tea-name { font-size: 28px; margin: 0 0 10px; color: #222; font-family: 'Nanum Pen Script', cursive; }
+
     .tea-desc { color: #555; line-height: 1.6; margin-bottom: 20px; word-break: keep-all; font-size: 15px; }
 
+
+
     .recipe-card { border-radius: 12px; margin-top: 12px; text-align: left; padding: 16px; position: relative; font-size: 14px; line-height: 1.5; }
+
     .recipe-card.original { background: #fffbf5; border: 1px dashed #d68c00; }
+
     .recipe-card.modified { background: #f1f8e9; border: 1px dashed #2f8a58; }
+
     
+
     .recipe-label { font-size: 11px; font-weight: bold; margin-bottom: 6px; display: inline-block; padding: 2px 8px; border-radius: 4px; }
+
     .recipe-label.og { background: #d68c00; color: #fff; }
+
     .recipe-label.mod { background: #2f8a58; color: #fff; }
 
+
+
     .tag-container { margin-top: 20px; display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; }
+
     .tag { background: #e8f5e9; color: #2e7d32; padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; }
 
+
+
     /* [푸터 & 모달] */
+
     .footer { text-align: center; margin-top: 20px; color: #888; font-size: 11px; line-height: 1.5; }
+
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 100; backdrop-filter: blur(3px); }
+
     .hidden { display: none; }
+
     .modal-box { background: white; padding: 24px; border-radius: 16px; width: 300px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+
     .qr-img { width: 160px; height: 160px; margin: 16px 0; }
+
     .url-input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 16px; text-align: center; color: #666; font-size: 12px; background: #f9f9f9; }
 
+
+
     @media (max-width: 360px) {
+
       h1 { font-size: 28px; }
+
       /* 모바일에서는 세로로 배치하는게 나을 수도 있지만, 요청대로 유지하되 비율 조정 */
+
       .scanner-left { flex: 0 0 160px; }
+
     }
+
   </style>
+
 </head>
 
+
+
 <body>
+
   <div class="wrap">
+
     <div class="card" id="app">
+
       <header>
+
         <div class="header-left">
+
           <h1 id="pageTitle">티 테라피</h1>
+
           <div class="sub" id="pageSub">오늘의 나에게 필요한 차를 처방합니다.</div>
+
         </div>
+
         <div class="header-right">
+
           <button class="icon-btn" onclick="location.href='index.html'">🏠</button>
+
           <button class="icon-btn" onclick="openShareModal()" aria-label="공유하기">
+
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+
               <circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle>
+
               <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+
             </svg>
+
           </button>
+
         </div>
+
       </header>
 
+
+
       <div style="margin-bottom:10px;"><div class="pill" id="stepPill">Menu</div></div>
+
       <div class="bar"><div id="barFill"></div></div>
+
+
 
       <main id="mainContent" style="flex:1; display:flex; flex-direction:column;"></main>
 
+
+
       <div class="footer">
+
         <div>© 자연환경해설사 정주희</div>
+
         <div>* 의학적 진단이 아닌 취향/컨디션 기반 추천입니다.</div>
+
       </div>
+
     </div>
+
   </div>
+
+
 
   <!-- 공유 모달 -->
+
   <div id="shareModal" class="modal-overlay hidden" onclick="closeShareModal(event)">
+
     <div class="modal-box" onclick="event.stopPropagation()">
+
       <h3>QR코드 공유</h3>
+
       <img id="qrImage" src="" alt="QR Code" class="qr-img">
+
       <input type="text" id="shareUrlInput" class="url-input" readonly>
+
       <div style="display:flex; gap:8px;">
+
         <button class="btn primary" style="flex:1" onclick="copyShareUrl()">주소 복사</button>
+
         <button class="btn" style="flex:1" onclick="closeShareModal()">닫기</button>
+
       </div>
+
     </div>
+
   </div>
 
+
+
 <script>
+
 (() => {
+
   // [TEA DATABASE]
+
   const TEA_DB = {
+
     head: {
+
       label: "머리 / 정신",
+
       symptoms: [
+
         { txt: "생각이 많고 머리가 무거움", tea: "박하차", desc: "박하의 멘톨 성분이 막힌 기운을 뚫어주고 머리를 맑게 합니다.", recipe: "박하잎 2g + 따뜻한 물 200ml (3분 우림)", tags: ["두통", "리프레시"], taste: "cooling" },
+
         { txt: "눈이 침침하고 피로함", tea: "결명자차", desc: "결명자는 '눈을 밝게 하는 씨앗'입니다. 스마트폰으로 지친 눈에 휴식을 주세요.", recipe: "볶은 결명자 1큰술 + 뜨거운 물 300ml", tags: ["눈피로", "열내림"] },
+
         { txt: "화가 나고 열이 뻗침", tea: "치자차", desc: "가슴 속의 화(火)를 내려주고 마음을 진정시켜 줍니다.", recipe: "말린 치자 1개(부셔서) + 감초 한 조각 + 물 300ml", tags: ["화병", "진정"] },
+
         { txt: "집중력이 필요함", tea: "녹차", desc: "은은한 카페인이 정신을 깨우고, 카테킨이 몸을 가볍게 합니다.", recipe: "녹차 잎 1티스푼 + 70~80도 물 (너무 뜨겁지 않게)", tags: ["집중", "맑음"] }
+
       ]
+
     },
+
     throat: {
+
       label: "목 / 기관지",
+
       symptoms: [
+
         { txt: "목이 따갑고 칼칼함", tea: "도라지 감초차", desc: "도라지의 사포닌이 기관지를 보호하고, 감초가 목을 부드럽게 감싸줍니다.", recipe: "말린 도라지 5g + 감초 2조각 + 물 500ml 끓이기", tags: ["목감기", "기관지"], taste: "sweet" },
+
         { txt: "으슬으슬 감기 기운", tea: "유자차", desc: "비타민 C가 가득한 따뜻한 유자차로 면역력을 충전하세요.", recipe: "유자청 2큰술 + 뜨거운 물 250ml", tags: ["감기", "비타민"], taste: "sour" },
+
         { txt: "마른 기침이 계속됨", tea: "오미자차", desc: "다섯 가지 맛을 가진 오미자는 폐를 촉촉하게 적셔줍니다.", recipe: "건오미자 10g + 찬물 500ml (하루 냉침 후 따뜻하게 데워드세요)", tags: ["기침", "폐건강"], taste: "sour" }
+
       ]
+
     },
+
     upper: {
+
       label: "윗배 / 위, 간",
+
       symptoms: [
+
         { txt: "속이 더부룩하고 소화 안됨", tea: "매실차", desc: "매실의 신맛이 위산 분비를 조절하고 소화를 돕습니다.", recipe: "매실청 2큰술 + 따뜻한 물 200ml", tags: ["소화불량", "체기"], taste: "sour" },
+
         { txt: "기름진 음식, 과식", tea: "보이차", desc: "지방을 분해하고 속을 편안하게 씻어내려 줍니다.", recipe: "보이차 티백/잎 + 끓는 물 (첫 물은 버리고 두번째부터 음용)", tags: ["다이어트", "지방분해"] },
+
         { txt: "피로하고 숙취가 있음", tea: "헛개나무차", desc: "간의 독소를 풀어주어 피로 회복과 숙취 해소에 좋습니다.", recipe: "헛개나무 조각 + 물 넣고 20분 이상 끓이기", tags: ["숙취", "간보호"] }
+
       ]
+
     },
+
     lower: {
+
       label: "아랫배 / 대장, 신장",
+
       symptoms: [
+
         { txt: "배가 차갑고 살살 아픔", tea: "생강차", desc: "생강의 매운맛이 아랫배를 따뜻하게 데워 냉기를 몰아냅니다.", recipe: "생강청 1큰술 또는 편생강 3쪽 + 꿀 + 뜨거운 물", tags: ["복통", "냉증"], taste: "spicy" },
+
         { txt: "화장실 가기가 힘듦 (변비)", tea: "우엉차", desc: "식이섬유가 풍부한 우엉은 장 운동을 활발하게 합니다.", recipe: "볶은 우엉 3-4조각 + 뜨거운 물 (구수한 맛이 날 때까지)", tags: ["변비", "디톡스"] },
+
         { txt: "몸이 잘 붓음 (신장)", tea: "옥수수수염차", desc: "이뇨 작용을 도와 불필요한 수분과 붓기를 빼줍니다.", recipe: "옥수수수염 한 줌 + 물 500ml 끓이기", tags: ["붓기", "이뇨"] }
+
       ]
+
     },
+
     whole: {
+
       label: "전신순환 (혈액순환)",
+
       symptoms: [
+
         { txt: "손발이 차고 저림", tea: "계피차 (수정과)", desc: "계피의 따뜻한 성질이 말초 혈관까지 혈액을 보내줍니다.", recipe: "통계피 1대 + 생강 약간 + 흑설탕 + 물 끓이기", tags: ["수족냉증", "순환"], taste: "spicy" },
+
         { txt: "온몸이 뻐근하고 쑤심", tea: "쌍화차", desc: "기와 혈을 쌍으로 조화롭게 하여 피로를 풉니다.", recipe: "시판 쌍화청 또는 쌍화 티백 + 잣/대추 고명", tags: ["근육통", "보양"], taste: "sweet" },
+
         { txt: "긴장 완화가 필요함", tea: "대추차", desc: "대추의 단맛이 긴장된 근육과 신경을 이완시켜 줍니다.", recipe: "대추고 2큰술 + 뜨거운 물", tags: ["이완", "불면증"], taste: "sweet" }
+
       ]
+
     }
+
   };
+
+
 
   const state = { 
+
     view: 'menu', 
+
     dislikedTaste: null,
+
     selectedCategory: null, 
+
     selectedResult: null 
+
   };
+
+
 
   const mainContent = document.getElementById("mainContent");
+
   const pageTitle = document.getElementById("pageTitle");
+
   const pageSub = document.getElementById("pageSub");
+
   const stepPill = document.getElementById("stepPill");
+
   const barFill = document.getElementById("barFill");
 
+
+
   // Highlight Logic
+
   window.setHighlight = (key, on) => {
+
     const el = document.getElementById('hlt-' + key);
+
     if (!el) return;
+
     el.classList.toggle('on', !!on);
+
     
+
     // 버튼 스타일 연동
+
     const btn = document.getElementById('btn-' + key);
+
     if (btn) {
+
         if (on) btn.classList.add('active');
+
         else btn.classList.remove('active');
+
     }
+
   };
 
+
+
   function setTitle(title, sub, pill) {
+
     pageTitle.textContent = title;
+
     pageSub.textContent = sub;
+
     stepPill.textContent = pill;
+
   }
+
+
 
   function getModifiedRecipe(original, teaName, dislike) {
+
     if (dislike === 'none') return null;
+
     if (dislike === 'spicy') {
+
         if (teaName.includes('생강') || teaName.includes('계피') || teaName.includes('쌍화')) {
+
             return "생강이나 계피의 양을 1/3로 줄이거나 빼고, 대추를 더 넣어 부드럽게 드세요.";
+
         }
+
     }
+
     if (dislike === 'sour') {
+
         if (teaName.includes('유자') || teaName.includes('오미자') || teaName.includes('매실') || teaName.includes('레몬')) {
+
             return "연하게 희석해서 드시거나, 꿀을 평소보다 더 넣어 신맛을 중화시키세요.";
+
         }
+
     }
+
     if (dislike === 'sweet') {
+
         if (original.includes('청') || original.includes('설탕') || original.includes('꿀') || teaName.includes('대추')) {
+
             return "청이나 꿀, 설탕을 빼고 원물 그대로 우려내어 담백하고 깔끔하게 드세요.";
+
         }
+
     }
+
     if (dislike === 'cooling') {
+
         if (teaName.includes('박하')) {
+
             return "박하 잎의 양을 절반으로 줄이고, 따뜻한 성질의 차(둥굴레 등)와 블렌딩하세요.";
+
         }
+
     }
+
     return null; 
+
   }
 
+
+
   function render() {
+
     barFill.style.width = '0%';
 
+
+
     // 1. 메인 메뉴
+
     if (state.view === 'menu') {
+
       setTitle("티 테라피", "원하는 메뉴를 선택해주세요.", "Menu");
+
       mainContent.innerHTML = `
+
         <button class="wide-btn" onclick="setView('select_taste')">
+
           <div style="flex:1;">
+
             <strong>🧘 바디 스캐너 (Body Scan)</strong>
+
             <span>내 몸의 불편한 곳을 짚어보고<br>증상에 맞는 차를 추천받습니다.</span>
+
           </div>
+
           <div style="font-size:24px;">🩺</div>
+
         </button>
+
         <button class="wide-btn" onclick="alert('준비 중인 기능입니다.')">
+
           <div style="flex:1;">
+
              <strong>🍵 티 블렌딩 레시피</strong>
+
              <span>나만의 차를 만드는 블렌딩 가이드</span>
+
           </div>
+
           <div style="font-size:24px;">🥣</div>
+
         </button>
+
       `;
+
     }
+
     // 2. 싫어하는 맛 선택
+
     else if (state.view === 'select_taste') {
+
       barFill.style.width = '20%';
+
       setTitle("취향 체크", "평소 싫어하거나 피하고 싶은 맛은?", "Step 1/3");
+
+      // 이미지를 크게 하고 설명을 제거하여 이미지를 강조
+
       mainContent.innerHTML = `
+
         <div class="taste-grid">
+
             <button class="taste-btn" onclick="selectTaste('spicy')">
-                <span class="taste-icon">🌶️</span>
+
+                <img src="./spicy.jpeg" alt="매운맛" class="taste-img">
+
                 <strong>매운맛</strong>
-                <span style="font-size:11px; color:#888;">생강, 계피 등</span>
+
             </button>
+
             <button class="taste-btn" onclick="selectTaste('sour')">
-                <span class="taste-icon">🍋</span>
+
+                <img src="./sour.jpeg" alt="신맛" class="taste-img">
+
                 <strong>신맛</strong>
-                <span style="font-size:11px; color:#888;">레몬, 오미자 등</span>
+
             </button>
+
             <button class="taste-btn" onclick="selectTaste('sweet')">
-                <span class="taste-icon">🍯</span>
+
+                <img src="./sweet.jpeg" alt="단맛" class="taste-img">
+
                 <strong>단맛</strong>
-                <span style="font-size:11px; color:#888;">초콜릿, 시럽 등</span>
+
             </button>
+
             <button class="taste-btn" onclick="selectTaste('cooling')">
-                <span class="taste-icon">❄️</span>
+
+                <img src="./cool.jpeg" alt="청량감" class="taste-img">
+
                 <strong>청량감</strong>
-                <span style="font-size:11px; color:#888;">박하, 민트 치약맛</span>
+
             </button>
+
         </div>
+
         <button class="wide-btn" style="margin-top:12px; justify-content:center;" onclick="selectTaste('none')">
+
             <strong>❌ 특별히 가리는 맛 없음</strong>
+
         </button>
+
         <div class="nav"><button class="btn" onclick="setView('menu')">취소</button></div>
+
       `;
+
     }
-    // 3. 바디 스캐너 (이미지 대신 SVG로 직접 그림 - 만세 포즈)
+
+  // 3. 바디 스캐너 (SVG 대신 담비 캐릭터 이미지 삽입)
+
     else if (state.view === 'scanner_parts') {
+
        barFill.style.width = '50%';
-       setTitle("바디 스캐너", "가장 불편한 부위를 선택하세요.", "Step 2/3");
+
+       setTitle("바디 스캐너", "본인의 관리하고 싶은 부위를 선택하세요", "Step 2/3");
+
        mainContent.innerHTML = `
+
         <div class="scanner-layout">
-            <!-- 왼쪽: SVG로 직접 그린 사람 모양 (만세 포즈) -->
-            <div class="scanner-left">
-                <svg class="body-svg" viewBox="0 0 200 320" xmlns="http://www.w3.org/2000/svg">
-                    <!-- 사람 아이콘 (검은색) - 만세 자세 -->
-                    <g fill="none" stroke="#000" stroke-width="25" stroke-linecap="round" stroke-linejoin="round">
-                        <!-- 머리 (선이 아닌 채워진 원으로) -->
-                        <circle cx="100" cy="40" r="28" fill="#000" stroke="none"/>
-                        
-                        <!-- 몸통 -->
-                        <line x1="100" y1="80" x2="100" y2="180" />
-                        
-                        <!-- 팔 (만세: 어깨에서 위로 꺾임) -->
-                        <!-- 왼쪽 팔: 몸통에서 나가서 위로 -->
-                        <path d="M100 95 L55 95 L55 55" />
-                        <!-- 오른쪽 팔 -->
-                        <path d="M100 95 L145 95 L145 55" />
-                        
-                        <!-- 다리 (벌림) -->
-                        <path d="M100 180 L70 280" />
-                        <path d="M100 180 L130 280" />
-                    </g>
-                    
-                    <!-- 하이라이트 레이어 -->
-                    <g pointer-events="none">
-                        <!-- 머리 -->
-                        <circle id="hlt-head" class="hlt" cx="100" cy="40" r="35" />
-                        <!-- 목 -->
-                        <rect id="hlt-throat" class="hlt" x="80" y="65" width="40" height="35" rx="5" />
-                        <!-- 윗배 -->
-                        <rect id="hlt-upper" class="hlt" x="70" y="100" width="60" height="45" rx="10" />
-                        <!-- 아랫배 -->
-                        <rect id="hlt-lower" class="hlt" x="70" y="145" width="60" height="45" rx="10" />
-                        <!-- 전신 (크게 감싸기) -->
-                        <ellipse id="hlt-whole" class="hlt" cx="100" cy="150" rx="95" ry="145" fill="none" stroke-width="5" />
-                    </g>
-                </svg>
+
+            <div class="scanner-left" style="position: relative;">
+
+                <img src="./dambi.png" alt="담비 캐릭터" class="body-svg" style="max-height: 300px; width: auto;">
+
+                
+
+                <svg class="body-svg" viewBox="0 0 200 320" xmlns="http://www.w3.org/2000/svg" style="position: absolute; top: 0; left: 0; pointer-events: none;">
+
+    <g fill="none">
+
+        <circle id="hlt-head" class="hlt" cx="130" cy="50" r="45" />
+
+        
+
+        <rect id="hlt-throat" class="hlt" x="110" y="80" width="35" height="25" rx="5" />
+
+        
+
+        <rect id="hlt-upper" class="hlt" x="100" y="110" width="60" height="40" rx="10" />
+
+        
+
+        <rect id="hlt-lower" class="hlt" x="98" y="150" width="65" height="45" rx="10" />
+
+        
+
+        <ellipse id="hlt-whole" class="hlt" cx="130" cy="110" rx="60" ry="100" stroke-width="5" />
+
+    </g>
+
+</svg>
+
             </div>
 
-            <!-- 오른쪽: 버튼 리스트 (작게) -->
+
+
             <div class="scanner-right">
+
                 <button id="btn-head" class="part-btn" onclick="selectPart('head')" 
+
                     onmouseenter="setHighlight('head', true)" onmouseleave="setHighlight('head', false)">
+
                     <span>머리 / 정신</span> <span>></span>
+
                 </button>
+
                 <button id="btn-throat" class="part-btn" onclick="selectPart('throat')" 
+
                     onmouseenter="setHighlight('throat', true)" onmouseleave="setHighlight('throat', false)">
+
                     <span>목 / 기관지</span> <span>></span>
+
                 </button>
+
                 <button id="btn-upper" class="part-btn" onclick="selectPart('upper')" 
+
                     onmouseenter="setHighlight('upper', true)" onmouseleave="setHighlight('upper', false)">
+
                     <span>윗배 / 위, 간</span> <span>></span>
+
                 </button>
+
                 <button id="btn-lower" class="part-btn" onclick="selectPart('lower')" 
+
                     onmouseenter="setHighlight('lower', true)" onmouseleave="setHighlight('lower', false)">
+
                     <span>아랫배 / 대장, 신장</span> <span>></span>
+
                 </button>
+
                 <button id="btn-whole" class="part-btn" onclick="selectPart('whole')" 
+
                     onmouseenter="setHighlight('whole', true)" onmouseleave="setHighlight('whole', false)">
+
                     <span>전신순환 (혈액순환)</span> <span>></span>
+
                 </button>
+
             </div>
+
         </div>
+
         <div class="nav"><button class="btn" onclick="setView('select_taste')">이전</button></div>
+
        `;
-    }
-    // 4. 구체적 증상 선택
+
+    }    // 4. 구체적 증상 선택
+
     else if (state.view === 'scanner_symptoms') {
+
       barFill.style.width = '75%';
+
       const data = TEA_DB[state.selectedCategory];
+
       setTitle(data.label, "구체적인 증상을 선택해주세요.", "Step 3/3");
 
+
+
       let html = `<div class="symptom-list">`;
+
       data.symptoms.forEach((item, idx) => {
+
         html += `<button class="symptom-btn" onclick="showResult(${idx})"><span>${item.txt}</span><span style="color:#ccc;">></span></button>`;
+
       });
+
       html += `</div>
+
         <div class="nav">
+
           <button class="btn" onclick="setView('scanner_parts')">이전</button>
+
         </div>`;
+
       mainContent.innerHTML = html;
+
     }
+
     // 5. 결과 화면 (레시피 2개)
+
     else if (state.view === 'result') {
+
       barFill.style.width = '100%';
+
       const result = state.selectedResult;
+
       const modifiedRecipe = getModifiedRecipe(result.recipe, result.tea, state.dislikedTaste);
+
       
+
       let dislikeLabel = "";
+
       if(state.dislikedTaste === 'spicy') dislikeLabel = "매운맛 제외";
+
       else if(state.dislikedTaste === 'sour') dislikeLabel = "신맛 제외";
+
       else if(state.dislikedTaste === 'sweet') dislikeLabel = "단맛 제외";
+
       else if(state.dislikedTaste === 'cooling') dislikeLabel = "청량감 제외";
+
+
 
       setTitle("처방 결과", "회원님을 위한 맞춤 차입니다.", "완료");
 
+
+
       mainContent.innerHTML = `
+
         <section class="result">
+
           <div class="box">
+
             <div class="result-title">Today's Tea</div>
+
             <h2 class="tea-name">${result.tea}</h2>
+
             <p class="tea-desc">"${result.desc}"</p>
 
+
+
             <!-- 오리지널 레시피 -->
+
             <div class="recipe-card original">
+
               <span class="recipe-label og">ORIGINAL RECIPE</span>
+
               <div>${result.recipe}</div>
+
             </div>
+
+
 
             <!-- 수정 레시피 (조건부 렌더링) -->
+
             ${modifiedRecipe ? `
+
             <div class="recipe-card modified">
+
               <span class="recipe-label mod">CUSTOM (${dislikeLabel})</span>
+
               <div>${modifiedRecipe}</div>
+
             </div>` : ''}
 
+
+
             <div class="tag-container">
+
               ${result.tags.map(tag => `<span class="tag">#${tag}</span>`).join('')}
+
             </div>
+
           </div>
+
+
 
           <div style="display:flex; gap:8px; margin-top:10px;">
-              <button class="btn capture" onclick="captureResult('app', '${result.tea}_처방전')">📷 저장</button>
-              <button class="btn primary" onclick="shareResult('${result.tea}')">공유하기</button>
-          </div>
-          <div class="nav" style="padding-top:10px;">
               <button class="btn" onclick="setView('scanner_parts')">다른 증상 보기</button>
-              <button class="btn" onclick="setView('menu')">처음으로</button>
+
+              <button class="btn" onclick="setView('menu')">처음으로</button>              
+
           </div>
+
+          <div class="nav" style="padding-top:10px;">
+<button class="btn capture" onclick="captureResult('app', '${result.tea}_처방전')">📷 저장</button>
+
+              <button class="btn primary" onclick="shareResult('${result.tea}')">공유하기</button>
+
+          </div>
+
         </section>
+
       `;
+
     }
+
   }
 
+
+
   // Logic Functions
+
   window.selectTaste = (taste) => { state.dislikedTaste = taste; state.view = 'scanner_parts'; render(); };
+
   window.selectPart = (key) => { state.selectedCategory = key; state.view = 'scanner_symptoms'; render(); };
+
   window.showResult = (idx) => { state.selectedResult = TEA_DB[state.selectedCategory].symptoms[idx]; state.view = 'result'; render(); };
+
   window.setView = (viewName) => { state.view = viewName; render(); };
 
+
+
   // Utils
+
   window.captureResult = (elementId, fileName) => {
+
     const element = document.getElementById(elementId);
+
     const btns = element.querySelectorAll('.btn, .icon-btn, .wide-btn');
+
     btns.forEach(b => b.style.opacity = '0');
+
     html2canvas(element, { backgroundColor: "#fff", scale: 2 }).then(canvas => {
+
       const link = document.createElement('a');
+
       link.download = fileName + '.png';
+
       link.href = canvas.toDataURL();
+
       link.click();
+
       btns.forEach(b => b.style.opacity = '1');
+
     }).catch(() => {
+
       alert("오류발생");
+
       btns.forEach(b => b.style.opacity = '1');
+
     });
+
   };
+
+
 
   const REAL_URL = "https://wngml090256-sudo.github.io/wngml090256.github.io/tea.html";
+
   window.shareResult = async (teaName) => {
+
     if (navigator.share) {
+
       try {
+
         await navigator.share({
+
           title: '티 테라피 처방전',
+
           text: `나에게 필요한 차는 '${teaName}' 입니다.`,
+
           url: REAL_URL
+
         });
+
       } catch (e) {}
+
     } else {
+
       openShareModal();
+
     }
+
   };
+
+
 
   window.openShareModal = () => {
+
     const modal = document.getElementById('shareModal');
+
     const input = document.getElementById('shareUrlInput');
+
     const qr = document.getElementById('qrImage');
+
     if (input) input.value = REAL_URL;
+
     if (qr) qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(REAL_URL)}`;
+
     modal.classList.remove('hidden');
+
   };
+
+
 
   window.closeShareModal = (event) => {
+
     if (event && event.target && event.target.id !== 'shareModal') return;
+
     document.getElementById('shareModal').classList.add('hidden');
+
   };
+
+
 
   window.copyShareUrl = () => {
+
     const el = document.getElementById("shareUrlInput");
+
     el.select();
+
     document.execCommand("copy");
+
     alert("주소가 복사되었습니다.");
+
   };
 
+
+
   render(); // Start
+
 })();
+
 </script>
+
 </body>
+
 </html>
