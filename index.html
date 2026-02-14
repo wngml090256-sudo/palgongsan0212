@@ -258,7 +258,7 @@
     </div>
   </div>
 
-  <script>
+<script>
     const REAL_URL = "https://wngml090256-sudo.github.io/wngml090256.github.io/"; 
 
     window.openShareModal = async () => {
@@ -267,15 +267,10 @@
       const qr = document.getElementById('qrImage');
       const modal = document.getElementById('shareModal');
       
+      // 기기 종류와 상관없이 QR 코드와 URL을 설정하고 모달을 엽니다.
       if(input) input.value = REAL_URL;
       if(qr) qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(REAL_URL)}`;
       
-      if (navigator.share) { 
-          try { 
-              await navigator.share({ title: title, text: '숨 고르기부터 차 한 잔까지, 나를 돌보는 시간.', url: REAL_URL }); 
-          } catch (e) {}
-          return; 
-      } 
       if(modal) modal.classList.remove('hidden'); 
     };
 
