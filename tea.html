@@ -13,7 +13,7 @@
       background-size: cover; 
       color: #333; 
       display: flex; justify-content: center; align-items: center; 
-      min-height: 100vh; padding: 15px; /* 모바일 여백 감소 */
+      min-height: 100vh; padding: 40px; /* 모바일 여백 감소 */
       backdrop-filter: blur(2px);
     }
     
@@ -21,7 +21,7 @@
     .card { 
       background: rgba(255, 255, 255, 0.96); 
       border-radius: 24px; 
-      padding: 24px; /* 패딩 균형 조정 */
+      padding: 30px; /* 패딩 균형 조정 */
       box-shadow: 0 10px 40px rgba(0,0,0,0.2); 
       min-height: 620px; 
       display: flex; flex-direction: column; 
@@ -244,31 +244,61 @@
   };
 
   function runBreathCycle() {
-    const circle = document.getElementById('breathCircle');
-    const configs = { '444': [4, 4, 4], '478': [4, 7, 8], '448': [4, 4, 8] };
-    const [inhale, hold, exhale] = configs[state.breathType];
-    const shadowColor = THEMES[state.breathType].shadow;
-    function cycle() {
-      if (!state.isBreathing) return;
-      circle.textContent = "들이마시기";
-      circle.style.transition = `box-shadow ${inhale}s linear`;
-      circle.style.boxShadow = `0 0 80px 40px ${shadowColor}`;
-      setTimeout(() => {
-        if (!state.isBreathing) return;
-        circle.textContent = "멈추기";
-        circle.style.transition = "none";
-        setTimeout(() => {
-          if (!state.isBreathing) return;
-          circle.textContent = "내쉬기";
-          circle.style.transition = `box-shadow ${exhale}s linear`;
-          circle.style.boxShadow = `0 0 10px 0px ${shadowColor}`;
-          setTimeout(cycle, exhale * 1000);
-        }, hold * 1000);
-      }, inhale * 1000);
-    }
-    cycle();
+  const circle = document.getElementById('breathCircle');
+  const configs = { '444': [4, 4, 4], '478': [4, 7, 8], '448': [4, 4, 8] };
+  const [inhale, hold, exhale] = configs[state.breathType];
+  const shadowColor = THEMES[state.breathType].shadow;
+
+  function countdown(seconds, label, nextStep) {
+    let time = seconds;
+
+    // 처음 표시
+    circle.innerHTML = `${label}<br>${time}`;
+
+    const interval = setInterval(() => {
+      if (!state.isBreathing) {
+        clearInterval(interval);
+        return;
+      }
+
+      time--;
+
+      if (time > 0) {
+        circle.innerHTML = `${label}<br>${time}`;
+      } else {
+        clearInterval(interval);
+        nextStep();
+      }
+    }, 1000);
   }
 
+  function cycle() {
+    if (!state.isBreathing) return;
+
+    // 1️⃣ 들이마시기
+    circle.style.transition = `box-shadow ${inhale}s linear`;
+    circle.style.boxShadow = `0 0 80px 40px ${shadowColor}`;
+
+    countdown(inhale, "들이마시기", () => {
+
+      // 2️⃣ 멈추기
+      circle.style.transition = "none";
+
+      countdown(hold, "멈추기", () => {
+
+        // 3️⃣ 내쉬기
+        circle.style.transition = `box-shadow ${exhale}s linear`;
+        circle.style.boxShadow = `0 0 10px 0px ${shadowColor}`;
+
+        countdown(exhale, "내쉬기", cycle);
+
+      });
+
+    });
+  }
+
+  cycle();
+}
   window.setView = (v) => { state.view = v; render(); };
   window.selectPart = (k) => { state.selectedCategory = k; setView('scanner_symptoms'); };
   window.showResult = (i) => { state.selectedResult = TEA_DB[state.selectedCategory].symptoms[i]; setView('result'); };
